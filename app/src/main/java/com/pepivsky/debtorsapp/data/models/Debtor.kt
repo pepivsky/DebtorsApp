@@ -3,6 +3,7 @@ package com.pepivsky.debtorsapp.data.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.pepivsky.debtorsapp.util.Constants
+import java.math.BigDecimal
 
 @Entity(tableName = Constants.DEBTOR_TABLE)
 data class Debtor(
@@ -11,6 +12,6 @@ data class Debtor(
     val name: String,
     val description: String,
     val creationDate: String,
-    val amount: String,
-    val remaining: String,
+    val amount: Double,
+    val remaining: Double,
 )
