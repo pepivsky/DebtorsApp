@@ -30,9 +30,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 
 
-@Preview
+//@Preview
 @Composable
-fun HomeScreen() {
+fun HomeScreen(total: String) {
     Scaffold(contentColor = Color.White, floatingActionButton = { FabAdd() }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
@@ -60,7 +60,7 @@ fun HomeScreen() {
                 height = Dimension.wrapContent
             })
 
-            TotalAmount(modifier = Modifier.constrainAs(totalAmountRef) {
+            TotalAmount(total = total, modifier = Modifier.constrainAs(totalAmountRef) {
                 bottom.linkTo(bottomGuide)
                 start.linkTo(startGuide)
                 end.linkTo(endGuide)
@@ -131,8 +131,8 @@ fun HomeTitle(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun TotalAmount(modifier: Modifier = Modifier) {
-    Text(modifier = modifier, text = "Total: $770.00", color = Color(0xFF1C170D), fontSize = 22.sp)
+fun TotalAmount(modifier: Modifier = Modifier, total: String = "Total: $770.00") {
+    Text(modifier = modifier, text = total, color = Color(0xFF1C170D), fontSize = 22.sp)
 }
 
 @Preview

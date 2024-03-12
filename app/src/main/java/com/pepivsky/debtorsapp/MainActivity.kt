@@ -1,6 +1,7 @@
 package com.pepivsky.debtorsapp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,10 +12,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.pepivsky.debtorsapp.ui.theme.DebtorsAppTheme
+//import dagger.hilt.android.AndroidEntryPoint
 
+//@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private lateinit var debtorsDatabase: DebtorsDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        debtorsDatabase = (application as DebtorsApplication).database
+        /*debtorsDatabase.getDebtorDAO().getDebtorWithMovements().forEach {
+            println(it.debtor.name)
+            it.movements.forEach { println(it.type) }
+        }*/
+
+        //Toast.makeText(this, debtorsDatabase.getDebtorDAO().getDebtorWithMovements().joinToString(), Toast.LENGTH_LONG).show()
+
+        //val list = debtorsDatabase.getDebtorDAO().getDebtorWithMovements().joinToString()
+        val list = debtorsDatabase.getDebtorDAO().getMovementsByDebtor(1).joinToString()
+
+
         setContent {
             DebtorsAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -23,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //Greeting("Android")
-                    HomeScreen()
+                    HomeScreen(total = list)
                 }
             }
         }
