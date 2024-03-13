@@ -10,26 +10,37 @@ import com.pepivsky.debtorsapp.data.models.Debtor
 import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.Movement
 import com.pepivsky.debtorsapp.util.Constants
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DebtorDAO {
 
     @Insert
-    fun insertDebtor(vararg debtor: Debtor)
+    suspend fun insertDebtor(vararg debtor: Debtor)
 
     @Delete
-    fun deleteDebtor(debtor: Debtor)
+    suspend fun deleteDebtor(debtor: Debtor)
 
     @Update
-    fun updateDebtor(debtor: Debtor)
+    suspend fun updateDebtor(debtor: Debtor)
+
+    @Query("DELETE FROM debtor")
+    suspend fun deleteAllDebtors()
+
     @Query("SELECT * FROM ${Constants.DEBTOR_TABLE}")
-    fun getAllDebtors(): List<Debtor>
+    fun getAllDebtors(): Flow<List<Debtor>>
+
+    @Query("SELECT * FROM debtor WHERE debtorId = :id")
+    fun getSelectedDebtor(id: Long)
 
     @Transaction
     @Query("SELECT * FROM ${Constants.DEBTOR_TABLE}")
-    fun getDebtorSWithMovements(): List<DebtorWithMovements>
+    fun getDebtorSWithMovements(): Flow<List<DebtorWithMovements>>
 
-    @Transaction
+    /*@Transaction
     @Query("SELECT * FROM movement WHERE debtorCreatorId =:debtorId")
-    fun getMovementsByDebtor(debtorId: Long): List<Movement>
+    fun getMovementsByDebtor(debtorId: Long): Flow<List<Movement>>
+
+    @Insert
+    suspend fun insertMovement(vararg movement: Movement)*/
 }
