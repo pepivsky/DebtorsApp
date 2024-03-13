@@ -1,6 +1,5 @@
 package com.pepivsky.debtorsapp.di
 
-/*
 import android.content.Context
 import androidx.room.Room
 import com.pepivsky.debtorsapp.DebtorsDatabase
@@ -23,4 +22,4 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideDebtorDAO(database: DebtorsDatabase) = database.getDebtorDAO()
-}*/
+}
