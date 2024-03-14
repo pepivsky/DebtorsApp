@@ -34,5 +34,9 @@ class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO) {
         return debtorDAO.getSelectedDebtor(id = id)
     }
 
+    fun getTotalAmountOfDebtors(): Flow<Double> {
+        return debtorDAO.getTotalAmount()
+    }
+
 
 }

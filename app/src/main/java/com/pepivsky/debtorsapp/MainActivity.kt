@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                     // for manage dialog
                     var openDialog by rememberSaveable { mutableStateOf(false) }
 
-                    HomeScreen(total = "100", onFabClicked = {
+                    HomeScreen(viewModel = sharedViewModel, onFabClicked = {
                         openDialog = true
                     })
 
