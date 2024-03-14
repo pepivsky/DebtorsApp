@@ -10,8 +10,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.pepivsky.debtorsapp.components.DialogAddDebtor
+import com.pepivsky.debtorsapp.data.models.Debtor
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
 import com.pepivsky.debtorsapp.ui.theme.DebtorsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +50,26 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //Greeting("Android")
-                    HomeScreen(total = "")
+                    // for manage dialog
+                    var openDialog by rememberSaveable { mutableStateOf(false) }
+
+                    HomeScreen(total = "100", onFabClicked = {
+                        openDialog = true
+                    })
+
+                    DialogAddDebtor(
+                        openDialog = openDialog,
+                        closeDialog = { openDialog = false }) { name, amount, description, date ->
+                        val debtor = Debtor(
+                            name = name,
+                            description = description,
+                            creationDate = date,
+                            amount = amount.toDouble(),
+                            remaining = amount.toDouble()
+                        )
+
+                        sharedViewModel.addNewDebtor(debtor)
+                    }
                 }
             }
         }

@@ -32,8 +32,8 @@ import androidx.constraintlayout.compose.Dimension
 
 //@Preview
 @Composable
-fun HomeScreen(total: String) {
-    Scaffold(contentColor = Color.White, floatingActionButton = { FabAdd() }) { paddingValues ->
+fun HomeScreen(total: String, onFabClicked: () -> Unit) {
+    Scaffold(contentColor = Color.White, floatingActionButton = { FabAdd(onFabClicked = onFabClicked ) }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -109,10 +109,10 @@ fun ItemDebtor(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
+//@Preview
 @Composable
-fun FabAdd(modifier: Modifier = Modifier) {
-    FloatingActionButton(onClick = { /*TODO*/ }, containerColor = Color(0xFF009963)) {
+fun FabAdd(modifier: Modifier = Modifier, onFabClicked: () -> Unit) {
+    FloatingActionButton(onClick = { onFabClicked() }, containerColor = Color(0xFF009963)) {
         Icon(imageVector = Icons.Default.Add, contentDescription = "Add", tint = Color.White)
     }
 }
