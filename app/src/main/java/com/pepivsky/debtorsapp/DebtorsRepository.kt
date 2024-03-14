@@ -30,8 +30,8 @@ class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO) {
         debtorDAO.deleteAllDebtors()
     }
 
-    suspend fun getSelectedDebtor(id: Long) {
-        debtorDAO.getSelectedDebtor(id = id)
+    fun getSelectedDebtor(id: Long): Flow<Debtor> {
+        return debtorDAO.getSelectedDebtor(id = id)
     }
 
 

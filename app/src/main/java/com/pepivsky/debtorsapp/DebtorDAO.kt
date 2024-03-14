@@ -31,7 +31,7 @@ interface DebtorDAO {
     fun getAllDebtors(): Flow<List<Debtor>>
 
     @Query("SELECT * FROM debtor WHERE debtorId = :id")
-    fun getSelectedDebtor(id: Long)
+    fun getSelectedDebtor(id: Long): Flow<Debtor>
 
     @Transaction
     @Query("SELECT * FROM ${Constants.DEBTOR_TABLE}")
