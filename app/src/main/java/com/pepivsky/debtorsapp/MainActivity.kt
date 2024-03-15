@@ -51,25 +51,14 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //Greeting("Android")
                     // for manage dialog
-                    var openDialog by rememberSaveable { mutableStateOf(false) }
+                   /* var openDialog by rememberSaveable { mutableStateOf(false) }
 
                     HomeScreen(viewModel = sharedViewModel, onFabClicked = {
                         openDialog = true
-                    })
+                    })*/
 
-                    DialogAddDebtor(
-                        openDialog = openDialog,
-                        closeDialog = { openDialog = false }) { name, amount, description, date ->
-                        val debtor = Debtor(
-                            name = name,
-                            description = description,
-                            creationDate = date,
-                            amount = amount.toDouble(),
-                            remaining = amount.toDouble()
-                        )
+                    HomeScreen(viewModel = sharedViewModel)
 
-                        sharedViewModel.addNewDebtor(debtor)
-                    }
                 }
             }
         }

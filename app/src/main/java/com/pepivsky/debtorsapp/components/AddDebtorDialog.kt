@@ -77,7 +77,7 @@ fun DialogAddDebtor(
 
 
 
-                Text(text = "Nuevo deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(text = "Nuevo deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = name,

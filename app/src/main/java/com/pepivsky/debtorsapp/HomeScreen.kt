@@ -21,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,17 +34,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.data.models.Debtor
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
 
 
 //@Preview
 @Composable
-fun HomeScreen(viewModel: SharedViewModel, onFabClicked: () -> Unit) {
+fun HomeScreen(viewModel: SharedViewModel) {
     val allDebtors by viewModel.allDebtors.collectAsState()
     val total by viewModel.totalAmount.collectAsState()
+    var openDialog by rememberSaveable { mutableStateOf(false) }
 
-    Scaffold(contentColor = Color.White, floatingActionButton = { FabAdd(onFabClicked = onFabClicked ) }) { paddingValues ->
+    Scaffold(contentColor = Color.White, floatingActionButton = { FabAdd(onFabClicked = { openDialog = true }) }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -78,6 +83,20 @@ fun HomeScreen(viewModel: SharedViewModel, onFabClicked: () -> Unit) {
             })
 
 
+        }
+
+        DialogAddDebtor(
+            openDialog = openDialog,
+            closeDialog = { openDialog = false }) { name, amount, description, date ->
+            val debtor = Debtor(
+                name = name,
+                description = description,
+                creationDate = date,
+                amount = amount.toDouble(),
+                remaining = amount.toDouble()
+            )
+
+            viewModel.addNewDebtor(debtor)
         }
     }
 }
