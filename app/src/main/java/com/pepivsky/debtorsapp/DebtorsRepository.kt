@@ -4,6 +4,7 @@ import com.pepivsky.debtorsapp.data.models.Debtor
 import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -35,7 +36,7 @@ class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO) {
     }
 
     fun getTotalAmountOfDebtors(): Flow<Double> {
-        return debtorDAO.getTotalAmount()
+        return debtorDAO.getTotalAmount().filterNotNull()
     }
 
 

@@ -26,10 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.data.models.SharedViewModel
 
-@Preview
+//@Preview
 @Composable
-fun DetailDebtorScreen() {
+fun DetailDebtorScreen(viewModel: SharedViewModel, navController: NavController, id: Long) {
     Scaffold { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
@@ -61,7 +63,7 @@ fun DetailDebtorScreen() {
             })
 
             Text(
-                text = "Movimientos",
+                text = "$id",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(movementsTitleRef) {

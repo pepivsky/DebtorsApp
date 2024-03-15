@@ -31,6 +31,7 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
         }
     }
 
+    // todo mejorar cuando it es null
     private fun getTotalAmount() {
         viewModelScope.launch {
             debtorsRepository.getTotalAmountOfDebtors().collect {

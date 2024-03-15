@@ -1,6 +1,7 @@
 package com.pepivsky.debtorsapp
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,11 +39,12 @@ import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.data.models.Debtor
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
+import com.pepivsky.debtorsapp.navigation.AppScreens
 
 
 //@Preview
 @Composable
-fun HomeScreen(viewModel: SharedViewModel) {
+fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
     val allDebtors by viewModel.allDebtors.collectAsState()
     val total by viewModel.totalAmount.collectAsState()
     var openDialog by rememberSaveable { mutableStateOf(false) }
@@ -66,7 +68,7 @@ fun HomeScreen(viewModel: SharedViewModel) {
                 width = Dimension.fillToConstraints*/
             })
 
-            DebtorsList(debtors = allDebtors,modifier = Modifier.constrainAs(listRef) {
+            DebtorsList(debtors = allDebtors, navController = navController,modifier = Modifier.constrainAs(listRef) {
                 start.linkTo(startGuide)
                 end.linkTo(endGuide)
                 top.linkTo(titleRef.bottom, margin = 32.dp)
@@ -103,19 +105,24 @@ fun HomeScreen(viewModel: SharedViewModel) {
 
 //@Preview(showBackground = true)
 @Composable
-fun DebtorsList(debtors: List<Debtor>, modifier: Modifier = Modifier, ) {
+fun DebtorsList(debtors: List<Debtor>, navController: NavController, modifier: Modifier = Modifier,) {
     LazyColumn(modifier = modifier) {
-        items(debtors) {
-            ItemDebtor(debtor = it)
+        items(debtors, key = { it.debtorId }) { debtor ->
+            ItemDebtor(debtor = debtor) {
+                navController.navigate(
+                    route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
+                )
+            }
         }
     }
 }
 
 //@Preview(showBackground = true)
 @Composable
-fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor) {
+fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Unit) {
     Row(
         modifier = modifier
+            .clickable(onClick = onClick)
             .fillMaxWidth()
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically

@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.data.models.Debtor
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
+import com.pepivsky.debtorsapp.navigation.AppNavigation
 import com.pepivsky.debtorsapp.ui.theme.DebtorsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,8 +58,8 @@ class MainActivity : ComponentActivity() {
                         openDialog = true
                     })*/
 
-                    HomeScreen(viewModel = sharedViewModel)
-
+                    //HomeScreen(viewModel = sharedViewModel)
+                    AppNavigation(viewModel = sharedViewModel)
                 }
             }
         }
