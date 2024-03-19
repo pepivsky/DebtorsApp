@@ -10,7 +10,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SharedViewModel @Inject constructor(private val debtorsRepository: DebtorsRepository) : ViewModel() {
+class SharedViewModel @Inject constructor(private val debtorsRepository: DebtorsRepository) :
+    ViewModel() {
 
     private val _allDebtors = MutableStateFlow<List<Debtor>>(emptyList())
     val allDebtors = _allDebtors
@@ -18,9 +19,20 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
     private val _totalAmount = MutableStateFlow<Double>(0.00)
     val totalAmount = _totalAmount
 
+    private val _selectedDebtorWithMovements = MutableStateFlow<DebtorWithMovements?>(null)
+    val selectedDebtorWithMovements = _selectedDebtorWithMovements
     init {
         getAllDebtors()
         getTotalAmount()
+        //getSelectedDebtorById(1)
+    }
+
+    fun getSelectedDebtorWithMovementsById(id: Long) {
+        viewModelScope.launch {
+            debtorsRepository.getDebtorWithMovementsById(id).collect {
+                _selectedDebtorWithMovements.value = it
+            }
+        }
     }
 
     private fun getAllDebtors() {
@@ -40,9 +52,9 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
         }
     }
 
-     fun addNewDebtor(debtor: Debtor) {
-         viewModelScope.launch {
-             debtorsRepository.addDebtor(debtor)
-         }
+    fun addNewDebtor(debtor: Debtor) {
+        viewModelScope.launch {
+            debtorsRepository.addDebtor(debtor)
+        }
     }
 }

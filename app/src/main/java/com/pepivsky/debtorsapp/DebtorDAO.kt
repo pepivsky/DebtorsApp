@@ -40,6 +40,11 @@ interface DebtorDAO {
     @Query("SELECT SUM(amount) FROM ${Constants.DEBTOR_TABLE}")
     fun getTotalAmount(): Flow<Double>
 
+    @Transaction
+    @Query("SELECT * FROM ${Constants.DEBTOR_TABLE} WHERE debtorId = :id")
+    fun getDebtorWithMovementsById(id: Long): Flow<DebtorWithMovements>
+
+
     /*@Transaction
     @Query("SELECT * FROM movement WHERE debtorCreatorId =:debtorId")
     fun getMovementsByDebtor(debtorId: Long): Flow<List<Movement>>

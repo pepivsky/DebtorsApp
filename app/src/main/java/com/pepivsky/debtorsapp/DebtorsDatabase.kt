@@ -10,5 +10,8 @@ import com.pepivsky.debtorsapp.data.models.Movement
 @Database(entities = [Debtor::class, Movement::class], version = 1, exportSchema = false)
 @TypeConverters(BigDecimalTypeConverter::class)
 abstract class DebtorsDatabase: RoomDatabase() {
+
     abstract fun getDebtorDAO(): DebtorDAO
+
+    abstract fun getMovementDAO(): MovementDAO
 }

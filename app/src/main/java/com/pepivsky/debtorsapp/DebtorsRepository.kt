@@ -39,5 +39,9 @@ class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO) {
         return debtorDAO.getTotalAmount().filterNotNull()
     }
 
+    fun getDebtorWithMovementsById(id: Long): Flow<DebtorWithMovements> {
+        return debtorDAO.getDebtorWithMovementsById(id)
+    }
+
 
 }

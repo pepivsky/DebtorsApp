@@ -16,6 +16,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,11 +29,18 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
 
 //@Preview
 @Composable
-fun DetailDebtorScreen(viewModel: SharedViewModel, navController: NavController, id: Long) {
+fun DetailDebtorScreen(
+    viewModel: SharedViewModel,
+    navController: NavController,
+    id: Long,
+    selectedDebtor: DebtorWithMovements
+) {
+
     Scaffold { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
@@ -63,7 +72,7 @@ fun DetailDebtorScreen(viewModel: SharedViewModel, navController: NavController,
             })
 
             Text(
-                text = "$id",
+                text = selectedDebtor.debtor.name,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(movementsTitleRef) {
@@ -87,11 +96,13 @@ fun DetailDebtorScreen(viewModel: SharedViewModel, navController: NavController,
                 width = Dimension.fillToConstraints
             })
 
-            Spacer(modifier = Modifier.size(16.dp).constrainAs(spacerRef) {
-                start.linkTo(paymentButtonRef.end)
-                end.linkTo(increaseButtonRef.start)
-                bottom.linkTo(bottomGuide)
-            })
+            Spacer(modifier = Modifier
+                .size(16.dp)
+                .constrainAs(spacerRef) {
+                    start.linkTo(paymentButtonRef.end)
+                    end.linkTo(increaseButtonRef.start)
+                    bottom.linkTo(bottomGuide)
+                })
             IncreaseButton(modifier = Modifier.constrainAs(increaseButtonRef) {
                 start.linkTo(spacerRef.end)
                 end.linkTo(endGuide)

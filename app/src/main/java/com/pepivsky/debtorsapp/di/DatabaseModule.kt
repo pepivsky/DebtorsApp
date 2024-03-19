@@ -22,4 +22,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideDebtorDAO(database: DebtorsDatabase) = database.getDebtorDAO()
+
+    @Singleton
+    @Provides
+    fun provideMovementsDAO(database: DebtorsDatabase) = database.getMovementDAO()
 }
