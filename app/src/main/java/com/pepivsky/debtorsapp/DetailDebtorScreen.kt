@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -30,6 +31,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
+import com.pepivsky.debtorsapp.data.models.Movement
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
 
 //@Preview
@@ -37,7 +39,6 @@ import com.pepivsky.debtorsapp.data.models.SharedViewModel
 fun DetailDebtorScreen(
     viewModel: SharedViewModel,
     navController: NavController,
-    id: Long,
     selectedDebtor: DebtorWithMovements
 ) {
 
@@ -63,16 +64,19 @@ fun DetailDebtorScreen(
                 end.linkTo(endGuide)
             })
 
-            DebtInfo(modifier = Modifier.constrainAs(debtInfoRef) {
-                top.linkTo(debtorInfoRef.bottom, margin = 24.dp)
-                start.linkTo(startGuide)
-                end.linkTo(endGuide)
-                width = Dimension.fillToConstraints
-                height = Dimension.wrapContent
-            })
+            DebtInfo(
+                amount = selectedDebtor.debtor.amount,
+                remaining = selectedDebtor.debtor.remaining,
+                modifier = Modifier.constrainAs(debtInfoRef) {
+                    top.linkTo(debtorInfoRef.bottom, margin = 24.dp)
+                    start.linkTo(startGuide)
+                    end.linkTo(endGuide)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.wrapContent
+                })
 
             Text(
-                text = selectedDebtor.debtor.name,
+                text = "Movimientos",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(movementsTitleRef) {
@@ -80,14 +84,16 @@ fun DetailDebtorScreen(
                     start.linkTo(startGuide)
                 })
 
-            MovementsList(modifier = Modifier.constrainAs(movementsListRef) {
-                top.linkTo(movementsTitleRef.bottom, margin = 8.dp)
-                start.linkTo(startGuide)
-                end.linkTo(endGuide)
-                bottom.linkTo(paymentButtonRef.top)
-                width = Dimension.fillToConstraints
-                height = Dimension.fillToConstraints
-            })
+            MovementsList(
+                selectedDebtor.movements,
+                modifier = Modifier.constrainAs(movementsListRef) {
+                    top.linkTo(movementsTitleRef.bottom, margin = 8.dp)
+                    start.linkTo(startGuide)
+                    end.linkTo(endGuide)
+                    bottom.linkTo(paymentButtonRef.top)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                })
 
             PaymentButton(modifier = Modifier.constrainAs(paymentButtonRef) {
                 start.linkTo(startGuide)
@@ -117,19 +123,22 @@ fun DetailDebtorScreen(
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun MovementsList(modifier: Modifier = Modifier) {
+fun MovementsList(movements: List<Movement>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
-        items(20) {
-            ItemMovement()
+        items(movements) { movement ->
+            ItemMovement(movement)
         }
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun ItemMovement(modifier: Modifier = Modifier) {
+fun ItemMovement(
+    movement: Movement,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -137,28 +146,32 @@ fun ItemMovement(modifier: Modifier = Modifier) {
     ) {
         Column(modifier = Modifier) {
             Text(
-                text = "Pago",
+                text = "${movement.type}",
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF1C170D),
                 fontSize = 18.sp
             )
             //Text(text = "Celulares", color = Color(0xFFA1824A))
-            Text(text = "22 de diciembre del 2023", color = Color(0xFFA1824A))
+            Text(text = "${movement.date}", color = Color(0xFFA1824A))
         }
         Spacer(modifier = Modifier.weight(1F))
-        Text(text = "$770.00", color = Color(0xFF1C170D), fontSize = 18.sp)
+        Text(text = "${movement.amount}", color = Color(0xFF1C170D), fontSize = 18.sp)
 
     }
 }
 
-@Preview
+//@Preview
 @Composable
-fun DebtInfo(modifier: Modifier = Modifier) {
+fun DebtInfo(
+    amount: Double,
+    remaining: Double,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
             Text(text = "Restante", color = Color(0xFFA1824A))
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "1000.00", color = Color.Black)
+            Text(text = "$remaining", color = Color.Black)
 
         }
 
@@ -166,7 +179,7 @@ fun DebtInfo(modifier: Modifier = Modifier) {
         Row {
             Text(text = "Deuda", color = Color(0xFFA1824A))
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "3000.00", color = Color.Black)
+            Text(text = "$amount", color = Color.Black)
 
         }
     }

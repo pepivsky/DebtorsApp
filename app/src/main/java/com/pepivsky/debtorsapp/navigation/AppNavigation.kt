@@ -44,7 +44,6 @@ fun AppNavigation(viewModel: SharedViewModel) {
                     DetailDebtorScreen(
                         viewModel = viewModel,
                         navController = navController,
-                        id = id,
                         it
                     )
                 }
