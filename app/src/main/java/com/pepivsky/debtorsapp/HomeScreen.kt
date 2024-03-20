@@ -127,7 +127,7 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconDebtor(Modifier.size(40.dp), 24)
+        IconDebtor(firstLetter = debtor.name.first(),modifier = Modifier.size(40.dp), fontSize = 24)
         Column(modifier = Modifier.padding(start = 8.dp)) {
             Text(
                 text = debtor.name,
@@ -173,7 +173,7 @@ fun TotalAmount(modifier: Modifier = Modifier, total: String = "Total: $770.00")
 
 @Preview
 @Composable
-fun IconDebtor(modifier: Modifier = Modifier, fontSize: Int = 30) {
+fun IconDebtor(firstLetter: Char = 'B',modifier: Modifier = Modifier, fontSize: Int = 30) {
     Box(
         modifier = modifier
             .clip(CircleShape)
@@ -182,7 +182,7 @@ fun IconDebtor(modifier: Modifier = Modifier, fontSize: Int = 30) {
         Text(
             modifier = Modifier
                 .align(Alignment.Center),
-            text = "B",
+            text = "$firstLetter",
             color = Color.White, fontSize = fontSize.sp, fontWeight = FontWeight.ExtraBold
         )
     }
