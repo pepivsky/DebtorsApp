@@ -1,4 +1,4 @@
-package com.pepivsky.debtorsapp.data.models
+package com.pepivsky.debtorsapp.data.models.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

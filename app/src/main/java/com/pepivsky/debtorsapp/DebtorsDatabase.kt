@@ -4,8 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.pepivsky.debtorsapp.data.models.BigDecimalTypeConverter
-import com.pepivsky.debtorsapp.data.models.Debtor
-import com.pepivsky.debtorsapp.data.models.Movement
+import com.pepivsky.debtorsapp.data.models.entity.Debtor
+import com.pepivsky.debtorsapp.data.models.entity.Movement
 
 @Database(entities = [Debtor::class, Movement::class], version = 1, exportSchema = false)
 @TypeConverters(BigDecimalTypeConverter::class)

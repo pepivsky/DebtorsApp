@@ -1,8 +1,8 @@
 package com.pepivsky.debtorsapp
 
-import com.pepivsky.debtorsapp.data.models.Debtor
-import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
-import com.pepivsky.debtorsapp.data.models.Movement
+import com.pepivsky.debtorsapp.data.models.entity.Debtor
+import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
+import com.pepivsky.debtorsapp.data.models.entity.Movement
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull

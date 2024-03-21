@@ -6,9 +6,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.pepivsky.debtorsapp.data.models.Debtor
-import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
-import com.pepivsky.debtorsapp.data.models.Movement
+import com.pepivsky.debtorsapp.data.models.entity.Debtor
+import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
+import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.util.Constants
 import kotlinx.coroutines.flow.Flow
 

@@ -30,9 +30,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.components.DialogAddMovement
-import com.pepivsky.debtorsapp.data.models.Debtor
-import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
-import com.pepivsky.debtorsapp.data.models.Movement
+import com.pepivsky.debtorsapp.data.models.entity.Debtor
+import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
+import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
 import com.pepivsky.debtorsapp.util.toRidePrice

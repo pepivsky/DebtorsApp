@@ -3,6 +3,9 @@ package com.pepivsky.debtorsapp.data.models
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pepivsky.debtorsapp.DebtorsRepository
+import com.pepivsky.debtorsapp.data.models.entity.Debtor
+import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
+import com.pepivsky.debtorsapp.data.models.entity.Movement
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
