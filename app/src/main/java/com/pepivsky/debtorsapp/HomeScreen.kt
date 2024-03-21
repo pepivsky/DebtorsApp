@@ -169,7 +169,7 @@ fun HomeTitle(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun TotalAmount(modifier: Modifier = Modifier, total: String = "Total: $770.00") {
-    Text(modifier = modifier, text = "Total: $$total", color = Color(0xFF1C170D), fontSize = 22.sp)
+    Text(modifier = modifier, text = "Total: $$total", color = Color(0xFF1C170D), fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
 }
 
 @Preview
