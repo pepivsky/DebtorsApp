@@ -2,13 +2,14 @@ package com.pepivsky.debtorsapp
 
 import com.pepivsky.debtorsapp.data.models.Debtor
 import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
+import com.pepivsky.debtorsapp.data.models.Movement
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
 @ViewModelScoped
-class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO) {
+class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO, private val movementDAO: MovementDAO) {
 
     val getAllDebtorsWithMovements: Flow<List<DebtorWithMovements>> =
         debtorDAO.getDebtorSWithMovements()
@@ -41,6 +42,10 @@ class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO) {
 
     fun getDebtorWithMovementsById(id: Long): Flow<DebtorWithMovements> {
         return debtorDAO.getDebtorWithMovementsById(id)
+    }
+
+    suspend fun insertMovement(movement: Movement) {
+        movementDAO.insertMovement(movement)
     }
 
 

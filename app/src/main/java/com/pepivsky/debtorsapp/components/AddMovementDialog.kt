@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -17,8 +16,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -41,21 +37,13 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
-/*@Composable
-fun DisplayDialogAddDebtor(
-    openDialog: Boolean,
-    closeDialog: () -> Unit,
-    onAcceptClicked: (name: String, ) -> Unit
-) {
-
-}*/
 @OptIn(ExperimentalMaterial3Api::class)
-//@Preview(showBackground = true)
 @Composable
-fun DialogAddDebtor(
+fun DialogAddMovement(
+    movementType: MovementType,
     openDialog: Boolean,
     closeDialog: () -> Unit,
-    onAcceptClicked: (name: String, amount: String, description: String, dateText: String) -> Unit,
+    onAcceptClicked: (amount: String, dateText: String) -> Unit,
 
     ) {
     if (openDialog) {
@@ -75,14 +63,14 @@ fun DialogAddDebtor(
                 val state = rememberDatePickerState()
                 var dateText by remember { mutableStateOf("${LocalDate.now().dayOfMonth}/${LocalDate.now().monthValue}/${LocalDate.now().year}") }
 
-                var name by remember { mutableStateOf("") }
+                //var name by remember { mutableStateOf("") }
                 var amount by remember { mutableStateOf("") }
-                var description by remember { mutableStateOf("") }
+                //var description by remember { mutableStateOf("") }
 
 
 
-                Text(text = "Nuevo deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
-                OutlinedTextField(
+                Text(text = if (movementType == MovementType.PAYMENT) "Nuevo Pago" else "Nuevo Aumento", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
+                /*OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = name,
                     onValueChange = {
@@ -96,7 +84,7 @@ fun DialogAddDebtor(
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Words
                     )
-                )
+                )*/
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -112,7 +100,7 @@ fun DialogAddDebtor(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
 
-                OutlinedTextField(
+                /*OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = description,
                     onValueChange = {
@@ -124,7 +112,7 @@ fun DialogAddDebtor(
 
                     ),
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
-                )
+                )*/
                 // Color(0xFF009963)
 
                 OutlinedButton(
@@ -136,7 +124,7 @@ fun DialogAddDebtor(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        onAcceptClicked(name, amount, description, dateText)
+                        onAcceptClicked(amount,dateText, )
                         closeDialog()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963))
@@ -170,22 +158,4 @@ fun DialogAddDebtor(
     }
 
 
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun TextFieldCustom() {
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = "",
-        onValueChange = {
-
-        },
-        label = { Text(text = "Nombre", color = Color(0xFFA1824A)) },
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color(0xFFA1824A)
-
-        )
-    )
 }

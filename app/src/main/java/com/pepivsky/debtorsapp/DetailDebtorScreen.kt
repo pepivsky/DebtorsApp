@@ -15,6 +15,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,8 +29,10 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.components.DialogAddMovement
 import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.Movement
+import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
 
 //@Preview
@@ -36,6 +42,10 @@ fun DetailDebtorScreen(
     navController: NavController,
     selectedDebtor: DebtorWithMovements
 ) {
+    var openDialog by rememberSaveable { mutableStateOf(false) }
+    var movementType by rememberSaveable {
+        mutableStateOf(MovementType.PAYMENT)
+    }
 
     Scaffold { paddingValues ->
         ConstraintLayout(
@@ -92,7 +102,10 @@ fun DetailDebtorScreen(
                     height = Dimension.fillToConstraints
                 })
 
-            PaymentButton(modifier = Modifier.constrainAs(paymentButtonRef) {
+            PaymentButton(onClick = {
+                openDialog = true
+                movementType = MovementType.PAYMENT
+            }, modifier = Modifier.constrainAs(paymentButtonRef) {
                 start.linkTo(startGuide)
                 end.linkTo(spacerRef.start)
                 bottom.linkTo(bottomGuide)
@@ -106,7 +119,10 @@ fun DetailDebtorScreen(
                     end.linkTo(increaseButtonRef.start)
                     bottom.linkTo(bottomGuide)
                 })
-            IncreaseButton(modifier = Modifier.constrainAs(increaseButtonRef) {
+            IncreaseButton(onClick = {
+                openDialog = true
+                movementType = MovementType.INCREASE
+            }, modifier = Modifier.constrainAs(increaseButtonRef) {
                 start.linkTo(spacerRef.end)
                 end.linkTo(endGuide)
                 bottom.linkTo(bottomGuide)
@@ -117,6 +133,19 @@ fun DetailDebtorScreen(
 
 
         }
+    }
+
+    DialogAddMovement(
+        movementType = movementType,
+        openDialog = openDialog,
+        closeDialog = { openDialog = false }) { amount, dateText ->
+        val movement = Movement(
+            debtorCreatorId = selectedDebtor.debtor.debtorId,
+            type = movementType?.name.toString(),
+            amount = amount.toDouble(),
+            date = dateText
+        )
+        viewModel.addNewMovement(movement)
     }
 }
 
@@ -143,13 +172,13 @@ fun ItemMovement(
     ) {
         Column(modifier = Modifier) {
             Text(
-                text = "${movement.type}",
+                text = if (movement.type == MovementType.INCREASE.name) "Aumento" else "Pago",
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF1C170D),
                 fontSize = 18.sp
             )
             //Text(text = "Celulares", color = Color(0xFFA1824A))
-            Text(text = "${movement.date}", color = Color(0xFFA1824A))
+            Text(text = movement.date, color = Color(0xFFA1824A))
         }
         Spacer(modifier = Modifier.weight(1F))
         Text(text = "${movement.amount}", color = Color(0xFF1C170D), fontSize = 18.sp)
@@ -188,17 +217,18 @@ fun DebtInfo(
 @Composable
 fun DebtorName(name: String = "Blanquis", modifier: Modifier = Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        IconDebtor(firstLetter = name.first(),modifier = Modifier.size(120.dp), fontSize = 60)
+        IconDebtor(firstLetter = name.first(), modifier = Modifier.size(120.dp), fontSize = 60)
+        Spacer(modifier = Modifier.size(8.dp))
         Text(text = name, color = Color.Black, fontSize = 20.sp)
     }
 }
 
-@Preview
+//@Preview
 @Composable
-fun PaymentButton(modifier: Modifier = Modifier) {
+fun PaymentButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(
         modifier = modifier,
-        onClick = { /*TODO*/ },
+        onClick = { onClick() },
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963))
     ) {
@@ -207,12 +237,12 @@ fun PaymentButton(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
+//@Preview
 @Composable
-fun IncreaseButton(modifier: Modifier = Modifier) {
+fun IncreaseButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(
         modifier = modifier,
-        onClick = { /*TODO*/ },
+        onClick = { onClick() },
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF5F0E5))
     ) {

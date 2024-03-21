@@ -26,6 +26,7 @@ interface MovementDAO {
     @Query("DELETE FROM movement")
     suspend fun deleteAllMovements()
 
+
     /*@Query("SELECT * FROM movement WHERE debtorCreatorId = :id")
     fun getMovementsByDebtor(id: Long): Flow<List<Movement>>*/
 }

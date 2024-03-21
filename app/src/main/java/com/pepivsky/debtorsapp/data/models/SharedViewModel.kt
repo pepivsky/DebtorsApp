@@ -57,4 +57,10 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
             debtorsRepository.addDebtor(debtor)
         }
     }
+
+    fun addNewMovement(movement: Movement) {
+        viewModelScope.launch {
+            debtorsRepository.insertMovement(movement)
+        }
+    }
 }
