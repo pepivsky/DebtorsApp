@@ -1,6 +1,5 @@
 package com.pepivsky.debtorsapp.data.models
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pepivsky.debtorsapp.DebtorsRepository
@@ -61,6 +60,13 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
     fun addNewMovement(movement: Movement) {
         viewModelScope.launch {
             debtorsRepository.insertMovement(movement)
+        }
+    }
+
+    fun addMovementTransaction(debtor: Debtor, movement: Movement) {
+        viewModelScope.launch {
+            debtorsRepository.addMovementTransaction(debtor, movement)
+            //getTotalAmount()
         }
     }
 }

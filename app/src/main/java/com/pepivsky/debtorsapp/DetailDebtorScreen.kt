@@ -30,6 +30,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.components.DialogAddMovement
+import com.pepivsky.debtorsapp.data.models.Debtor
 import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.Movement
 import com.pepivsky.debtorsapp.data.models.MovementType
@@ -139,13 +140,27 @@ fun DetailDebtorScreen(
         movementType = movementType,
         openDialog = openDialog,
         closeDialog = { openDialog = false }) { amount, dateText ->
+
+        val debtorUpdated: Debtor = when (movementType) {
+            MovementType.PAYMENT -> {
+                selectedDebtor.debtor.copy(remaining = selectedDebtor.debtor.remaining - amount.toDouble())
+            }
+
+            MovementType.INCREASE -> {
+                selectedDebtor.debtor.copy(
+                    remaining = selectedDebtor.debtor.remaining + amount.toDouble(),
+                    amount = selectedDebtor.debtor.amount + amount.toDouble()
+                )
+
+            }
+        }
         val movement = Movement(
             debtorCreatorId = selectedDebtor.debtor.debtorId,
-            type = movementType?.name.toString(),
+            type = movementType.name,
             amount = amount.toDouble(),
             date = dateText
         )
-        viewModel.addNewMovement(movement)
+        viewModel.addMovementTransaction(debtor = debtorUpdated, movement = movement)
     }
 }
 

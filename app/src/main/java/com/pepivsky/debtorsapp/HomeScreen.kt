@@ -139,7 +139,7 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
             Text(text = debtor.creationDate, color = Color(0xFFA1824A))
         }
         Spacer(modifier = Modifier.weight(1F))
-        Text(text = debtor.amount.toString(), color = Color(0xFF1C170D), fontSize = 18.sp)
+        Text(text = debtor.remaining.toString(), color = Color(0xFF1C170D), fontSize = 18.sp)
 
     }
 }
