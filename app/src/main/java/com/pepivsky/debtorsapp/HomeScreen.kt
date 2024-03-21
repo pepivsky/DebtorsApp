@@ -40,6 +40,7 @@ import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.data.models.Debtor
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppScreens
+import com.pepivsky.debtorsapp.util.toRidePrice
 
 
 //@Preview
@@ -76,7 +77,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
                 height = Dimension.wrapContent
             })
 
-            TotalAmount(total = total.toString(), modifier = Modifier.constrainAs(totalAmountRef) {
+            TotalAmount(total = total.toRidePrice(), modifier = Modifier.constrainAs(totalAmountRef) {
                 bottom.linkTo(bottomGuide)
                 start.linkTo(startGuide)
                 end.linkTo(endGuide)
@@ -139,7 +140,7 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
             Text(text = debtor.creationDate, color = Color(0xFFA1824A))
         }
         Spacer(modifier = Modifier.weight(1F))
-        Text(text = debtor.remaining.toString(), color = Color(0xFF1C170D), fontSize = 18.sp)
+        Text(text = "$${debtor.remaining.toRidePrice()}", color = Color(0xFF1C170D), fontSize = 18.sp)
 
     }
 }
@@ -168,7 +169,7 @@ fun HomeTitle(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun TotalAmount(modifier: Modifier = Modifier, total: String = "Total: $770.00") {
-    Text(modifier = modifier, text = total, color = Color(0xFF1C170D), fontSize = 22.sp)
+    Text(modifier = modifier, text = "Total: $$total", color = Color(0xFF1C170D), fontSize = 22.sp)
 }
 
 @Preview

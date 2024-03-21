@@ -35,6 +35,7 @@ import com.pepivsky.debtorsapp.data.models.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.Movement
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
+import com.pepivsky.debtorsapp.util.toRidePrice
 
 //@Preview
 @Composable
@@ -196,7 +197,7 @@ fun ItemMovement(
             Text(text = movement.date, color = Color(0xFFA1824A))
         }
         Spacer(modifier = Modifier.weight(1F))
-        Text(text = "${movement.amount}", color = Color(0xFF1C170D), fontSize = 18.sp)
+        Text(text = "$${movement.amount.toRidePrice()}", color = Color(0xFF1C170D), fontSize = 18.sp)
 
     }
 }
@@ -212,7 +213,7 @@ fun DebtInfo(
         Row {
             Text(text = "Restante", color = Color(0xFFA1824A))
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$remaining", color = Color.Black)
+            Text(text = "$${remaining.toRidePrice()}", color = Color.Black)
 
         }
 
@@ -220,7 +221,7 @@ fun DebtInfo(
         Row {
             Text(text = "Deuda", color = Color(0xFFA1824A))
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$amount", color = Color.Black)
+            Text(text = "$${amount.toRidePrice()}", color = Color.Black)
 
         }
     }
