@@ -72,4 +72,16 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
             //getTotalAmount()
         }
     }
+
+    fun deleteSelectedDebtor(debtor: Debtor) {
+        viewModelScope.launch {
+            debtorsRepository.deleteDebtor(debtor)
+        }
+    }
+
+    /*fun deleteDebtorWithMov(debtorWithMovements: DebtorWithMovements) {
+        viewModelScope.launch {
+            debtorsRepository.deleteDebtorWithMove(debtorWithMovements)
+        }
+    }*/
 }

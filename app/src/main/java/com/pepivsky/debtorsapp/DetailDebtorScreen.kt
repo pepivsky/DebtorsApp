@@ -36,6 +36,8 @@ import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
 import com.pepivsky.debtorsapp.util.toRidePrice
+import com.pepivsky.debtorsapp.ui.DefaultDetailDebtorAppBar
+
 
 //@Preview
 @Composable
@@ -49,7 +51,7 @@ fun DetailDebtorScreen(
         mutableStateOf(MovementType.PAYMENT)
     }
 
-    Scaffold { paddingValues ->
+    Scaffold(topBar = { DefaultDetailDebtorAppBar(sharedViewModel = viewModel, navController= navController, debtorWithMovements = selectedDebtor) }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
