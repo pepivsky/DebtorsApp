@@ -1,6 +1,7 @@
 package com.pepivsky.debtorsapp.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
@@ -19,7 +20,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
@@ -80,7 +84,9 @@ fun DefaultDetailDebtorAppBar(
     navController: NavController,
     debtorWithMovements: DebtorWithMovements,
 ) {
-    TopAppBar(title = { Text(text = debtorWithMovements.debtor.name) },
+    TopAppBar(title = { Text(text = debtorWithMovements.debtor.name, fontWeight = FontWeight.Bold, fontSize = 24.sp
+
+    ) },
         actions = {
             DetailDebtorAppBarActions {
                 //sharedViewModel.deleteDebtorWithMov(debtorWithMovements)
@@ -91,7 +97,7 @@ fun DefaultDetailDebtorAppBar(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "back",
-                modifier = Modifier.clickable { navController.popBackStack() })
+                modifier = Modifier.clickable { navController.popBackStack() }.padding(8.dp))
         })
 }
 
