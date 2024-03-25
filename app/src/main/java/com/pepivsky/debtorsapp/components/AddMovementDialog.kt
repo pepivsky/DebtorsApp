@@ -18,6 +18,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,6 +66,8 @@ fun DialogAddMovement(
 
                 //var name by remember { mutableStateOf("") }
                 var amount by remember { mutableStateOf("") }
+                val isEnable by remember { derivedStateOf { amount.isNotBlank() } }
+
                 //var description by remember { mutableStateOf("") }
 
 
@@ -127,7 +130,8 @@ fun DialogAddMovement(
                         onAcceptClicked(amount,dateText, )
                         closeDialog()
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963)),
+                    enabled = isEnable
                 ) {
                     Text(text = "Aceptar")
                 }
