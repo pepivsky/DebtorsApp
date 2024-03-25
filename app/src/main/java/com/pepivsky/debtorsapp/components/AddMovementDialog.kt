@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.text.isDigitsOnly
 import com.pepivsky.debtorsapp.data.models.MovementType
 import java.time.Instant
 import java.time.LocalDate
@@ -93,7 +94,9 @@ fun DialogAddMovement(
                     modifier = Modifier.fillMaxWidth(),
                     value = amount,
                     onValueChange = {
-                        amount = it
+                        if (it.isDigitsOnly()) {
+                            amount = it
+                        }
                     },
                     label = { Text(text = "Monto", color = Color(0xFFA1824A)) },
                     colors = OutlinedTextFieldDefaults.colors(
