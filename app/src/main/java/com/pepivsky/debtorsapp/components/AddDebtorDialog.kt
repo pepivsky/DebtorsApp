@@ -13,6 +13,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -21,9 +22,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,9 +78,11 @@ fun DialogAddDebtor(
                 val state = rememberDatePickerState()
                 var dateText by remember { mutableStateOf("${LocalDate.now().dayOfMonth}/${LocalDate.now().monthValue}/${LocalDate.now().year}") }
 
-                var name by remember { mutableStateOf("") }
-                var amount by remember { mutableStateOf("") }
-                var description by remember { mutableStateOf("") }
+                var name by rememberSaveable { mutableStateOf("") }
+                var amount by rememberSaveable { mutableStateOf("") }
+                var description by rememberSaveable { mutableStateOf("") }
+                val isEnable by remember { derivedStateOf { name.isNotBlank() && amount.isNotBlank() && description.isNotBlank() } }
+
 
 
 
@@ -95,7 +100,12 @@ fun DialogAddDebtor(
                     ),
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Words
-                    )
+                    ), /*supportingText = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Nombre vacio",
+                            color = MaterialTheme.colorScheme.error)
+                    }*/
                 )
 
                 OutlinedTextField(
@@ -139,7 +149,8 @@ fun DialogAddDebtor(
                         onAcceptClicked(name, amount, description, dateText)
                         closeDialog()
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963)),
+                    enabled = isEnable
                 ) {
                     Text(text = "Aceptar")
                 }
