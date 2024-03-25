@@ -70,7 +70,7 @@ fun DetailDebtorScreen(
             DebtorName(
                 name = selectedDebtor.debtor.name,
                 modifier = Modifier.constrainAs(debtorInfoRef) {
-                    top.linkTo(parent.top, margin = 32.dp)
+                    top.linkTo(parent.top, margin = 8.dp)
                     start.linkTo(startGuide)
                     end.linkTo(endGuide)
                 })
@@ -233,7 +233,7 @@ fun DebtInfo(
 
 @Preview
 @Composable
-fun DebtorName(name: String = "Blanquis", modifier: Modifier = Modifier) {
+fun DebtorName(name: String = "", modifier: Modifier = Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         IconDebtor(firstLetter = name.first(), modifier = Modifier.size(120.dp), fontSize = 60)
         Spacer(modifier = Modifier.size(8.dp))
