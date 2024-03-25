@@ -131,7 +131,7 @@ fun DialogAddDebtor(
                     onValueChange = {
                         description = it
                     },
-                    label = { Text(text = "Descripcion", color = Color(0xFFA1824A)) },
+                    label = { Text(text = "Concepto", color = Color(0xFFA1824A)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFA1824A)
 
