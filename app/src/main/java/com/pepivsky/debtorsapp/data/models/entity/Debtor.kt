@@ -14,4 +14,5 @@ data class Debtor(
     val creationDate: String,
     val amount: Double,
     val remaining: Double,
+    val isPaid: Boolean = false,
 )
