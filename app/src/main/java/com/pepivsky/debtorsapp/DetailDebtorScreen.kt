@@ -213,17 +213,17 @@ fun DebtInfo(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = "Restante", color = Color(0xFFA1824A))
+            Text(text = "Restante", color = Color(0xFFA1824A), fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$${remaining.toRidePrice()}", color = Color.Black)
+            Text(text = "$${remaining.toRidePrice()}", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
         }
 
         Spacer(modifier = Modifier.size(8.dp))
         Row {
-            Text(text = "Deuda", color = Color(0xFFA1824A))
+            Text(text = "Deuda", color = Color(0xFFA1824A), fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$${amount.toRidePrice()}", color = Color.Black)
+            Text(text = "$${amount.toRidePrice()}", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
         }
     }
