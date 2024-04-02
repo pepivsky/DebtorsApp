@@ -41,6 +41,7 @@ import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppScreens
 import com.pepivsky.debtorsapp.util.toRidePrice
+import com.pepivsky.todocompose.ui.screens.ads.AdvertView
 
 
 //@Preview
@@ -59,7 +60,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
             val startGuide = createGuidelineFromStart(0.05F)
             val endGuide = createGuidelineFromEnd(0.05F)
             val bottomGuide = createGuidelineFromBottom(0.1F)
-            val (titleRef, listRef, totalAmountRef) = createRefs()
+            val (titleRef, listRef, totalAmountRef, adRef) = createRefs()
 
             HomeTitle(modifier = Modifier.constrainAs(titleRef) {
                 top.linkTo(parent.top, margin = 16.dp)
@@ -85,6 +86,14 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
                 width = Dimension.wrapContent
             })
 
+           /* AdvertView(modifier = Modifier.constrainAs(adRef) {
+                top.linkTo(bottomGuide)
+                start.linkTo(startGuide)
+                end.linkTo(endGuide)
+                height = Dimension.wrapContent
+                width = Dimension.wrapContent
+            })*/
+
 
         }
 
@@ -108,6 +117,9 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
 @Composable
 fun DebtorsList(debtors: List<Debtor>, navController: NavController, modifier: Modifier = Modifier,) {
     LazyColumn(modifier = modifier) {
+        item {
+            AdvertView()
+        }
         items(debtors, key = { it.debtorId }) { debtor ->
             ItemDebtor(debtor = debtor) {
                 navController.navigate(
