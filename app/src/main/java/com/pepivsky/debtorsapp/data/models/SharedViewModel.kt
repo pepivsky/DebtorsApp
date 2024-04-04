@@ -7,6 +7,7 @@ import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,14 +19,14 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
     private val _allDebtors = MutableStateFlow<List<Debtor>>(emptyList())
     val allDebtors = _allDebtors
 
-    private val _totalAmount = MutableStateFlow<Double>(0.00)
+    private val _totalAmount: Flow<Double> = debtorsRepository.getTotalAmountOfDebtors()
     val totalAmount = _totalAmount
 
     private val _selectedDebtorWithMovements = MutableStateFlow<DebtorWithMovements?>(null)
     val selectedDebtorWithMovements = _selectedDebtorWithMovements
     init {
         getAllDebtors()
-        getTotalAmount()
+        //getTotalAmount()
         //getSelectedDebtorById(1)
     }
 
@@ -46,13 +47,13 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
     }
 
     // todo mejorar cuando it es null
-    private fun getTotalAmount() {
+    /*private fun getTotalAmount() {
         viewModelScope.launch {
             debtorsRepository.getTotalAmountOfDebtors().collect {
                 _totalAmount.value = it
             }
         }
-    }
+    }*/
 
     fun addNewDebtor(debtor: Debtor) {
         viewModelScope.launch {

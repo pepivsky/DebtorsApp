@@ -48,7 +48,7 @@ import com.pepivsky.todocompose.ui.screens.ads.AdvertView
 @Composable
 fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
     val allDebtors by viewModel.allDebtors.collectAsState()
-    val total by viewModel.totalAmount.collectAsState()
+    val total by viewModel.totalAmount.collectAsState(0.0)
     var openDialog by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(contentColor = Color.White, floatingActionButton = { FabAdd(onFabClicked = { openDialog = true }) }) { paddingValues ->
