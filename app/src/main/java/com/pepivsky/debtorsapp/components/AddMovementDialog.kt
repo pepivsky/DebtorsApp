@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
 import com.pepivsky.debtorsapp.data.models.MovementType
+import com.pepivsky.debtorsapp.util.numberValidator
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -93,9 +94,9 @@ fun DialogAddMovement(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = amount,
-                    onValueChange = {
-                        if (it.isDigitsOnly()) {
-                            amount = it
+                    onValueChange = { str ->
+                        if (numberValidator(str)) {
+                            amount = str
                         }
                     },
                     label = { Text(text = "Monto", color = Color(0xFFA1824A)) },
