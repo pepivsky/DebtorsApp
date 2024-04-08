@@ -1,5 +1,6 @@
 package com.pepivsky.debtorsapp.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
 import com.pepivsky.debtorsapp.data.models.MovementType
+import com.pepivsky.debtorsapp.util.numberValidator
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -112,9 +114,11 @@ fun DialogAddDebtor(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = amount,
-                    onValueChange = {
-                        if (it.isDigitsOnly()) {
-                            amount = it
+                    onValueChange = { str ->
+                        /*val countDots = str.count {it == '.' } < 2
+                        Log.d("pruebilla", "countDots: $countDots")*/
+                        if (numberValidator(str)) {
+                            amount = str
                         }
                     },
                     label = { Text(text = "Monto", color = Color(0xFFA1824A)) },
