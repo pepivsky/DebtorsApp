@@ -1,4 +1,4 @@
-package com.pepivsky.debtorsapp
+package com.pepivsky.debtorsapp.ui.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,7 +38,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
-import com.pepivsky.debtorsapp.data.models.SharedViewModel
+import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppScreens
 import com.pepivsky.debtorsapp.util.toRidePrice
 import com.pepivsky.todocompose.ui.screens.ads.AdvertView

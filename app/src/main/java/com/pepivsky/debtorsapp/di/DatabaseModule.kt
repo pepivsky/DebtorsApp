@@ -2,7 +2,7 @@ package com.pepivsky.debtorsapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.pepivsky.debtorsapp.DebtorsDatabase
+import com.pepivsky.debtorsapp.data.DebtorsDatabase
 import com.pepivsky.debtorsapp.util.Constants
 import dagger.Module
 import dagger.Provides

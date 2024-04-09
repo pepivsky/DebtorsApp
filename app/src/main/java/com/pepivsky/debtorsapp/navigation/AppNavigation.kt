@@ -7,11 +7,11 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.pepivsky.debtorsapp.data.models.SharedViewModel
+import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.pepivsky.debtorsapp.DetailDebtorScreen
-import com.pepivsky.debtorsapp.HomeScreen
+import com.pepivsky.debtorsapp.ui.screens.detailDebtor.DetailDebtorScreen
+import com.pepivsky.debtorsapp.ui.screens.home.HomeScreen
 
 
 @Composable

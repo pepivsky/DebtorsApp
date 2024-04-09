@@ -1,4 +1,4 @@
-package com.pepivsky.debtorsapp.data.models
+package com.pepivsky.debtorsapp.data.converters
 
 import androidx.room.TypeConverter
 import java.math.BigDecimal

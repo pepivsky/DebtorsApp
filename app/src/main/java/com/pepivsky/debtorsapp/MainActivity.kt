@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.pepivsky.debtorsapp.data.models.SharedViewModel
+import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppNavigation
 import com.pepivsky.debtorsapp.ui.theme.DebtorsAppTheme
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,5 +1,7 @@
-package com.pepivsky.debtorsapp
+package com.pepivsky.debtorsapp.data.repositories
 
+import com.pepivsky.debtorsapp.data.dao.DebtorDAO
+import com.pepivsky.debtorsapp.data.dao.MovementDAO
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.entity.Movement

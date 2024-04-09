@@ -1,8 +1,8 @@
-package com.pepivsky.debtorsapp.data.models
+package com.pepivsky.debtorsapp.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pepivsky.debtorsapp.DebtorsRepository
+import com.pepivsky.debtorsapp.data.repositories.DebtorsRepository
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.entity.Movement

@@ -1,4 +1,4 @@
-package com.pepivsky.debtorsapp
+package com.pepivsky.debtorsapp.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
