@@ -10,6 +10,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -116,7 +117,6 @@ fun DeleteAction(onDelete: () -> Unit) {
         Icon(
             imageVector = Icons.Filled.MoreVert,
             contentDescription = "",
-            tint = Color.Blue//MaterialTheme.colors.topAppBarContentColor
         )
     }
     // dropdown menu with prioritys

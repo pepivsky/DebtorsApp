@@ -1,5 +1,7 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,8 +14,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -192,14 +198,12 @@ fun ItemMovement(
             Text(
                 text = if (movement.type == MovementType.INCREASE.name) "Aumento" else "Pago",
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1C170D),
                 fontSize = 18.sp
             )
-            //Text(text = "Celulares", color = Color(0xFFA1824A))
-            Text(text = movement.date, color = Color(0xFFA1824A))
+            Text(text = movement.date,)
         }
         Spacer(modifier = Modifier.weight(1F))
-        Text(text = "$${movement.amount.toRidePrice()}", color = Color(0xFF1C170D), fontSize = 18.sp)
+        Text(text = "$${movement.amount.toRidePrice()}", fontSize = 18.sp)
 
     }
 }
@@ -213,17 +217,17 @@ fun DebtInfo(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = "Restante", color = Color(0xFFA1824A), fontSize = 18.sp)
+            Text(text = "Restante", fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$${remaining.toRidePrice()}", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = "$${remaining.toRidePrice()}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
         }
 
         Spacer(modifier = Modifier.size(8.dp))
         Row {
-            Text(text = "Deuda", color = Color(0xFFA1824A), fontSize = 18.sp)
+            Text(text = "Deuda", fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$${amount.toRidePrice()}", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = "$${amount.toRidePrice()}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
         }
     }
@@ -237,7 +241,7 @@ fun DebtorName(name: String = "", modifier: Modifier = Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         IconDebtor(firstLetter = name.first(), modifier = Modifier.size(120.dp), fontSize = 60)
         Spacer(modifier = Modifier.size(8.dp))
-        Text(text = name, color = Color.Black, fontSize = 20.sp)
+        Text(text = name, fontSize = 20.sp)
     }
 }
 
@@ -248,23 +252,22 @@ fun PaymentButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         modifier = modifier,
         onClick = { onClick() },
         shape = RoundedCornerShape(20.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963))
+        //colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963))
     ) {
-        Text(text = "Pago", color = Color.White)
-        //ButtonColors(containerColor = Color(0xFF009963))
+        Text(text = "Pago")
     }
 }
 
 //@Preview
 @Composable
 fun IncreaseButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Button(
+    OutlinedButton(
         modifier = modifier,
         onClick = { onClick() },
         shape = RoundedCornerShape(20.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF5F0E5))
+        //colors = ButtonDefaults.buttonColors(containerColor = )
     ) {
-        Text(text = "Aumento", color = Color.Black)
+        Text(text = "Aumento")
         //ButtonColors(containerColor = Color(0xFF009963))
     }
 }

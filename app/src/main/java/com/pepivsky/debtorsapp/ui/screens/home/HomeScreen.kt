@@ -51,7 +51,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
     val total by viewModel.totalAmount.collectAsState(0.0)
     var openDialog by rememberSaveable { mutableStateOf(false) }
 
-    Scaffold(contentColor = Color.White, floatingActionButton = { FabAdd(onFabClicked = { openDialog = true }) }) { paddingValues ->
+    Scaffold(floatingActionButton = { FabAdd(onFabClicked = { openDialog = true }) }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -147,14 +147,13 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
             Text(
                 text = debtor.name,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1C170D),
                 fontSize = 18.sp
             )
-            Text(text = debtor.description, color = Color(0xFFA1824A))
-            Text(text = debtor.creationDate, color = Color(0xFFA1824A))
+            Text(text = debtor.description)
+            Text(text = debtor.creationDate)
         }
         Spacer(modifier = Modifier.weight(1F))
-        Text(text = "$${debtor.remaining.toRidePrice()}", color = Color(0xFF1C170D), fontSize = 18.sp)
+        Text(text = "$${debtor.remaining.toRidePrice()}", fontSize = 18.sp)
 
     }
 }
@@ -163,8 +162,8 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
 //@Preview
 @Composable
 fun FabAdd(modifier: Modifier = Modifier, onFabClicked: () -> Unit) {
-    FloatingActionButton(onClick = { onFabClicked() }, containerColor = Color(0xFF009963)) {
-        Icon(imageVector = Icons.Default.Add, contentDescription = "Add", tint = Color.White)
+    FloatingActionButton(onClick = { onFabClicked() }) {
+        Icon(imageVector = Icons.Default.Add, contentDescription = "Add",)
     }
 }
 
@@ -175,7 +174,6 @@ fun HomeTitle(modifier: Modifier = Modifier) {
         modifier = modifier,
         text = "Deudores",
         fontSize = 30.sp,
-        color = Color(0xFF1C170D),
         fontWeight = FontWeight.Bold
     )
 }
@@ -183,7 +181,7 @@ fun HomeTitle(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun TotalAmount(modifier: Modifier = Modifier, total: String = "Total: $770.00") {
-    Text(modifier = modifier, text = "Total: $$total", color = Color(0xFF1C170D), fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+    Text(modifier = modifier, text = "Total: $$total", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
 }
 
 @Preview
