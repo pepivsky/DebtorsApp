@@ -19,7 +19,7 @@ interface DebtorDAO {
     suspend fun insertDebtor(vararg debtor: Debtor)
 
     @Delete
-    suspend fun deleteDebtor(debtor: Debtor)
+    suspend fun deleteDebtor(debtor: Debtor): Int
 
     @Update
     suspend fun updateDebtor(debtor: Debtor)

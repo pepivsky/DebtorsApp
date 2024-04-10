@@ -1,7 +1,10 @@
 package com.pepivsky.debtorsapp.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.data.models.UiEvent
 import com.pepivsky.debtorsapp.data.repositories.DebtorsRepository
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
@@ -28,6 +31,12 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
         getAllDebtors()
         //getTotalAmount()
         //getSelectedDebtorById(1)
+    }
+
+    fun handleEvents(uiEvent: UiEvent) {
+        when(uiEvent) {
+            is UiEvent.DeleteDebtor -> deleteSelectedDebtor(uiEvent.debtor, uiEvent.navController)
+        }
     }
 
     fun getSelectedDebtorWithMovementsById(id: Long) {
@@ -74,9 +83,14 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
         }
     }
 
-    fun deleteSelectedDebtor(debtor: Debtor) {
+    fun deleteSelectedDebtor(debtor: Debtor, navController: NavController) {
         viewModelScope.launch {
-            debtorsRepository.deleteDebtor(debtor)
+            val affectedRows = debtorsRepository.deleteDebtor(debtor)
+            if (affectedRows > 0) {
+                navController.popBackStack()
+            }
+            Log.d("pruebilla", "deleteSelectedDebtor: $affectedRows")
+
         }
     }
 

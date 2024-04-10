@@ -22,8 +22,8 @@ class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO, pr
         debtorDAO.insertDebtor(debtor)
     }
 
-    suspend fun deleteDebtor(debtor: Debtor) {
-        debtorDAO.deleteDebtor(debtor = debtor)
+    suspend fun deleteDebtor(debtor: Debtor): Int {
+        return debtorDAO.deleteDebtor(debtor = debtor)
     }
 
     suspend fun updateDebtor(debtor: Debtor) {

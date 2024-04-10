@@ -23,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.data.models.UiEvent
+import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 
@@ -80,36 +82,41 @@ fun DefaultDetailDebtorAppBar(
     sharedViewModel: SharedViewModel,
     navController: NavController,
     debtorWithMovements: DebtorWithMovements,
+    onEvent: (UiEvent) -> Unit
 ) {
-    TopAppBar(title = { Text(text = debtorWithMovements.debtor.name, fontWeight = FontWeight.Bold, fontSize = 24.sp
-
-    ) },
+    TopAppBar(title = {
+        Text(
+            text = debtorWithMovements.debtor.name,
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp
+        )
+    },
         actions = {
-            DetailDebtorAppBarActions {
-                //sharedViewModel.deleteDebtorWithMov(debtorWithMovements)
-                sharedViewModel.deleteSelectedDebtor(debtorWithMovements.debtor)
-                navController.popBackStack()
-            }
+            DetailDebtorAppBarActions(onEvent = onEvent, debtorWithMovements.debtor, navController)
         }, navigationIcon = {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "back",
-                modifier = Modifier.clickable { navController.popBackStack() }.padding(8.dp))
+                modifier = Modifier
+                    .clickable { navController.popBackStack() }
+                    .padding(8.dp)
+            )
         })
 }
 
 @Composable
 fun DetailDebtorAppBarActions(
-    onEditClicked: () -> Unit
+    //onEditClicked: () -> Unit,
+    onEvent: (UiEvent) -> Unit,
+    debtor: Debtor,
+    navController: NavController
 ) {
-    DeleteAction {
-        onEditClicked()
-    }
+    DeleteAction(onEvent, debtor, navController)
 }
 
 // delete all action
 @Composable
-fun DeleteAction(onDelete: () -> Unit) {
+fun DeleteAction(onEvent: (UiEvent) -> Unit, debtor: Debtor, navController: NavController) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     IconButton(onClick = { expanded = true }) {
@@ -125,7 +132,8 @@ fun DeleteAction(onDelete: () -> Unit) {
             Text(text = "Eliminar")
         }, onClick = {
             expanded = false
-            onDelete()
+            onEvent(UiEvent.DeleteDebtor(debtor, navController))
+            //navController.popBackStack()
         })
 
     }

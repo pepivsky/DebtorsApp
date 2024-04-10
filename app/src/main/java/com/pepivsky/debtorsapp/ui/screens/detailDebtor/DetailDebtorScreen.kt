@@ -34,6 +34,7 @@ import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.data.models.MovementType
+import com.pepivsky.debtorsapp.data.models.UiEvent
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.util.toRidePrice
 import com.pepivsky.debtorsapp.ui.screens.home.IconDebtor
@@ -44,14 +45,15 @@ import com.pepivsky.debtorsapp.ui.screens.home.IconDebtor
 fun DetailDebtorScreen(
     viewModel: SharedViewModel,
     navController: NavController,
-    selectedDebtor: DebtorWithMovements
+    selectedDebtor: DebtorWithMovements,
+    onEvent: (UiEvent) -> Unit
 ) {
     var openDialog by rememberSaveable { mutableStateOf(false) }
     var movementType by rememberSaveable {
         mutableStateOf(MovementType.PAYMENT)
     }
 
-    Scaffold(topBar = { DefaultDetailDebtorAppBar(sharedViewModel = viewModel, navController= navController, debtorWithMovements = selectedDebtor) }) { paddingValues ->
+    Scaffold(topBar = { DefaultDetailDebtorAppBar(sharedViewModel = viewModel, navController= navController, debtorWithMovements = selectedDebtor, onEvent = onEvent) }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()

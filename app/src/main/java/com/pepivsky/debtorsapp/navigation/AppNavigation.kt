@@ -45,7 +45,10 @@ fun AppNavigation(viewModel: SharedViewModel) {
                         viewModel = viewModel,
                         navController = navController,
                         it
-                    )
+                    ) { uiEvent ->
+                        viewModel.handleEvents(uiEvent)
+                        //navController.popBackStack()
+                    }
                 }
             }
         }
