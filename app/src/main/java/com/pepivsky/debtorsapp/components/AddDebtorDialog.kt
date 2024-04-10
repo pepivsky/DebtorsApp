@@ -5,12 +5,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -66,124 +71,134 @@ fun DialogAddDebtor(
     ) {
     if (openDialog) {
         Dialog(onDismissRequest = { closeDialog() }) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(
-                        RoundedCornerShape(10.dp)
-                    )
-                    .background(Color.White)
-                    .padding(24.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Card(modifier = Modifier
+                .fillMaxWidth()
+                /*.height(200.dp)
+                .padding(16.dp)*/,
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors()
+
             ) {
-                var showDialog by remember { mutableStateOf(false) }
-                val state = rememberDatePickerState()
-                var dateText by remember { mutableStateOf("${LocalDate.now().dayOfMonth}/${LocalDate.now().monthValue}/${LocalDate.now().year}") }
+                Column(
+                    modifier = Modifier
+                        /*.fillMaxWidth()
+                        .clip(
+                            RoundedCornerShape(10.dp)
+                        )
+                        .background(MaterialTheme.colorScheme.background)*/
+                        .padding(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    var showDialog by remember { mutableStateOf(false) }
+                    val state = rememberDatePickerState()
+                    var dateText by remember { mutableStateOf("${LocalDate.now().dayOfMonth}/${LocalDate.now().monthValue}/${LocalDate.now().year}") }
 
-                var name by rememberSaveable { mutableStateOf("") }
-                var amount by rememberSaveable { mutableStateOf("") }
-                var description by rememberSaveable { mutableStateOf("") }
-                val isEnable by remember { derivedStateOf { name.isNotBlank() && amount.isNotBlank() && description.isNotBlank() } }
+                    var name by rememberSaveable { mutableStateOf("") }
+                    var amount by rememberSaveable { mutableStateOf("") }
+                    var description by rememberSaveable { mutableStateOf("") }
+                    val isEnable by remember { derivedStateOf { name.isNotBlank() && amount.isNotBlank() && description.isNotBlank() } }
 
 
 
 
-                Text(text = "Nuevo deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = name,
-                    onValueChange = {
-                        name = it
-                    },
-                    label = { Text(text = "Nombre", color = Color(0xFFA1824A)) },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFA1824A)
+                    Text(text = "Nuevo deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp,)
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = name,
+                        onValueChange = {
+                            name = it
+                        },
+                        label = { Text(text = "Nombre",) },
+                        /*colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color(0xFFA1824A)
 
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Words
-                    ), /*supportingText = {
+                        ),*/
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Words
+                        ), /*supportingText = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = "Nombre vacio",
                             color = MaterialTheme.colorScheme.error)
                     }*/
-                )
+                    )
 
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = amount,
-                    onValueChange = { str ->
-                        /*val countDots = str.count {it == '.' } < 2
-                        Log.d("pruebilla", "countDots: $countDots")*/
-                        if (numberValidator(str)) {
-                            amount = str
-                        }
-                    },
-                    label = { Text(text = "Monto", color = Color(0xFFA1824A)) },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFA1824A)
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = amount,
+                        onValueChange = { str ->
+                            /*val countDots = str.count {it == '.' } < 2
+                            Log.d("pruebilla", "countDots: $countDots")*/
+                            if (numberValidator(str)) {
+                                amount = str
+                            }
+                        },
+                        label = { Text(text = "Monto",) },
+                        /*colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color(0xFFA1824A)
 
-                    ),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
-                )
+                        ),*/
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                    )
 
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = description,
-                    onValueChange = {
-                        description = it
-                    },
-                    label = { Text(text = "Concepto", color = Color(0xFFA1824A)) },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFA1824A)
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = description,
+                        onValueChange = {
+                            description = it
+                        },
+                        label = { Text(text = "Concepto",) },
+                        /*colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color(0xFFA1824A)
 
-                    ),
-                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
-                )
-                // Color(0xFF009963)
+                        ),*/
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+                    )
 
-                OutlinedButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { showDialog = true }) {
-                    Text(text = dateText, color = Color(0xFF009963))
-                }
 
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        onAcceptClicked(name, amount, description, dateText)
-                        closeDialog()
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963)),
-                    enabled = isEnable
-                ) {
-                    Text(text = "Aceptar")
-                }
-
-                if (showDialog) {
-                    DatePickerDialog(onDismissRequest = { showDialog = false }, confirmButton = {
-                        Button(onClick = { showDialog = false }) {
-                            Text(text = "Confirmar")
-                        }
-                    }, dismissButton = {
-                        OutlinedButton(onClick = { showDialog = false }) {
-                            Text(text = "Cancelar")
-                        }
-                    }) {
-                        DatePicker(state = state)
+                    OutlinedButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { showDialog = true }) {
+                        Text(text = dateText,)
                     }
-                }
 
-                val date = state.selectedDateMillis
-                date?.let {
-                    val localDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
-                    dateText = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
-                    //Text(text = "Fecha seleccionada: $dateText")
-                }
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            onAcceptClicked(name, amount, description, dateText)
+                            closeDialog()
+                        },
+                        //colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963)),
+                        enabled = isEnable
+                    ) {
+                        Text(text = "Aceptar")
+                    }
 
+                    if (showDialog) {
+                        DatePickerDialog(onDismissRequest = { showDialog = false }, confirmButton = {
+                            Button(onClick = { showDialog = false }) {
+                                Text(text = "Confirmar")
+                            }
+                        }, dismissButton = {
+                            OutlinedButton(onClick = { showDialog = false }) {
+                                Text(text = "Cancelar")
+                            }
+                        }) {
+                            DatePicker(state = state)
+                        }
+                    }
+
+                    val date = state.selectedDateMillis
+                    date?.let {
+                        val localDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
+                        dateText = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
+                        //Text(text = "Fecha seleccionada: $dateText")
+                    }
+
+                }
             }
+
         }
     }
 
@@ -200,10 +215,10 @@ fun TextFieldCustom() {
         onValueChange = {
 
         },
-        label = { Text(text = "Nombre", color = Color(0xFFA1824A)) },
-        colors = OutlinedTextFieldDefaults.colors(
+        label = { Text(text = "Nombre",) },
+        /*colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0xFFA1824A)
 
-        )
+        )*/
     )
 }
