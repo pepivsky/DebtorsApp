@@ -1,5 +1,6 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -13,6 +14,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -82,7 +85,10 @@ fun DefaultDetailDebtorAppBar(
     navController: NavController,
     debtorWithMovements: DebtorWithMovements,
 ) {
-    TopAppBar(title = { Text(text = debtorWithMovements.debtor.name, fontWeight = FontWeight.Bold, fontSize = 24.sp
+    TopAppBar(colors = TopAppBarDefaults.topAppBarColors(),
+        title = { Text(text = debtorWithMovements.debtor.name,
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp
 
     ) },
         actions = {
@@ -95,7 +101,9 @@ fun DefaultDetailDebtorAppBar(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "back",
-                modifier = Modifier.clickable { navController.popBackStack() }.padding(8.dp))
+                modifier = Modifier
+                    .clickable { navController.popBackStack() }
+                    .padding(8.dp))
         })
 }
 

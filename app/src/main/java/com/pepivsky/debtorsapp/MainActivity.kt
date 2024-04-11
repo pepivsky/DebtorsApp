@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppNavigation
 import com.pepivsky.debtorsapp.ui.theme.DebtorsAppTheme
@@ -40,6 +41,7 @@ class MainActivity : ComponentActivity() {
             DebtorsAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
+                    tonalElevation = 5.dp,
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
