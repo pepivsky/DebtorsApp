@@ -144,7 +144,6 @@ fun DebtorsList(debtors: List<Debtor>, navController: NavController, modifier: M
 @Composable
 fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Unit) {
     Card(
-        shape = MaterialTheme.shapes.large,
         modifier = modifier
             .padding(vertical = 4.dp), onClick = onClick,
         colors = CardDefaults.cardColors()

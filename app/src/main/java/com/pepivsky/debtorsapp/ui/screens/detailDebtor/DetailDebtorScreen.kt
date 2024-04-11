@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -189,22 +191,27 @@ fun ItemMovement(
     movement: Movement,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Card(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(4.dp), verticalAlignment = Alignment.CenterVertically
+            .padding(vertical = 4.dp),
+        colors = CardDefaults.cardColors()
     ) {
-        Column(modifier = Modifier) {
-            Text(
-                text = if (movement.type == MovementType.INCREASE.name) "Aumento" else "Pago",
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            )
-            Text(text = movement.date,)
+        Row(
+            modifier = modifier
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier) {
+                Text(
+                    text = if (movement.type == MovementType.INCREASE.name) "Aumento" else "Pago",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+                Text(text = movement.date)
+            }
+            Spacer(modifier = Modifier.weight(1F))
+            Text(text = "$${movement.amount.toRidePrice()}", fontSize = 18.sp)
         }
-        Spacer(modifier = Modifier.weight(1F))
-        Text(text = "$${movement.amount.toRidePrice()}", fontSize = 18.sp)
-
     }
 }
 
