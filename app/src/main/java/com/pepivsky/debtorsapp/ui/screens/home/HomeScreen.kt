@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -47,7 +48,6 @@ import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppScreens
-import com.pepivsky.debtorsapp.ui.theme.Myshapes
 import com.pepivsky.debtorsapp.util.toRidePrice
 import com.pepivsky.todocompose.ui.screens.ads.AdvertView
 
@@ -144,14 +144,14 @@ fun DebtorsList(debtors: List<Debtor>, navController: NavController, modifier: M
 @Composable
 fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Unit) {
     Card(
+        shape = MaterialTheme.shapes.large,
         modifier = modifier
-            .clickable(onClick = onClick)
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 4.dp), onClick = onClick,
         colors = CardDefaults.cardColors()
     ) {
         Row(
-            modifier = Modifier.fillMaxSize().padding(10.dp),
+            modifier = Modifier
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconDebtor(
@@ -165,31 +165,38 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Text(text = debtor.description,
+                Text(
+                    text = debtor.description,
                     style = MaterialTheme.typography.bodyMedium
-                    )
-                Text(text = debtor.creationDate,
+                )
+                Text(
+                    text = debtor.creationDate,
                     style = MaterialTheme.typography.bodyMedium
-                    )
+                )
             }
             Spacer(modifier = Modifier.weight(1F))
-            Text(style = MaterialTheme.typography.titleLarge,text = "$${debtor.remaining.toRidePrice()}")
+            Text(
+                style = MaterialTheme.typography.titleLarge,
+                text = "$${debtor.remaining.toRidePrice()}"
+            )
 
         }
     }
-
 }
 
 
 //@Preview
 @Composable
 fun FabAdd(modifier: Modifier = Modifier, onFabClicked: () -> Unit) {
-    LargeFloatingActionButton(
-        //shape = Myshapes.large,
+    FloatingActionButton(
         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
         contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
         onClick = { onFabClicked() }) {
-        Icon(modifier = modifier.size(36.dp),imageVector = Icons.Default.Add, contentDescription = "Add")
+        Icon(
+            //modifier = modifier.size(36.dp),
+            imageVector = Icons.Default.Add,
+            contentDescription = "Add"
+        )
     }
 }
 
