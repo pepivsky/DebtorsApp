@@ -2,6 +2,7 @@ package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +16,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -83,7 +86,7 @@ fun DetailDebtorScreen(
                     end.linkTo(endGuide)
                 })
 
-            DebtInfo(
+            CardDebtInfo(
                 amount = selectedDebtor.debtor.amount,
                 remaining = selectedDebtor.debtor.remaining,
                 modifier = Modifier.constrainAs(debtInfoRef) {
@@ -238,13 +241,51 @@ fun DebtInfo(
 
         }
     }
-
-
 }
+
+@Preview(showBackground = true)
+@Composable
+fun CardDebtInfo(
+    amount: Double = 1200.0,
+    remaining: Double = 200.0,
+    modifier: Modifier = Modifier
+) {
+//                     color = MaterialTheme.colorScheme.background
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+        )
+    ) {
+
+        Column(modifier = Modifier.padding(8.dp)) {
+            Row {
+                Text(text = "Restante", fontSize = 18.sp)
+                Spacer(modifier = Modifier.weight(1F))
+                Text(
+                    text = "$${remaining.toRidePrice()}",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    //color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+
+            }
+            Spacer(modifier = Modifier.size(8.dp))
+            Row {
+                Text(text = "Deuda", fontSize = 18.sp,)
+                Spacer(modifier = Modifier.weight(1F))
+                Text(text = "$${amount.toRidePrice()}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+
+            }
+        }
+    }
+}
+
 
 @Preview
 @Composable
-fun DebtorName(name: String = "", modifier: Modifier = Modifier) {
+fun DebtorName(name: String = "Blanquis", modifier: Modifier = Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         IconDebtor(firstLetter = name.first(), modifier = Modifier.size(120.dp), fontSize = 60)
         Spacer(modifier = Modifier.size(8.dp))
