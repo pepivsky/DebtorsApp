@@ -253,14 +253,13 @@ fun DebtInfo(
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun CardDebtInfo(
-    amount: Double = 1200.0,
-    remaining: Double = 200.0,
+    amount: Double,
+    remaining: Double,
     modifier: Modifier = Modifier
 ) {
-//                     color = MaterialTheme.colorScheme.background
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -269,7 +268,7 @@ fun CardDebtInfo(
         )
     ) {
 
-        Column(modifier = Modifier.padding(12.dp)) {
+        Column(modifier = Modifier.padding(18.dp)) {
             Row {
                 Text(
                     text = "Restante:",
