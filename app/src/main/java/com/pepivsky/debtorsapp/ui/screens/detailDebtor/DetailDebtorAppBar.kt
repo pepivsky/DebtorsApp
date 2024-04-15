@@ -98,12 +98,14 @@ fun DefaultDetailDebtorAppBar(
                 navController.popBackStack()
             }
         }, navigationIcon = {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "back",
-                modifier = Modifier
-                    .clickable { navController.popBackStack() }
-                    .padding(8.dp))
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "back",
+                    modifier = Modifier
+                        .padding(8.dp))
+            }
+
         })
 }
 
