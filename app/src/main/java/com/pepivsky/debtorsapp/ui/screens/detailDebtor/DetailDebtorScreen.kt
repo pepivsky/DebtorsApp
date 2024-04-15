@@ -62,7 +62,13 @@ fun DetailDebtorScreen(
         mutableStateOf(MovementType.PAYMENT)
     }
 
-    Scaffold(topBar = { DefaultDetailDebtorAppBar(sharedViewModel = viewModel, navController= navController, debtorWithMovements = selectedDebtor) }) { paddingValues ->
+    Scaffold(topBar = {
+        DefaultDetailDebtorAppBar(
+            sharedViewModel = viewModel,
+            navController = navController,
+            debtorWithMovements = selectedDebtor
+        )
+    }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -229,7 +235,11 @@ fun DebtInfo(
         Row {
             Text(text = "Restante", fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$${remaining.toRidePrice()}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = "$${remaining.toRidePrice()}",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
 
         }
 
@@ -259,23 +269,34 @@ fun CardDebtInfo(
         )
     ) {
 
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(12.dp)) {
             Row {
-                Text(text = "Restante", fontSize = 18.sp)
+                Text(
+                    text = "Restante:",
+                    style = MaterialTheme.typography.bodyLarge
+                )
                 Spacer(modifier = Modifier.weight(1F))
                 Text(
                     text = "$${remaining.toRidePrice()}",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
+                    //fontSize = 18.sp,
+                    //fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
                     //color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
 
             }
             Spacer(modifier = Modifier.size(8.dp))
             Row {
-                Text(text = "Deuda", fontSize = 18.sp,)
+                Text(
+                    text = "Deuda:",
+                    style = MaterialTheme.typography.bodyLarge
+                )
                 Spacer(modifier = Modifier.weight(1F))
-                Text(text = "$${amount.toRidePrice()}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = "$${amount.toRidePrice()}",
+                    //fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                )
 
             }
         }
