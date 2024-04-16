@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
+import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppScreens
@@ -126,15 +128,19 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
 //@Preview(showBackground = true)
 @Composable
 fun DebtorsList(debtors: List<Debtor>, navController: NavController, modifier: Modifier = Modifier,) {
+    val context = LocalContext.current
+
     LazyColumn(modifier = modifier) {
         item {
             AdvertView()
         }
         items(debtors, key = { it.debtorId }) { debtor ->
             ItemDebtor(debtor = debtor) {
-                navController.navigate(
-                    route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
-                )
+                showInterstitial(context) {
+                    navController.navigate(
+                        route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
+                    )
+                }
             }
         }
     }

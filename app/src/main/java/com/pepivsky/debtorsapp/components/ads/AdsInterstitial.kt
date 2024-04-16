@@ -45,9 +45,7 @@ fun showInterstitial(context: Context, onAdDismissed: () -> Unit) {
                 onAdDismissed()
             }
         }
-
         mInterstitialAd?.show(activity)
-
     }
 }
 
