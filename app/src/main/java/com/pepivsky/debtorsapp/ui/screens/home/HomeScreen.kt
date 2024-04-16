@@ -72,13 +72,18 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
             val bottomGuide = createGuidelineFromBottom(0.1F)
             val (titleRef, listRef, totalAmountRef, adRef) = createRefs()
 
+            AdvertView(modifier = Modifier.constrainAs(adRef) {
+                top.linkTo(parent.top,)
+            })
+
             HomeTitle(modifier = Modifier.constrainAs(titleRef) {
-                top.linkTo(parent.top, margin = 16.dp)
+                top.linkTo(adRef.bottom,)
                 start.linkTo(startGuide)
                 /*end.linkTo(endGuide)
                 height = Dimension.wrapContent
                 width = Dimension.fillToConstraints*/
             })
+
 
             DebtorsList(debtors = allDebtors, navController = navController,modifier = Modifier.constrainAs(listRef) {
                 start.linkTo(startGuide)
@@ -136,9 +141,6 @@ fun DebtorsList(
     val randomNum = (1..10).random()
 
     LazyColumn(modifier = modifier) {
-        item {
-            AdvertView()
-        }
         items(debtors, key = { it.debtorId }) { debtor ->
             ItemDebtor(debtor = debtor) {
                 if (randomNum == 2 || randomNum == 7 || randomNum == 5) {
