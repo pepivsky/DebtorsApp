@@ -48,7 +48,7 @@ import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppScreens
-import com.pepivsky.debtorsapp.util.toRidePrice
+import com.pepivsky.debtorsapp.util.extension.toRidePrice
 import com.pepivsky.todocompose.ui.screens.ads.AdvertView
 
 

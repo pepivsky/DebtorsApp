@@ -1,4 +1,4 @@
-package com.pepivsky.debtorsapp.util
+package com.pepivsky.debtorsapp.util.extension
 
 import java.text.DecimalFormat
 import java.text.NumberFormat
