@@ -127,8 +127,13 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
 
 //@Preview(showBackground = true)
 @Composable
-fun DebtorsList(debtors: List<Debtor>, navController: NavController, modifier: Modifier = Modifier,) {
+fun DebtorsList(
+    debtors: List<Debtor>,
+    navController: NavController,
+    modifier: Modifier = Modifier,
+) {
     val context = LocalContext.current
+    val randomNum = (1..10).random()
 
     LazyColumn(modifier = modifier) {
         item {
@@ -136,7 +141,13 @@ fun DebtorsList(debtors: List<Debtor>, navController: NavController, modifier: M
         }
         items(debtors, key = { it.debtorId }) { debtor ->
             ItemDebtor(debtor = debtor) {
-                showInterstitial(context) {
+                if (randomNum == 2 || randomNum == 7 || randomNum == 5) {
+                    showInterstitial(context) {
+                        navController.navigate(
+                            route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
+                        )
+                    }
+                } else {
                     navController.navigate(
                         route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
                     )
