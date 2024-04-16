@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.pepivsky.debtorsapp.components.ads.loadInterstitial
+import com.pepivsky.debtorsapp.components.ads.removeInterstitial
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppNavigation
 import com.pepivsky.debtorsapp.ui.theme.DebtorsAppTheme
@@ -24,6 +26,8 @@ class MainActivity : ComponentActivity() {
     private val sharedViewModel: SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loadInterstitial(this)
+
 
         //debtorsDatabase = (application as DebtorsApplication).database
         /*debtorsDatabase.getDebtorDAO().getDebtorWithMovements().forEach {
@@ -58,6 +62,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        removeInterstitial()
+        super.onDestroy()
     }
 }
 

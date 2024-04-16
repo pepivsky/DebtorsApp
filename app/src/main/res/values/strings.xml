@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Deudores y Cobranza</string>
     <string name="ad_id_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_id_interstitial" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
