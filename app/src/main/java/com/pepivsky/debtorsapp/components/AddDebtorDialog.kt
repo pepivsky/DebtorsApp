@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
 import com.pepivsky.debtorsapp.data.models.MovementType
+import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.util.numberValidator
 import java.time.Instant
 import java.time.LocalDate
@@ -66,10 +67,13 @@ fun DisplayDialogAddDebtor(
 fun DialogAddDebtor(
     openDialog: Boolean,
     closeDialog: () -> Unit,
-    onAcceptClicked: (name: String, amount: String, description: String, dateText: String) -> Unit,
+    debtor: Debtor? = null,
+    onAcceptClicked: (debtor:Debtor) -> Unit,
+
 
     ) {
     if (openDialog) {
+
         Dialog(onDismissRequest = { closeDialog() }) {
             Card(modifier = Modifier
                 .fillMaxWidth()
@@ -94,12 +98,18 @@ fun DialogAddDebtor(
                     val state = rememberDatePickerState()
                     var dateText by remember { mutableStateOf("${LocalDate.now().dayOfMonth}/${LocalDate.now().monthValue}/${LocalDate.now().year}") }
 
-                    var name by rememberSaveable { mutableStateOf("") }
-                    var amount by rememberSaveable { mutableStateOf("") }
-                    var description by rememberSaveable { mutableStateOf("") }
+                    var name by rememberSaveable { mutableStateOf(debtor?.name ?: "") }
+                    var amount by rememberSaveable { mutableStateOf(  "${debtor?.amount ?: ""}") }
+                    var description by rememberSaveable { mutableStateOf( debtor?.description ?: "") }
                     val isEnable by remember { derivedStateOf { name.isNotBlank() && amount.isNotBlank() && description.isNotBlank() } }
 
 
+                   /* debtor?.let {
+                        name = debtor.name
+                        amount = debtor.amount.toString()
+                        description= debtor.description
+                        dateText = debtor.creationDate
+                    }*/
 
 
                     Text(text = "Nuevo deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp,)
@@ -166,8 +176,33 @@ fun DialogAddDebtor(
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            onAcceptClicked(name, amount, description, dateText)
-                            closeDialog()
+                            if (debtor == null) {
+                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && dateText.isNotEmpty()) {
+                                    val newDebtor = Debtor(
+                                        name = name,
+                                        description = description,
+                                        creationDate = dateText,
+                                        amount = amount.toDoubleOrNull() ?: 0.0,
+                                        remaining = amount.toDoubleOrNull() ?: 0.0
+                                    )
+                                    onAcceptClicked(newDebtor)
+                                    closeDialog()
+                                }
+                            } else {
+                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && dateText.isNotEmpty()) {
+                                    val editedDebtor = debtor.copy(
+                                        name = name,
+                                        description = description,
+                                        creationDate = dateText,
+                                        amount = amount.toDoubleOrNull() ?: 0.0,
+                                        remaining = amount.toDoubleOrNull() ?: 0.0
+                                    )
+                                    onAcceptClicked(editedDebtor)
+                                    closeDialog()
+                                }
+
+                            }
+
                         },
                         //colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963)),
                         enabled = isEnable
