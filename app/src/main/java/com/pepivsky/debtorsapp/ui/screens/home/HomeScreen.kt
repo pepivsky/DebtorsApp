@@ -46,6 +46,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
+import com.pepivsky.debtorsapp.components.ads.adIsLoaded
 import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
@@ -89,8 +90,9 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
                 start.linkTo(startGuide)
                 end.linkTo(endGuide)
                 top.linkTo(titleRef.bottom, margin = 32.dp)
+                bottom.linkTo(parent.bottom)
                 width = Dimension.fillToConstraints
-                height = Dimension.wrapContent
+                height = Dimension.fillToConstraints
             })
 
             TotalAmount(total = total.toRidePrice(), modifier = Modifier.constrainAs(totalAmountRef) {
@@ -143,7 +145,7 @@ fun DebtorsList(
     LazyColumn(modifier = modifier) {
         items(debtors, key = { it.debtorId }) { debtor ->
             ItemDebtor(debtor = debtor) {
-                if (randomNum == 2 || randomNum == 7 || randomNum == 5) {
+                if ((randomNum == 2 || randomNum == 7 || randomNum == 5) && adIsLoaded) {
                     showInterstitial(context) {
                         navController.navigate(
                             route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
