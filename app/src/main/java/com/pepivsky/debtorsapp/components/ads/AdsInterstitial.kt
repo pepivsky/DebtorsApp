@@ -11,6 +11,7 @@ import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.util.extension.findActivity
 
 var mInterstitialAd: InterstitialAd? = null
+var adIsLoaded = false
 
 fun loadInterstitial(context: Context) {
     InterstitialAd.load(
@@ -20,10 +21,12 @@ fun loadInterstitial(context: Context) {
         object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 mInterstitialAd = null
+                adIsLoaded = false
             }
 
             override fun onAdLoaded(interstitialAd: InterstitialAd) {
                 mInterstitialAd = interstitialAd
+                adIsLoaded = true
             }
         }
     )
@@ -36,10 +39,12 @@ fun showInterstitial(context: Context, onAdDismissed: () -> Unit) {
         mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdFailedToShowFullScreenContent(e: AdError) {
                 mInterstitialAd = null
+                adIsLoaded = false
             }
 
             override fun onAdDismissedFullScreenContent() {
                 mInterstitialAd = null
+                adIsLoaded = false
 
                 loadInterstitial(context)
                 onAdDismissed()
@@ -52,4 +57,5 @@ fun showInterstitial(context: Context, onAdDismissed: () -> Unit) {
 fun removeInterstitial() {
     mInterstitialAd?.fullScreenContentCallback = null
     mInterstitialAd = null
+    adIsLoaded = false
 }
