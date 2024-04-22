@@ -100,6 +100,7 @@ fun DialogAddDebtor(
 
                     var name by rememberSaveable { mutableStateOf(debtor?.name ?: "") }
                     var amount by rememberSaveable { mutableStateOf(  "${debtor?.amount ?: ""}") }
+                    var remaining by rememberSaveable { mutableStateOf(  "${debtor?.remaining}") }
                     var description by rememberSaveable { mutableStateOf( debtor?.description ?: "") }
                     val isEnable by remember { derivedStateOf { name.isNotBlank() && amount.isNotBlank() && description.isNotBlank() } }
 
@@ -112,7 +113,7 @@ fun DialogAddDebtor(
                     }*/
 
 
-                    Text(text = "Nuevo deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp,)
+                    Text(text = if (debtor == null) "Nuevo deudor" else "Editar deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp,)
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = name,
@@ -166,6 +167,21 @@ fun DialogAddDebtor(
                         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
                     )
 
+                    if (debtor != null) {
+                        OutlinedTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = remaining,
+                            onValueChange = {
+                                remaining = it
+                            },
+                            label = { Text(text = "Restante",) },
+                            /*colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color(0xFFA1824A)
+
+                            ),*/
+                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+                        )
+                    }
 
                     OutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
@@ -176,7 +192,7 @@ fun DialogAddDebtor(
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            if (debtor == null) {
+                            if (debtor == null) { // nuevo deudor
                                 if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && dateText.isNotEmpty()) {
                                     val newDebtor = Debtor(
                                         name = name,
@@ -188,14 +204,14 @@ fun DialogAddDebtor(
                                     onAcceptClicked(newDebtor)
                                     closeDialog()
                                 }
-                            } else {
+                            } else { // editar deudor
                                 if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && dateText.isNotEmpty()) {
                                     val editedDebtor = debtor.copy(
                                         name = name,
                                         description = description,
                                         creationDate = dateText,
                                         amount = amount.toDoubleOrNull() ?: 0.0,
-                                        remaining = amount.toDoubleOrNull() ?: 0.0
+                                        remaining = remaining.toDoubleOrNull() ?: 0.0
                                     )
                                     onAcceptClicked(editedDebtor)
                                     closeDialog()
