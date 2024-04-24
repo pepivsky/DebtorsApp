@@ -1,7 +1,5 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -11,10 +9,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,11 +18,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 
@@ -84,26 +80,38 @@ fun DefaultDetailDebtorAppBar(
     sharedViewModel: SharedViewModel,
     navController: NavController,
     debtorWithMovements: DebtorWithMovements,
+    onEditClicked: () -> Unit,
+
 ) {
     TopAppBar(colors = TopAppBarDefaults.topAppBarColors(),
-        title = { Text(text = debtorWithMovements.debtor.name,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
+        title = {
+            Text(
+                text = debtorWithMovements.debtor.name,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
 
-    ) },
+            )
+        },
         actions = {
-            DetailDebtorAppBarActions {
-                //sharedViewModel.deleteDebtorWithMov(debtorWithMovements)
+
+
+
+            DetailDebtorAppBarActions(onDeleteClicked = {
                 sharedViewModel.deleteSelectedDebtor(debtorWithMovements.debtor)
                 navController.popBackStack()
-            }
+            }, onEditClicked =  {
+                onEditClicked()
+            })
+
+
         }, navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "back",
                     modifier = Modifier
-                        .padding(8.dp))
+                        .padding(8.dp)
+                )
             }
 
         })
@@ -111,16 +119,21 @@ fun DefaultDetailDebtorAppBar(
 
 @Composable
 fun DetailDebtorAppBarActions(
-    onEditClicked: () -> Unit
+    onDeleteClicked: () -> Unit,
+    onEditClicked: () -> Unit,
+
 ) {
-    DeleteAction {
-        onEditClicked()
-    }
+    DropDownActions(
+        onDelete = { onDeleteClicked() },
+        onEdit = { onEditClicked() }
+        )
+
+
 }
 
 // delete all action
 @Composable
-fun DeleteAction(onDelete: () -> Unit) {
+fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     IconButton(onClick = { expanded = true }) {
@@ -138,5 +151,13 @@ fun DeleteAction(onDelete: () -> Unit) {
             onDelete()
         })
 
+        DropdownMenuItem(text = {
+            Text(text = "Editar")
+        }, onClick = {
+            expanded = false
+            onEdit()
+        })
+
     }
+
 }

@@ -69,7 +69,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
                 .padding(paddingValues)
         ) {
             val startGuide = createGuidelineFromStart(0.05F)
-            val endGuide = createGuidelineFromEnd(0.05F)
+            val endGuide = createGuidelineFromEnd(0.05F) // usando porcentajes
             val bottomGuide = createGuidelineFromBottom(0.1F)
             val (titleRef, listRef, totalAmountRef, adRef) = createRefs()
 
@@ -116,21 +116,12 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
 
         DialogAddDebtor(
             openDialog = openDialog,
-            closeDialog = { openDialog = false }) { name, amount, description, date ->
-            if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && date.isNotEmpty()) {
-                val debtor = Debtor(
-                    name = name,
-                    description = description,
-                    creationDate = date,
-                    amount = amount.toDoubleOrNull() ?: 0.0,
-                    remaining = amount.toDoubleOrNull() ?: 0.0
-                )
-
+            closeDialog = { openDialog = false }) { debtor ->
                 viewModel.addNewDebtor(debtor)
             }
         }
     }
-}
+
 
 //@Preview(showBackground = true)
 @Composable
