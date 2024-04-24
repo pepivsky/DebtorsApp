@@ -69,7 +69,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
                 .padding(paddingValues)
         ) {
             val startGuide = createGuidelineFromStart(0.05F)
-            val endGuide = createGuidelineFromEnd(0.05F)
+            val endGuide = createGuidelineFromEnd(0.05F) // usando porcentajes
             val bottomGuide = createGuidelineFromBottom(0.1F)
             val (titleRef, listRef, totalAmountRef, adRef) = createRefs()
 
