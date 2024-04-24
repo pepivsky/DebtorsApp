@@ -9,7 +9,7 @@ import com.pepivsky.debtorsapp.data.converters.BigDecimalTypeConverter
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 
-@Database(entities = [Debtor::class, Movement::class], version = 1, exportSchema = false)
+@Database(entities = [Debtor::class, Movement::class], version = 1, exportSchema = true)
 @TypeConverters(BigDecimalTypeConverter::class)
 abstract class DebtorsDatabase: RoomDatabase() {
 

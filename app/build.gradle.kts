@@ -21,6 +21,12 @@ android {
             useSupportLibrary = true
         }
 
+        // export schema, necesario para las migraciones automaticas
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
 
     }
 
