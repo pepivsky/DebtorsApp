@@ -116,21 +116,12 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
 
         DialogAddDebtor(
             openDialog = openDialog,
-            closeDialog = { openDialog = false }) { name, amount, description, date ->
-            if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && date.isNotEmpty()) {
-                val debtor = Debtor(
-                    name = name,
-                    description = description,
-                    creationDate = date,
-                    amount = amount.toDoubleOrNull() ?: 0.0,
-                    remaining = amount.toDoubleOrNull() ?: 0.0
-                )
-
+            closeDialog = { openDialog = false }) { debtor ->
                 viewModel.addNewDebtor(debtor)
             }
         }
     }
-}
+
 
 //@Preview(showBackground = true)
 @Composable

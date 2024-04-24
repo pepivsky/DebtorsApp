@@ -1,8 +1,6 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Box
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,16 +12,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,8 +25,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.DialogAddMovement
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
@@ -57,7 +50,9 @@ fun DetailDebtorScreen(
     navController: NavController,
     selectedDebtor: DebtorWithMovements
 ) {
-    var openDialog by rememberSaveable { mutableStateOf(false) }
+    var openDialogAddMovement by rememberSaveable { mutableStateOf(false) }
+    var openDialogEditDebtor by rememberSaveable { mutableStateOf(false) }
+
     var movementType by rememberSaveable {
         mutableStateOf(MovementType.PAYMENT)
     }
@@ -67,7 +62,9 @@ fun DetailDebtorScreen(
             sharedViewModel = viewModel,
             navController = navController,
             debtorWithMovements = selectedDebtor
-        )
+        ) {
+            openDialogEditDebtor = true
+        }
     }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
@@ -124,7 +121,7 @@ fun DetailDebtorScreen(
                 })
 
             PaymentButton(onClick = {
-                openDialog = true
+                openDialogAddMovement = true
                 movementType = MovementType.PAYMENT
             }, modifier = Modifier.constrainAs(paymentButtonRef) {
                 start.linkTo(startGuide)
@@ -141,7 +138,7 @@ fun DetailDebtorScreen(
                     bottom.linkTo(bottomGuide)
                 })
             IncreaseButton(onClick = {
-                openDialog = true
+                openDialogAddMovement = true
                 movementType = MovementType.INCREASE
             }, modifier = Modifier.constrainAs(increaseButtonRef) {
                 start.linkTo(spacerRef.end)
@@ -158,8 +155,8 @@ fun DetailDebtorScreen(
 
     DialogAddMovement(
         movementType = movementType,
-        openDialog = openDialog,
-        closeDialog = { openDialog = false }) { amount, dateText ->
+        openDialog = openDialogAddMovement,
+        closeDialog = { openDialogAddMovement = false }) { amount, dateText ->
 
         val debtorUpdated: Debtor = when (movementType) {
             MovementType.PAYMENT -> {
@@ -182,6 +179,16 @@ fun DetailDebtorScreen(
         )
         viewModel.addMovementTransaction(debtor = debtorUpdated, movement = movement)
     }
+
+    DialogAddDebtor(
+        openDialog = openDialogEditDebtor,
+        closeDialog = { openDialogEditDebtor = false },
+        debtor = selectedDebtor.debtor ,
+        onAcceptClicked = { debtor ->
+            viewModel.updateDebtor(debtor)
+            Log.d("pruebilla", "DetailDebtorScreen: onAcceptClicked")
+        }
+    )
 }
 
 //@Preview(showBackground = true)
