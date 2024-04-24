@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.pepivsky.debtorsapp.ui.screens.AboutScreen
 import com.pepivsky.debtorsapp.ui.screens.detailDebtor.DetailDebtorScreen
 import com.pepivsky.debtorsapp.ui.screens.home.HomeScreen
 
@@ -48,6 +49,12 @@ fun AppNavigation(viewModel: SharedViewModel) {
                     )
                 }
             }
+        }
+
+        composable(
+            route = AppScreens.AboutScreen.route
+        ) {
+            AboutScreen(navController = navController)
         }
 
     }

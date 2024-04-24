@@ -15,17 +15,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -56,13 +62,30 @@ import com.pepivsky.todocompose.ui.screens.ads.AdvertView
 
 
 //@Preview
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
     val allDebtors by viewModel.allDebtors.collectAsState()
     val total by viewModel.totalAmount.collectAsState(0.0)
     var openDialog by rememberSaveable { mutableStateOf(false) }
 
-    Scaffold(floatingActionButton = { FabAdd(onFabClicked = { openDialog = true }) }) { paddingValues ->
+    Scaffold( topBar = {
+                       CenterAlignedTopAppBar(title = { Text(text = "Deudores") }
+                       ,
+                           actions = {
+                               IconButton(onClick = { navController.navigate(
+                                   route = AppScreens.AboutScreen.route
+                               ) }) {
+                                   Icon(
+                                       imageVector = Icons.Default.Settings,
+                                       contentDescription = "back",
+                                       modifier = Modifier
+                                           .padding(8.dp)
+                                   )
+                               }
+                           }
+                           )
+    } ,floatingActionButton = { FabAdd(onFabClicked = { openDialog = true }) }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -77,19 +100,19 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
                 top.linkTo(parent.top,)
             })
 
-            HomeTitle(modifier = Modifier.constrainAs(titleRef) {
+            /*HomeTitle(modifier = Modifier.constrainAs(titleRef) {
                 top.linkTo(adRef.bottom,)
                 start.linkTo(startGuide)
-                /*end.linkTo(endGuide)
+                *//*end.linkTo(endGuide)
                 height = Dimension.wrapContent
-                width = Dimension.fillToConstraints*/
-            })
+                width = Dimension.fillToConstraints*//*
+            })*/
 
 
             DebtorsList(debtors = allDebtors, navController = navController,modifier = Modifier.constrainAs(listRef) {
                 start.linkTo(startGuide)
                 end.linkTo(endGuide)
-                top.linkTo(titleRef.bottom, margin = 32.dp)
+                top.linkTo(adRef.bottom, margin = 32.dp)
                 bottom.linkTo(parent.bottom)
                 width = Dimension.fillToConstraints
                 height = Dimension.fillToConstraints
