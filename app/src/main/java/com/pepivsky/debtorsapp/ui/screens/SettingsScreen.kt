@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -37,7 +36,7 @@ import androidx.navigation.NavController
 //@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AboutScreen(navController: NavController) {
+fun SettingsScreen(navController: NavController) {
     Scaffold(topBar = {
         TopAppBar(colors = TopAppBarDefaults.topAppBarColors(),
             title = {
@@ -80,26 +79,7 @@ fun AboutScreen(navController: NavController) {
     }
 }
 
-/*private fun compartirEnlace(enlace: String) {
-    val i = Intent(Intent.ACTION_SEND)
-    i.setType("text/plain")
-    i.putExtra(Intent.EXTRA_SUBJECT, "Sharing URL")
-    i.putExtra(Intent.EXTRA_TEXT, "http://www.url.com")
-    startActivity(Intent.createChooser(i, "Share URL"))
-}*/
 
-// Our custom sharing component
-@Composable
-fun Share(text: String, context: Context) {
-    val sendIntent = Intent(Intent.ACTION_SEND).apply {
-        putExtra(Intent.EXTRA_TEXT, text)
-        type = "text/plain"
-    }
-    val shareIntent = Intent.createChooser(sendIntent, null)
-    startActivity(context, shareIntent, null)
-
-
-}
 
 fun shareLink(context: Context) {
     val sendIntent = Intent(Intent.ACTION_SEND).apply {

@@ -70,21 +70,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
     var openDialog by rememberSaveable { mutableStateOf(false) }
 
     Scaffold( topBar = {
-                       CenterAlignedTopAppBar(title = { Text(text = "Deudores") }
-                       ,
-                           actions = {
-                               IconButton(onClick = { navController.navigate(
-                                   route = AppScreens.AboutScreen.route
-                               ) }) {
-                                   Icon(
-                                       imageVector = Icons.Default.Settings,
-                                       contentDescription = "back",
-                                       modifier = Modifier
-                                           .padding(8.dp)
-                                   )
-                               }
-                           }
-                           )
+        HomeAppBar(navController = navController)
     } ,floatingActionButton = { FabAdd(onFabClicked = { openDialog = true }) }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
