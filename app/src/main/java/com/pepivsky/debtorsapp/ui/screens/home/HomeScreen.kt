@@ -84,6 +84,8 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
 
             AdvertView(modifier = Modifier.constrainAs(adRef) {
                 top.linkTo(parent.top,)
+                height = Dimension.value(50.dp)
+                width = Dimension.wrapContent
             })
 
             /*HomeTitle(modifier = Modifier.constrainAs(titleRef) {
@@ -98,7 +100,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
             DebtorsList(debtors = allDebtors, navController = navController,modifier = Modifier.constrainAs(listRef) {
                 start.linkTo(startGuide)
                 end.linkTo(endGuide)
-                top.linkTo(adRef.bottom, margin = 32.dp)
+                top.linkTo(adRef.bottom, margin = 16.dp)
                 bottom.linkTo(parent.bottom)
                 width = Dimension.fillToConstraints
                 height = Dimension.fillToConstraints
