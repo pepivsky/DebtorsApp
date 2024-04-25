@@ -2,6 +2,7 @@ package com.pepivsky.debtorsapp.ui.screens
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,6 +26,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,6 +35,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.BuildConfig
 
 
 //@Preview
@@ -47,7 +52,7 @@ fun SettingsScreen(navController: NavController) {
 
                 )
             }, navigationIcon = {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = { navController.popBackStack()  }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "back",
@@ -96,7 +101,8 @@ fun SetupList(modifier: Modifier = Modifier) {
         item {
             SetupItem(
                 title = "Compartir",
-                content = "Ayuda a mas personas a llevar el control de sus dedudores"
+                content = "Ayuda a mas personas a llevar el control de sus dedudores",
+                icon = Icons.Default.Share
             ) {
 
                 /*val sendIntent = Intent(Intent.ACTION_SEND).apply {
@@ -109,6 +115,32 @@ fun SetupList(modifier: Modifier = Modifier) {
             }
         }
 
+        item {
+            SetupItem(
+                title = "Version de la aplicacion",
+                content = BuildConfig.VERSION_NAME,
+                icon = Icons.Default.Code
+            ) {
+
+            }
+        }
+
+        item {
+            SetupItem(
+                title = "Sugerencias",
+                content = "Envianos tus sugerencias y comentarios",
+                icon = Icons.Default.Mail
+            ) {
+            composeEmail(
+                arrayOf("pepivskydev@gmail.com"),
+                "Sugerencia app",
+                context
+            )
+            }
+        }
+
+
+
         /*item {
             SetupItem(
                 title = "Calificar",
@@ -118,21 +150,33 @@ fun SetupList(modifier: Modifier = Modifier) {
     }
 }
 
+fun composeEmail(addresses: Array<String?>?, subject: String?, context: Context) {
+    val intent = Intent(Intent.ACTION_SENDTO)
+    intent.setData(Uri.parse("mailto:")) // only email apps should handle this
+    intent.putExtra(Intent.EXTRA_EMAIL, addresses)
+    intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+    if (intent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(intent)
+    }
+}
+
 //@Preview(showBackground = true)
 @Composable
 fun SetupItem(
     title: String,
     content: String,
+    icon: ImageVector,
     action: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth().clickable { action() },
+            .fillMaxWidth()
+            .clickable { action() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = Icons.Default.Share,
+            imageVector = icon,
             contentDescription = "",
             tint = MaterialTheme.colorScheme.tertiary
         )
