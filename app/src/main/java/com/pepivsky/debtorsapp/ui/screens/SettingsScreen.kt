@@ -90,7 +90,7 @@ fun SettingsScreen(navController: NavController) {
 
 fun shareLink(context: Context) {
     val sendIntent = Intent(Intent.ACTION_SEND).apply {
-        putExtra(Intent.EXTRA_TEXT, "https://developer.android.com/training/sharing/")
+        putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.pepivsky.debtorsapp&pcampaignid=web_share")
         type = "text/plain"
     }
     val shareIntent = Intent.createChooser(sendIntent, null)
