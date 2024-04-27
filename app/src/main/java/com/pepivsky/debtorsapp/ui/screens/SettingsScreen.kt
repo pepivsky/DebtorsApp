@@ -3,6 +3,7 @@ package com.pepivsky.debtorsapp.ui.screens
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -157,13 +158,16 @@ fun SetupList(modifier: Modifier = Modifier) {
 }
 
 fun composeEmail(addresses: Array<String?>?, subject: String?, context: Context) {
+    Log.d("pruebilla", "composeEmail: entrando al email")
     val intent = Intent(Intent.ACTION_SENDTO)
     intent.setData(Uri.parse("mailto:")) // only email apps should handle this
     intent.putExtra(Intent.EXTRA_EMAIL, addresses)
     intent.putExtra(Intent.EXTRA_SUBJECT, subject)
-    if (intent.resolveActivity(context.packageManager) != null) {
+    context.startActivity(intent)
+
+    /*if (intent.resolveActivity(context.packageManager) != null) {
         context.startActivity(intent)
-    }
+    }*/
 }
 
 //@Preview(showBackground = true)
@@ -178,14 +182,14 @@ fun SetupItem(
     Card(
         modifier = modifier
             .padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors()
+        colors = CardDefaults.cardColors(),
+        onClick = { action() }
     ) {
 
         Row(
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth()
-                .clickable { action() },
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
