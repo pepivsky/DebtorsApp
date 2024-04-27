@@ -15,6 +15,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -117,15 +119,7 @@ fun SetupList(modifier: Modifier = Modifier) {
             }
         }
 
-        item {
-            SetupItem(
-                title = "Versión de la aplicación",
-                content = BuildConfig.VERSION_NAME,
-                icon = Icons.Default.Code
-            ) {
 
-            }
-        }
 
         item {
             SetupItem(
@@ -138,6 +132,16 @@ fun SetupList(modifier: Modifier = Modifier) {
                 "Sugerencia app",
                 context
             )
+            }
+        }
+
+        item {
+            SetupItem(
+                title = "Versión de la aplicación",
+                content = BuildConfig.VERSION_NAME,
+                icon = Icons.Default.Code
+            ) {
+
             }
         }
 
@@ -165,36 +169,44 @@ fun composeEmail(addresses: Array<String?>?, subject: String?, context: Context)
 //@Preview(showBackground = true)
 @Composable
 fun SetupItem(
+    modifier: Modifier = Modifier,
     title: String,
     content: String,
     icon: ImageVector,
     action: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
-            .clickable { action() },
-        verticalAlignment = Alignment.CenterVertically
+    Card(
+        modifier = modifier
+            .padding(vertical = 4.dp),
+        colors = CardDefaults.cardColors()
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.tertiary
-        )
 
-        Column(modifier = Modifier.padding(start = 12.dp)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.tertiary
+        Row(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .clickable { action() },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.tertiary
             )
 
-            Text(
-                text = content,
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Column(modifier = Modifier.padding(start = 12.dp)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.tertiary
+                )
 
+                Text(
+                    text = content,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+            }
         }
     }
 }
