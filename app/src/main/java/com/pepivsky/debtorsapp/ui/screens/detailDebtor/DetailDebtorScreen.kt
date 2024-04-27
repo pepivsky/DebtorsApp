@@ -25,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.DialogAddMovement
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
@@ -219,7 +221,9 @@ fun ItemMovement(
         ) {
             Column(modifier = Modifier) {
                 Text(
-                    text = if (movement.type == MovementType.INCREASE.name) "Aumento" else "Pago",
+                    text = if (movement.type == MovementType.INCREASE.name) stringResource(R.string.label_increase) else stringResource(
+                        R.string.label_payment
+                    ),
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
@@ -240,7 +244,7 @@ fun DebtInfo(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = "Restante", fontSize = 18.sp)
+            Text(text = stringResource(R.string.label_remaining), fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
             Text(
                 text = "$${remaining.toRidePrice()}",
@@ -252,7 +256,7 @@ fun DebtInfo(
 
         Spacer(modifier = Modifier.size(8.dp))
         Row {
-            Text(text = "Deuda", fontSize = 18.sp)
+            Text(text = stringResource(R.string.label_debt), fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
             Text(text = "$${amount.toRidePrice()}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
@@ -278,7 +282,7 @@ fun CardDebtInfo(
         Column(modifier = Modifier.padding(18.dp)) {
             Row {
                 Text(
-                    text = "Restante:",
+                    text = stringResource(id = R.string.label_remaining)+":",
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.weight(1F))
@@ -294,7 +298,7 @@ fun CardDebtInfo(
             Spacer(modifier = Modifier.size(8.dp))
             Row {
                 Text(
-                    text = "Deuda:",
+                    text = stringResource(id = R.string.label_debt)+":",
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.weight(1F))
@@ -312,7 +316,7 @@ fun CardDebtInfo(
 
 @Preview
 @Composable
-fun DebtorName(name: String = "Blanquis", modifier: Modifier = Modifier) {
+fun DebtorName(modifier: Modifier = Modifier,name: String = "Blanquis", ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         IconDebtor(firstLetter = name.first(), modifier = Modifier.size(120.dp), fontSize = 60)
         Spacer(modifier = Modifier.size(8.dp))
@@ -329,7 +333,7 @@ fun PaymentButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(20.dp),
         //colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963))
     ) {
-        Text(text = "Pago")
+        Text(text = stringResource(id = R.string.label_payment))
     }
 }
 
@@ -342,7 +346,7 @@ fun IncreaseButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(20.dp),
         //colors = ButtonDefaults.buttonColors(containerColor = )
     ) {
-        Text(text = "Aumento")
+        Text(text = stringResource(id = R.string.label_increase))
         //ButtonColors(containerColor = Color(0xFF009963))
     }
 }

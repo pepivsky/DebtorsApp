@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.ads.adIsLoaded
 import com.pepivsky.debtorsapp.components.ads.showInterstitial
@@ -227,21 +229,21 @@ fun FabAdd(modifier: Modifier = Modifier, onFabClicked: () -> Unit) {
 fun HomeTitle(modifier: Modifier = Modifier) {
     Text(
         modifier = modifier,
-        text = "Deudores",
+        text = stringResource(id = R.string.debtors),
         fontSize = 30.sp,
         fontWeight = FontWeight.Bold
     )
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun TotalAmount(modifier: Modifier = Modifier, total: String = "Total: $770.00") {
+fun TotalAmount(modifier: Modifier = Modifier, total: String) {
     Text(modifier = modifier, text = "Total: $$total", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
 }
 
-@Preview
+//@Preview
 @Composable
-fun IconDebtor(firstLetter: Char = 'B',modifier: Modifier = Modifier, fontSize: Int = 30) {
+fun IconDebtor(modifier: Modifier = Modifier, firstLetter: Char, fontSize: Int = 30) {
     Box(
         modifier = modifier
             .clip(CircleShape)

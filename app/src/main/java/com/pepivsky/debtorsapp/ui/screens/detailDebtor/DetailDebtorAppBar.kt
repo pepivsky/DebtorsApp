@@ -19,10 +19,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
@@ -146,14 +148,14 @@ fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit) {
     // dropdown menu with prioritys
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
         DropdownMenuItem(text = {
-            Text(text = "Eliminar")
+            Text(text = stringResource(R.string.label_delete))
         }, onClick = {
             expanded = false
             onDelete()
         })
 
         DropdownMenuItem(text = {
-            Text(text = "Editar")
+            Text(text = stringResource(R.string.label_edit))
         }, onClick = {
             expanded = false
             onEdit()

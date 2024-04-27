@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +37,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.BuildConfig
+import com.pepivsky.debtorsapp.R
 
 
 //@Preview
@@ -46,7 +48,7 @@ fun SettingsScreen(navController: NavController) {
         TopAppBar(colors = TopAppBarDefaults.topAppBarColors(),
             title = {
                 Text(
-                    text = "Configuracion",
+                    text = stringResource(R.string.label_configuration),
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
 
@@ -100,8 +102,8 @@ fun SetupList(modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
         item {
             SetupItem(
-                title = "Compartir",
-                content = "Ayuda a mas personas a llevar el control de sus dedudores",
+                title = stringResource(R.string.label_share),
+                content = stringResource(R.string.label_shareapp_content),
                 icon = Icons.Default.Share
             ) {
 
@@ -117,7 +119,7 @@ fun SetupList(modifier: Modifier = Modifier) {
 
         item {
             SetupItem(
-                title = "Version de la aplicacion",
+                title = "Versión de la aplicación",
                 content = BuildConfig.VERSION_NAME,
                 icon = Icons.Default.Code
             ) {
@@ -128,7 +130,7 @@ fun SetupList(modifier: Modifier = Modifier) {
         item {
             SetupItem(
                 title = "Sugerencias",
-                content = "Envianos tus sugerencias y comentarios",
+                content = "Envíanos tus sugerencias y comentarios",
                 icon = Icons.Default.Mail
             ) {
             composeEmail(

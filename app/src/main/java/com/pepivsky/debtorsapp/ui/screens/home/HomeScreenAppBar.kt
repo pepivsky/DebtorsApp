@@ -12,15 +12,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeAppBar(navController: NavController) {
-    CenterAlignedTopAppBar(title = { Text(text = "Deudores", fontSize = 24.sp) },
+    CenterAlignedTopAppBar(title = { Text(text = stringResource(R.string.debtors), fontSize = 24.sp) },
         actions = {
             IconButton(onClick = {
                 navController.navigate(
