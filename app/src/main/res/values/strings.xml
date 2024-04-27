@@ -12,4 +12,8 @@
     <string name="label_payment">Pago</string>
     <string name="label_remaining">Restante</string>
     <string name="label_debt">Deuda</string>
+    <string name="label_new_payment">Nuevo Pago</string>
+    <string name="label_new_increase">Nuevo Aumento</string>
+    <string name="label_new_debtor">Nuevo deudor</string>
+    <string name="label_edit_debtor">Editar deudor</string>
 </resources>
