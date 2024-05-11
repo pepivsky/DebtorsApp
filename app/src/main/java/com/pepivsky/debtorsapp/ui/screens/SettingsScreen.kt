@@ -163,7 +163,7 @@ fun composeEmail(addresses: Array<String?>?, subject: String?, context: Context)
     intent.setData(Uri.parse("mailto:")) // only email apps should handle this
     intent.putExtra(Intent.EXTRA_EMAIL, addresses)
     intent.putExtra(Intent.EXTRA_SUBJECT, subject)
-    context.startActivity(intent)
+    context.startActivity(Intent.createChooser(intent, null))
 
     /*if (intent.resolveActivity(context.packageManager) != null) {
         context.startActivity(intent)

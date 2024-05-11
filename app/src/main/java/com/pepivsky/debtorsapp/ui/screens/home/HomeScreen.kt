@@ -1,5 +1,6 @@
 package com.pepivsky.debtorsapp.ui.screens.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -44,8 +45,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -99,7 +102,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
             })*/
 
 
-            DebtorsList(debtors = allDebtors, navController = navController,modifier = Modifier.constrainAs(listRef) {
+            ShowContent(debtors = allDebtors, navController = navController,modifier = Modifier.constrainAs(listRef) {
                 start.linkTo(startGuide)
                 end.linkTo(endGuide)
                 top.linkTo(adRef.bottom, margin = 16.dp)
@@ -138,30 +141,49 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
 
 //@Preview(showBackground = true)
 @Composable
-fun DebtorsList(
+fun ShowContent(
     debtors: List<Debtor>,
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    val randomNum = (1..10).random()
+    if (debtors.isEmpty()) {
+        EmptyContent(modifier = modifier)
+    } else {
+        val context = LocalContext.current
+        val randomNum = (1..10).random()
 
-    LazyColumn(modifier = modifier) {
-        items(debtors, key = { it.debtorId }) { debtor ->
-            ItemDebtor(debtor = debtor) {
-                if ((randomNum == 2 || randomNum == 7 || randomNum == 5) && adIsLoaded) {
-                    showInterstitial(context) {
+        LazyColumn(modifier = modifier) {
+            items(debtors, key = { it.debtorId }) { debtor ->
+                ItemDebtor(debtor = debtor) {
+                    if ((randomNum == 2 || randomNum == 7 || randomNum == 5) && adIsLoaded) {
+                        showInterstitial(context) {
+                            navController.navigate(
+                                route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
+                            )
+                        }
+                    } else {
                         navController.navigate(
                             route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
                         )
                     }
-                } else {
-                    navController.navigate(
-                        route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
-                    )
                 }
             }
         }
+    }
+
+
+}
+
+
+
+@Preview
+@Composable
+fun EmptyContent(modifier: Modifier= Modifier) {
+    Column(modifier = modifier,horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(painterResource(R.drawable.icon_empty),"content description")
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(text = "Todavía no hay ningún deudor.", textAlign = TextAlign.Center)
+        Text(text = "Pulsa “+” para  llevar el control del tu cobranza", textAlign = TextAlign.Center)
     }
 }
 
