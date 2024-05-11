@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -126,7 +127,8 @@ fun DialogAddDebtor(
 
                         ),*/
                         keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Words
+                            capitalization = KeyboardCapitalization.Words,
+                            imeAction = ImeAction.Next
                         ), /*supportingText = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -150,7 +152,7 @@ fun DialogAddDebtor(
                             focusedBorderColor = Color(0xFFA1824A)
 
                         ),*/
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next)
                     )
 
                     OutlinedTextField(
@@ -164,7 +166,7 @@ fun DialogAddDebtor(
                             focusedBorderColor = Color(0xFFA1824A)
 
                         ),*/
-                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = if (debtor != null) ImeAction.Next else ImeAction.Done)
                     )
 
                     if (debtor != null) {
@@ -179,7 +181,7 @@ fun DialogAddDebtor(
                                 focusedBorderColor = Color(0xFFA1824A)
 
                             ),*/
-                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Done)
                         )
                     }
 
