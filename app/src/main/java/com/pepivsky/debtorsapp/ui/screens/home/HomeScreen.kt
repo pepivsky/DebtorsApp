@@ -2,37 +2,25 @@ package com.pepivsky.debtorsapp.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,8 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,14 +46,13 @@ import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.ads.adIsLoaded
 import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
-import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppScreens
+import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.util.extension.toRidePrice
 import com.pepivsky.todocompose.ui.screens.ads.AdvertView
 
 
 //@Preview
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
     val allDebtors by viewModel.allDebtors.collectAsState()
@@ -85,10 +70,10 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
             val startGuide = createGuidelineFromStart(0.05F)
             val endGuide = createGuidelineFromEnd(0.05F) // usando porcentajes
             val bottomGuide = createGuidelineFromBottom(0.1F)
-            val (titleRef, listRef, totalAmountRef, adRef) = createRefs()
+            val (listRef, totalAmountRef, adRef) = createRefs()
 
             AdvertView(modifier = Modifier.constrainAs(adRef) {
-                top.linkTo(parent.top,)
+                top.linkTo(parent.top)
                 height = Dimension.value(50.dp)
                 width = Dimension.wrapContent
             })
@@ -180,10 +165,10 @@ fun ShowContent(
 @Composable
 fun EmptyContent(modifier: Modifier= Modifier) {
     Column(modifier = modifier,horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(painterResource(R.drawable.icon_empty),"content description")
+        Image(painterResource(R.drawable.icon_empty),"icon empty content")
         Spacer(modifier = Modifier.size(16.dp))
-        Text(text = "Todavía no hay ningún deudor.", textAlign = TextAlign.Center)
-        Text(text = "Pulsa “+” para  llevar el control del tu cobranza", textAlign = TextAlign.Center)
+        Text(text = stringResource(R.string.title_empty_content), textAlign = TextAlign.Center)
+        Text(text = stringResource(R.string.label_empty_content), textAlign = TextAlign.Center)
     }
 }
 
@@ -234,7 +219,7 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
 //@Preview
 @Composable
 fun FabAdd(modifier: Modifier = Modifier, onFabClicked: () -> Unit) {
-    FloatingActionButton(
+    FloatingActionButton(modifier = modifier,
         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
         contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
         onClick = { onFabClicked() }) {

@@ -16,4 +16,6 @@
     <string name="label_new_increase">Nuevo Aumento</string>
     <string name="label_new_debtor">Nuevo deudor</string>
     <string name="label_edit_debtor">Editar deudor</string>
+    <string name="title_empty_content">Todavía no hay ningún deudor.</string>
+    <string name="label_empty_content">Pulsa “+” para  llevar el control del tu cobranza</string>
 </resources>
