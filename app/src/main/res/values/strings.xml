@@ -2,4 +2,18 @@
     <string name="app_name">Deudores y Cobranza</string>
     <string name="ad_id_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="ad_id_interstitial" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="debtors">Deudores</string>
+    <string name="label_configuration">Configuración</string>
+    <string name="label_share">Compartir</string>
+    <string name="label_shareapp_content">Ayuda a más personas a llevar el control de sus dedudores</string>
+    <string name="label_delete">Eliminar</string>
+    <string name="label_edit">Editar</string>
+    <string name="label_increase">Aumento</string>
+    <string name="label_payment">Pago</string>
+    <string name="label_remaining">Restante</string>
+    <string name="label_debt">Deuda</string>
+    <string name="label_new_payment">Nuevo Pago</string>
+    <string name="label_new_increase">Nuevo Aumento</string>
+    <string name="label_new_debtor">Nuevo deudor</string>
+    <string name="label_edit_debtor">Editar deudor</string>
 </resources>

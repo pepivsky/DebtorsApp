@@ -13,8 +13,8 @@ android {
         applicationId = "com.pepivsky.debtorsapp"
         minSdk = 27
         targetSdk = 34
-        versionCode = 6
-        versionName = "1.0.6"
+        versionCode = 11
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -48,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"

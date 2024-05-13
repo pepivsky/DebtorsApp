@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
+import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.util.numberValidator
@@ -114,7 +116,9 @@ fun DialogAddDebtor(
                     }*/
 
 
-                    Text(text = if (debtor == null) "Nuevo deudor" else "Editar deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp,)
+                    Text(text = if (debtor == null) stringResource(R.string.label_new_debtor) else stringResource(
+                        R.string.label_edit_debtor
+                    ), fontWeight = FontWeight.Bold,color = MaterialTheme.colorScheme.tertiary, style = MaterialTheme.typography.titleLarge, fontSize = 20.sp)
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = name,

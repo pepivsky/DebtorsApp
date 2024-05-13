@@ -7,4 +7,6 @@ sealed class AppScreens(val route: String) {
         const val param = "id"
         fun createRoute(id: Long) = "movements_screen/$id"
     }
+
+    object AboutScreen: AppScreens("about_screen")
 }
