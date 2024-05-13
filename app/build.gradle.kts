@@ -94,6 +94,9 @@ dependencies {
     // ads
     implementation ("com.google.android.gms:play-services-ads:23.0.0")
 
+// splashScreen
+    implementation ("androidx.core:core-splashscreen:1.0.1")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
