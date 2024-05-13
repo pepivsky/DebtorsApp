@@ -12,12 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.pepivsky.debtorsapp.components.ads.loadInterstitial
 import com.pepivsky.debtorsapp.components.ads.removeInterstitial
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.navigation.AppNavigation
 import com.pepivsky.debtorsapp.ui.theme.DebtorsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -26,6 +31,7 @@ class MainActivity : ComponentActivity() {
     private val sharedViewModel: SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupSplashScreen()
         loadInterstitial(this)
 
 
@@ -67,6 +73,21 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         removeInterstitial()
         super.onDestroy()
+    }
+
+    private fun setupSplashScreen() {
+        var keepSplashScreenOn = true
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sharedViewModel.showSplash.collect {
+                    keepSplashScreenOn = it
+                }
+            }
+        }
+
+        installSplashScreen().setKeepOnScreenCondition {
+            keepSplashScreenOn
+        }
     }
 }
 

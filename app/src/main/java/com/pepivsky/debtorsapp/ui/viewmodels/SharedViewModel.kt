@@ -9,12 +9,16 @@ import com.pepivsky.debtorsapp.data.models.entity.Movement
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SharedViewModel @Inject constructor(private val debtorsRepository: DebtorsRepository) :
     ViewModel() {
+
+    private val _showSplash = MutableStateFlow(true)
+    val showSplash = _showSplash.asStateFlow()
 
     private val _allDebtors = MutableStateFlow<List<Debtor>>(emptyList())
     val allDebtors = _allDebtors
@@ -42,6 +46,7 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
         viewModelScope.launch {
             debtorsRepository.getAllDebtors.collect {
                 _allDebtors.value = it
+                _showSplash.value = false
             }
         }
     }
