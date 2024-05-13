@@ -59,9 +59,9 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
     val total by viewModel.totalAmount.collectAsState(0.0)
     var openDialog by rememberSaveable { mutableStateOf(false) }
 
-    Scaffold( topBar = {
+    Scaffold(topBar = {
         HomeAppBar(navController = navController)
-    } ,floatingActionButton = { FabAdd(onFabClicked = { openDialog = true }) }) { paddingValues ->
+    }, floatingActionButton = { FabAdd(onFabClicked = { openDialog = true }) }) { paddingValues ->
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -78,50 +78,39 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
                 width = Dimension.wrapContent
             })
 
-            /*HomeTitle(modifier = Modifier.constrainAs(titleRef) {
-                top.linkTo(adRef.bottom,)
-                start.linkTo(startGuide)
-                *//*end.linkTo(endGuide)
-                height = Dimension.wrapContent
-                width = Dimension.fillToConstraints*//*
-            })*/
 
+            ShowContent(
+                debtors = allDebtors,
+                navController = navController,
+                modifier = Modifier.constrainAs(listRef) {
+                    start.linkTo(startGuide)
+                    end.linkTo(endGuide)
+                    top.linkTo(adRef.bottom, margin = 16.dp)
+                    bottom.linkTo(parent.bottom)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                }
+            )
 
-            ShowContent(debtors = allDebtors, navController = navController,modifier = Modifier.constrainAs(listRef) {
-                start.linkTo(startGuide)
-                end.linkTo(endGuide)
-                top.linkTo(adRef.bottom, margin = 16.dp)
-                bottom.linkTo(parent.bottom)
-                width = Dimension.fillToConstraints
-                height = Dimension.fillToConstraints
-            })
-
-            TotalAmount(total = total.toRidePrice(), modifier = Modifier.constrainAs(totalAmountRef) {
-                bottom.linkTo(bottomGuide)
-                start.linkTo(startGuide)
-                end.linkTo(endGuide)
-                height = Dimension.wrapContent
-                width = Dimension.wrapContent
-            })
-
-           /* AdvertView(modifier = Modifier.constrainAs(adRef) {
-                top.linkTo(bottomGuide)
-                start.linkTo(startGuide)
-                end.linkTo(endGuide)
-                height = Dimension.wrapContent
-                width = Dimension.wrapContent
-            })*/
-
-
+            TotalAmount(
+                total = total.toRidePrice(),
+                modifier = Modifier.constrainAs(totalAmountRef) {
+                    bottom.linkTo(bottomGuide)
+                    start.linkTo(startGuide)
+                    end.linkTo(endGuide)
+                    height = Dimension.wrapContent
+                    width = Dimension.wrapContent
+                }
+            )
         }
 
         DialogAddDebtor(
             openDialog = openDialog,
             closeDialog = { openDialog = false }) { debtor ->
-                viewModel.addNewDebtor(debtor)
-            }
+            viewModel.addNewDebtor(debtor)
         }
     }
+}
 
 
 //@Preview(showBackground = true)
@@ -160,12 +149,11 @@ fun ShowContent(
 }
 
 
-
 @Preview
 @Composable
-fun EmptyContent(modifier: Modifier= Modifier) {
-    Column(modifier = modifier,horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(painterResource(R.drawable.icon_empty),"icon empty content")
+fun EmptyContent(modifier: Modifier = Modifier) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(painterResource(R.drawable.icon_empty), "icon empty content")
         Spacer(modifier = Modifier.size(16.dp))
         Text(text = stringResource(R.string.title_empty_content), textAlign = TextAlign.Center)
         Text(text = stringResource(R.string.label_empty_content), textAlign = TextAlign.Center)
@@ -245,7 +233,12 @@ fun HomeTitle(modifier: Modifier = Modifier) {
 //@Preview(showBackground = true)
 @Composable
 fun TotalAmount(modifier: Modifier = Modifier, total: String) {
-    Text(modifier = modifier, text = "Total: $$total", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+    Text(
+        modifier = modifier,
+        text = "Total: $$total",
+        fontSize = 22.sp,
+        fontWeight = FontWeight.ExtraBold
+    )
 }
 
 //@Preview
