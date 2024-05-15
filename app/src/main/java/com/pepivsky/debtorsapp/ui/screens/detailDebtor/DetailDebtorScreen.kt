@@ -189,7 +189,7 @@ fun DetailDebtorScreen(
     DialogAddDebtor(
         openDialog = openDialogEditDebtor,
         closeDialog = { openDialogEditDebtor = false },
-        debtor = selectedDebtor.debtor ,
+        debtor = selectedDebtor.debtor,
         onAcceptClicked = { debtor ->
             viewModel.updateDebtor(debtor)
             Log.d("pruebilla", "DetailDebtorScreen: onAcceptClicked")
@@ -210,11 +210,20 @@ fun ShowMovementsContent(movements: List<Movement>, modifier: Modifier = Modifie
         EmptyIcon(modifier = modifier)
     }
 }
+
 @Preview
 @Composable
 fun EmptyIcon(modifier: Modifier = Modifier) {
-    Column(modifier = modifier,horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Icon(modifier = modifier.size(70.dp), imageVector = ImageVector.vectorResource(id = R.drawable.money_off_icon), contentDescription = "")
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            modifier = modifier.size(70.dp),
+            imageVector = ImageVector.vectorResource(id = R.drawable.money_off_icon),
+            contentDescription = ""
+        )
         Spacer(modifier = Modifier.size(16.dp))
         Text(text = stringResource(R.string.no_movements))
         Text(text = stringResource(R.string.add_a_movement))
@@ -301,7 +310,7 @@ fun CardDebtInfo(
         Column(modifier = Modifier.padding(18.dp)) {
             Row {
                 Text(
-                    text = stringResource(id = R.string.label_remaining)+":",
+                    text = stringResource(id = R.string.label_remaining) + ":",
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.weight(1F))
@@ -317,7 +326,7 @@ fun CardDebtInfo(
             Spacer(modifier = Modifier.size(8.dp))
             Row {
                 Text(
-                    text = stringResource(id = R.string.label_debt)+":",
+                    text = stringResource(id = R.string.label_debt) + ":",
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.weight(1F))
@@ -335,7 +344,7 @@ fun CardDebtInfo(
 
 @Preview
 @Composable
-fun DebtorName(modifier: Modifier = Modifier,name: String = "Blanquis") {
+fun DebtorName(modifier: Modifier = Modifier, name: String = "Blanquis") {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         IconDebtor(firstLetter = name.first(), modifier = Modifier.size(120.dp), fontSize = 60)
         Spacer(modifier = Modifier.size(8.dp))
