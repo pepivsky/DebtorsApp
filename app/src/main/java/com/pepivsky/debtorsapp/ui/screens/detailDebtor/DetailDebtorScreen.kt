@@ -1,7 +1,6 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -117,7 +115,7 @@ fun DetailDebtorScreen(
                     start.linkTo(startGuide)
                 })
 
-            MovementsList(
+            ShowMovementsContent(
                 selectedDebtor.movements,
                 modifier = Modifier.constrainAs(movementsListRef) {
                     top.linkTo(movementsTitleRef.bottom, margin = 8.dp)
@@ -201,7 +199,7 @@ fun DetailDebtorScreen(
 
 //@Preview(showBackground = true)
 @Composable
-fun MovementsList(movements: List<Movement>, modifier: Modifier = Modifier) {
+fun ShowMovementsContent(movements: List<Movement>, modifier: Modifier = Modifier) {
     if (movements.isNotEmpty()) {
         LazyColumn(modifier = modifier) {
             items(movements) { movement ->
@@ -218,8 +216,8 @@ fun EmptyIcon(modifier: Modifier = Modifier) {
     Column(modifier = modifier,horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Icon(modifier = modifier.size(70.dp), imageVector = ImageVector.vectorResource(id = R.drawable.money_off_icon), contentDescription = "")
         Spacer(modifier = Modifier.size(16.dp))
-        Text(text = "Sin movimientos")
-        Text(text = "Agrega un Pago un Aumento")
+        Text(text = stringResource(R.string.no_movements))
+        Text(text = stringResource(R.string.add_a_movement))
     }
 
 }
@@ -337,7 +335,7 @@ fun CardDebtInfo(
 
 @Preview
 @Composable
-fun DebtorName(modifier: Modifier = Modifier,name: String = "Blanquis", ) {
+fun DebtorName(modifier: Modifier = Modifier,name: String = "Blanquis") {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         IconDebtor(firstLetter = name.first(), modifier = Modifier.size(120.dp), fontSize = 60)
         Spacer(modifier = Modifier.size(8.dp))
