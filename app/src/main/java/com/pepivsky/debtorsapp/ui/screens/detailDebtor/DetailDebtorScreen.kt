@@ -244,14 +244,21 @@ fun ItemMovement(
     movement: Movement,
     modifier: Modifier = Modifier
 ) {
+    val contentColor =
+        if (movement.type == MovementType.INCREASE.name) MaterialTheme.colorScheme.onErrorContainer
+        else MaterialTheme.colorScheme.onPrimaryContainer
+
     Card(
         modifier = modifier
             .padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors()
+        colors = CardDefaults.cardColors(
+            //containerColor = containerColor,
+            contentColor = contentColor
+        )
     ) {
         Row(
             modifier = modifier
-                .padding(8.dp),
+                .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier) {
