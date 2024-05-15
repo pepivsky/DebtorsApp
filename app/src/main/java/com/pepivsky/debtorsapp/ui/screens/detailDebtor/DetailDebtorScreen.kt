@@ -225,8 +225,15 @@ fun EmptyIcon(modifier: Modifier = Modifier) {
             contentDescription = ""
         )
         Spacer(modifier = Modifier.size(16.dp))
-        Text(text = stringResource(R.string.no_movements))
-        Text(text = stringResource(R.string.add_a_movement))
+        Text(
+            text = stringResource(R.string.no_movements),
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(modifier = Modifier.size(4.dp))
+        Text(
+            text = stringResource(R.string.add_a_movement),
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 
 }
