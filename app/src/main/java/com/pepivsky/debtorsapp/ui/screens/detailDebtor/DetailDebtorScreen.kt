@@ -1,6 +1,8 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
 import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -25,7 +28,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -196,11 +202,26 @@ fun DetailDebtorScreen(
 //@Preview(showBackground = true)
 @Composable
 fun MovementsList(movements: List<Movement>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
-        items(movements) { movement ->
-            ItemMovement(movement)
+    if (movements.isNotEmpty()) {
+        LazyColumn(modifier = modifier) {
+            items(movements) { movement ->
+                ItemMovement(movement)
+            }
         }
+    } else {
+        EmptyIcon(modifier = modifier)
     }
+}
+@Preview
+@Composable
+fun EmptyIcon(modifier: Modifier = Modifier) {
+    Column(modifier = modifier,horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Icon(modifier = modifier.size(70.dp), imageVector = ImageVector.vectorResource(id = R.drawable.money_off_icon), contentDescription = "")
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(text = "Sin movimientos")
+        Text(text = "Agrega un Pago un Aumento")
+    }
+
 }
 
 //@Preview(showBackground = true)
