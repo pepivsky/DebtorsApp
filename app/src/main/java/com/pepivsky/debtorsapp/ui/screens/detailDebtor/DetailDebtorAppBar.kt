@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,11 +12,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -85,7 +88,7 @@ fun DefaultDetailDebtorAppBar(
     debtorWithMovements: DebtorWithMovements,
     onEditClicked: () -> Unit,
 
-) {
+    ) {
     TopAppBar(colors = TopAppBarDefaults.topAppBarColors(),
         title = {
             Text(
@@ -98,11 +101,10 @@ fun DefaultDetailDebtorAppBar(
         actions = {
 
 
-
             DetailDebtorAppBarActions(onDeleteClicked = {
                 sharedViewModel.deleteSelectedDebtor(debtorWithMovements.debtor)
                 navController.popBackStack()
-            }, onEditClicked =  {
+            }, onEditClicked = {
                 onEditClicked()
             })
 
@@ -125,13 +127,32 @@ fun DetailDebtorAppBarActions(
     onDeleteClicked: () -> Unit,
     onEditClicked: () -> Unit,
 
-) {
-    DropDownActions(
-        onDelete = { onDeleteClicked() },
-        onEdit = { onEditClicked() }
+    ) {
+    var showDialogConfirmDelete by remember { mutableStateOf(false) }
+
+    if (showDialogConfirmDelete) {
+        AlertDialog(
+            onDismissRequest = { showDialogConfirmDelete = false },
+            title = { Text(stringResource(R.string.title_dialog_delete_debtor)) },
+            text = { Text(stringResource(R.string.text_dialog_delete_debtor)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    onDeleteClicked()
+                }) {
+                    Text(stringResource(R.string.delete).uppercase())
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialogConfirmDelete = false }) {
+                    Text(stringResource(R.string.cancel).uppercase())
+                }
+            },
         )
-
-
+    }
+    DropDownActions(
+        onDelete = { showDialogConfirmDelete = true },
+        onEdit = { onEditClicked() }
+    )
 }
 
 // delete all action
@@ -160,7 +181,5 @@ fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit) {
             expanded = false
             onEdit()
         })
-
     }
-
 }

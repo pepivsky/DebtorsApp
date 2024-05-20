@@ -20,4 +20,8 @@
     <string name="label_empty_content">Pulsa “+” para  llevar el control del tu cobranza</string>
     <string name="no_movements">Sin movimientos</string>
     <string name="add_a_movement">Agrega un Pago un Aumento</string>
+    <string name="title_dialog_delete_debtor">¿Estás seguro que quieres eliminar este deudor?</string>
+    <string name="text_dialog_delete_debtor">Esta acción no se puede deshacer</string>
+    <string name="delete">Eliminar</string>
+    <string name="cancel">Cancelar</string>
 </resources>
