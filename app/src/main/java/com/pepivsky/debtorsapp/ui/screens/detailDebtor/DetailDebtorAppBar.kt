@@ -33,52 +33,6 @@ import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 
 
-/*
-
-@Composable
-fun ListAppBarActions(
-    onSearchClicked: () -> Unit,
-    onSortClicked: (Priority) -> Unit,
-    onDeleteAllConfirmed: () -> Unit
-) {
-
-    // for manage dialog
-    var openDialog by rememberSaveable { mutableStateOf(false) }
-
-    DisplayAlertDialog(title = stringResource(id = R.string.delete_all_tasks), message = stringResource(
-        id = R.string.delete_all_tasks_confirmation
-    ), openDialog = openDialog, closeDialog = { openDialog = false }, onYesClicked = {
-    onDeleteAllConfirmed()
-    })
-
-    SearchAction(onSearchClicked = onSearchClicked)
-    SortAction(onSortClicked = onSortClicked)
-    DeleteAllAction(onDeleteAllConfirmed = { openDialog = true })
-}
- */
-
-/*
-// app bar que se muestra por default
-@Composable
-fun DefaultListAppBar(
-    onSearchClicked: () -> Unit,
-    onSortClicked: (Priority) -> Unit,
-    onDeleteAllConfirmed: () -> Unit
-) {
-    TopAppBar(
-        title = { Text(text = stringResource(id = R.string.app_bar_title), color = MaterialTheme.colors.topAppBarContentColor) },
-        backgroundColor = MaterialTheme.colors.topAppBarBackgroundColor,
-        actions = {
-            ListAppBarActions(
-                onSearchClicked = onSearchClicked,
-                onSortClicked = onSortClicked,
-                onDeleteAllConfirmed = onDeleteAllConfirmed
-            )
-        }
-    )
-}
- */
-
 //@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
