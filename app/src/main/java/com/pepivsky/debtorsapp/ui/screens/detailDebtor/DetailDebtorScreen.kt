@@ -179,7 +179,7 @@ fun DetailDebtorScreen(
         }
         val movement = Movement(
             debtorCreatorId = selectedDebtor.debtor.debtorId,
-            type = movementType.name,
+            type = movementType,
             amount = amount.toDouble(),
             date = dateText
         )
@@ -245,7 +245,7 @@ fun ItemMovement(
     modifier: Modifier = Modifier
 ) {
     val contentColor =
-        if (movement.type == MovementType.INCREASE.name) MaterialTheme.colorScheme.onErrorContainer
+        if (movement.type == MovementType.INCREASE) MaterialTheme.colorScheme.onErrorContainer
         else MaterialTheme.colorScheme.onPrimaryContainer
 
     Card(
@@ -263,7 +263,7 @@ fun ItemMovement(
         ) {
             Column(modifier = Modifier) {
                 Text(
-                    text = if (movement.type == MovementType.INCREASE.name) stringResource(R.string.label_increase) else stringResource(
+                    text = if (movement.type == MovementType.INCREASE) stringResource(R.string.label_increase) else stringResource(
                         R.string.label_payment
                     ),
                     fontWeight = FontWeight.Bold,
