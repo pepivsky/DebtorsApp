@@ -48,6 +48,7 @@ import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.navigation.AppScreens
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
+import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.extension.toRidePrice
 import com.pepivsky.todocompose.ui.screens.ads.AdvertView
 
@@ -189,7 +190,7 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = debtor.creationDate,
+                    text = debtor.creationDate.formatToServerDateDefaults(),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

@@ -13,8 +13,8 @@ android {
         applicationId = "com.pepivsky.debtorsapp"
         minSdk = 27
         targetSdk = 34
-        versionCode = 13
-        versionName = "1.1.3"
+        versionCode = 18
+        versionName = "1.1.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

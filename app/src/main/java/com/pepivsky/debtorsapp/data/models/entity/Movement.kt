@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.util.Constants
 import java.math.BigDecimal
+import java.util.Date
 
 @Entity(Constants.MOVEMENT_TABLE,
     foreignKeys = [ForeignKey(
@@ -21,5 +22,5 @@ data class Movement(
     val debtorCreatorId: Long,
     val type: MovementType,
     val amount: Double,
-    val date: String
+    val date: Date
 )

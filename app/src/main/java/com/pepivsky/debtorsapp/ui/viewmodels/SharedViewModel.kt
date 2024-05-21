@@ -1,5 +1,6 @@
 package com.pepivsky.debtorsapp.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pepivsky.debtorsapp.data.repositories.DebtorsRepository
@@ -30,6 +31,7 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
     val selectedDebtorWithMovements = _selectedDebtorWithMovements
     init {
         getAllDebtors()
+        getMovementsSortedByDate()
         //getTotalAmount()
         //getSelectedDebtorById(1)
     }
@@ -88,6 +90,14 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
     fun updateDebtor(debtor: Debtor) {
         viewModelScope.launch {
             debtorsRepository.updateDebtor(debtor)
+        }
+    }
+
+    fun getMovementsSortedByDate() {
+        viewModelScope.launch {
+            debtorsRepository.getMovementsSortedByDate().collect {
+                Log.d("pruebilla", "getMovementsSortedByDate: ${it.joinToString()}")
+            }
         }
     }
 

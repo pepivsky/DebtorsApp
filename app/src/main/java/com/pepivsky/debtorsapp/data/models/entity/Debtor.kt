@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.pepivsky.debtorsapp.util.Constants
 import java.math.BigDecimal
+import java.util.Date
 
 @Entity(tableName = Constants.DEBTOR_TABLE)
 data class Debtor(
@@ -11,7 +12,7 @@ data class Debtor(
     val debtorId: Long = 0,
     val name: String,
     val description: String,
-    val creationDate: String,
+    val creationDate: Date,
     val amount: Double,
     val remaining: Double,
     val isPaid: Boolean = false,
