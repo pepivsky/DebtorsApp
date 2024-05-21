@@ -46,6 +46,7 @@ import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.ui.screens.home.IconDebtor
+import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.extension.toRidePrice
 import java.util.Date
 
@@ -182,7 +183,7 @@ fun DetailDebtorScreen(
             debtorCreatorId = selectedDebtor.debtor.debtorId,
             type = movementType,
             amount = amount.toDouble(),
-            date = Date(dateText)
+            date = dateText
         )
         viewModel.addMovementTransaction(debtor = debtorUpdated, movement = movement)
     }
@@ -270,7 +271,7 @@ fun ItemMovement(
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
-                Text(text = movement.date.toString())
+                Text(text = movement.date.formatToServerDateDefaults())
             }
             Spacer(modifier = Modifier.weight(1F))
             Text(text = "$${movement.amount.toRidePrice()}", fontSize = 18.sp)

@@ -41,6 +41,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
 import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.data.models.MovementType
+import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.numberValidator
 import java.time.Instant
 import java.time.LocalDate
@@ -52,7 +53,7 @@ fun DialogAddMovement(
     movementType: MovementType,
     openDialog: Boolean,
     closeDialog: () -> Unit,
-    onAcceptClicked: (amount: String, dateText: String) -> Unit,
+    onAcceptClicked: (amount: String, dateText: LocalDate) -> Unit,
 
     ) {
     if (openDialog) {
@@ -72,7 +73,7 @@ fun DialogAddMovement(
                 ) {
                     var showDialog by remember { mutableStateOf(false) }
                     val state = rememberDatePickerState()
-                    var dateText by remember { mutableStateOf("${LocalDate.now().dayOfMonth}/${LocalDate.now().monthValue}/${LocalDate.now().year}") }
+                    var dateText by remember { mutableStateOf(LocalDate.now()) }
 
                     var amount by remember { mutableStateOf("") }
                     val isEnable by remember { derivedStateOf { amount.isNotBlank() } }
@@ -96,7 +97,7 @@ fun DialogAddMovement(
                     OutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = { showDialog = true }) {
-                        Text(text = dateText,)
+                        Text(text = dateText.formatToServerDateDefaults(),)
                     }
 
                     Button(
@@ -127,7 +128,7 @@ fun DialogAddMovement(
                     val date = state.selectedDateMillis
                     date?.let {
                         val localDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
-                        dateText = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
+                        dateText = localDate
                     }
 
                 }

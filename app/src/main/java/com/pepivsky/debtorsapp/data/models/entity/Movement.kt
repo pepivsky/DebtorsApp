@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.util.Constants
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.util.Date
 
 @Entity(Constants.MOVEMENT_TABLE,
@@ -22,5 +23,5 @@ data class Movement(
     val debtorCreatorId: Long,
     val type: MovementType,
     val amount: Double,
-    val date: Date
+    val date: LocalDate
 )

@@ -25,7 +25,7 @@ interface MovementDAO {
 
     @Query("DELETE FROM movement")
     suspend fun deleteAllMovements()
-    @Query("SELECT * FROM movement ORDER BY date DESC")
+    @Query("SELECT * FROM movement ORDER BY date ASC")
     fun getMovementsSortedByDate(): Flow<List<Movement>>
 
 

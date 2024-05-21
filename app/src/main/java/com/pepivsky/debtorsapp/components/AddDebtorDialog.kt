@@ -43,6 +43,7 @@ import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.numberValidator
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
 
@@ -89,7 +90,7 @@ fun DialogAddDebtor(
                 ) {
                     var showDialog by remember { mutableStateOf(false) }
                     val state = rememberDatePickerState()
-                    var creationDate by remember { mutableStateOf(Date.from(Instant.now())) }
+                    var creationDate by remember { mutableStateOf(LocalDate.now()) }
 
                     var name by rememberSaveable { mutableStateOf(debtor?.name ?: "") }
                     var amount by rememberSaveable { mutableStateOf(  "${debtor?.amount ?: ""}") }
@@ -240,7 +241,7 @@ fun DialogAddDebtor(
                     date?.let {
                         val localDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
                         //val date = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
-                        creationDate = Date(it)
+                        creationDate = localDate
                         Log.d("pruebilla", "DialogAddDebtor: $date")
                         //Text(text = "Fecha seleccionada: $dateText")
                     }
