@@ -1,12 +1,11 @@
 package com.pepivsky.debtorsapp.data
 
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.pepivsky.debtorsapp.data.converters.BigDecimalTypeConverter
 import com.pepivsky.debtorsapp.data.dao.DebtorDAO
 import com.pepivsky.debtorsapp.data.dao.MovementDAO
-import com.pepivsky.debtorsapp.data.converters.BigDecimalTypeConverter
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 
