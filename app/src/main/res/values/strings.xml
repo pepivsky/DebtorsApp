@@ -25,4 +25,9 @@
     <string name="delete">Eliminar</string>
     <string name="cancel">Cancelar</string>
     <string name="remaining">Restante</string>
+    <string name="app_version_label">Versión de la aplicación</string>
+    <string name="app_suggestion">Sugerencia app</string>
+    <string name="my_email">pepivskydev@gmail.com</string>
+    <string name="send_comments">Envíanos tus sugerencias y comentarios</string>
+    <string name="suggestions">Sugerencias</string>
 </resources>

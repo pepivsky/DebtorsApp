@@ -123,13 +123,13 @@ fun SetupList(modifier: Modifier = Modifier) {
 
         item {
             SetupItem(
-                title = "Sugerencias",
-                content = "Envíanos tus sugerencias y comentarios",
+                title = stringResource(R.string.suggestions),
+                content = stringResource(R.string.send_comments),
                 icon = Icons.Default.Mail
             ) {
             composeEmail(
-                arrayOf("pepivskydev@gmail.com"),
-                "Sugerencia app",
+                arrayOf(context.getString(R.string.my_email)),
+                context.getString(R.string.app_suggestion),
                 context
             )
             }
@@ -137,7 +137,7 @@ fun SetupList(modifier: Modifier = Modifier) {
 
         item {
             SetupItem(
-                title = "Versión de la aplicación",
+                title = stringResource(R.string.app_version_label),
                 content = BuildConfig.VERSION_NAME,
                 icon = Icons.Default.Code
             ) {
