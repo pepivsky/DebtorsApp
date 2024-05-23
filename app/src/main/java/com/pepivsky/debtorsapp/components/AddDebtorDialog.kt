@@ -1,7 +1,5 @@
 package com.pepivsky.debtorsapp.components
 
-import android.icu.util.Calendar
-import android.icu.util.TimeZone
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,7 +43,6 @@ import com.pepivsky.debtorsapp.util.numberValidator
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.Date
 
 /*@Composable
 fun DisplayDialogAddDebtor(
@@ -116,7 +113,7 @@ fun DialogAddDebtor(
                         onValueChange = {
                             name = it
                         },
-                        label = { Text(text = "Nombre",) },
+                        label = { Text(text = "Nombre") },
                         /*colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color(0xFFA1824A)
 
@@ -142,7 +139,7 @@ fun DialogAddDebtor(
                                 amount = str
                             }
                         },
-                        label = { Text(text = "Monto",) },
+                        label = { Text(text = "Monto") },
                         /*colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color(0xFFA1824A)
 
@@ -156,7 +153,7 @@ fun DialogAddDebtor(
                         onValueChange = {
                             description = it
                         },
-                        label = { Text(text = "Concepto",) },
+                        label = { Text(text = "Concepto") },
                         /*colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color(0xFFA1824A)
 
@@ -171,7 +168,7 @@ fun DialogAddDebtor(
                             onValueChange = {
                                 remaining = it
                             },
-                            label = { Text(text = "Restante",) },
+                            label = { Text(text = stringResource(R.string.remaining)) },
                             /*colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = Color(0xFFA1824A)
 
@@ -265,7 +262,7 @@ fun TextFieldCustom() {
         onValueChange = {
 
         },
-        label = { Text(text = "Nombre",) },
+        label = { Text(text = "Nombre") },
         /*colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0xFFA1824A)
 
