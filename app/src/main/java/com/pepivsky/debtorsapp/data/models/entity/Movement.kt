@@ -23,5 +23,6 @@ data class Movement(
     val debtorCreatorId: Long,
     val type: MovementType,
     val amount: Double,
-    val date: LocalDate
+    val date: LocalDate,
+    val concept: String,
 )

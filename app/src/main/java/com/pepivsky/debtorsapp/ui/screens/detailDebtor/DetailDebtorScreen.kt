@@ -163,7 +163,7 @@ fun DetailDebtorScreen(
     DialogAddMovement(
         movementType = movementType,
         openDialog = openDialogAddMovement,
-        closeDialog = { openDialogAddMovement = false }) { amount, dateText ->
+        closeDialog = { openDialogAddMovement = false }) { amount, dateText, concept ->
 
         val debtorUpdated: Debtor = when (movementType) {
             MovementType.PAYMENT -> {
@@ -182,7 +182,8 @@ fun DetailDebtorScreen(
             debtorCreatorId = selectedDebtor.debtor.debtorId,
             type = movementType,
             amount = amount.toDouble(),
-            date = dateText
+            date = dateText,
+            concept = concept
         )
         viewModel.addMovementTransaction(debtor = debtorUpdated, movement = movement)
     }
@@ -268,12 +269,25 @@ fun ItemMovement(
                         R.string.label_payment
                     ),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.bodyLarge
                 )
-                Text(text = movement.date.formatToServerDateDefaults())
+                Spacer(modifier = Modifier.size(4.dp))
+                Text(
+                    text = movement.concept,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = movement.date.formatToServerDateDefaults(),
+                    style = MaterialTheme.typography.labelMedium
+                )
             }
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$${movement.amount.toRidePrice()}", fontSize = 18.sp)
+            Text(
+                text = "$${movement.amount.toRidePrice()}",
+                fontSize = 18.sp,
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }

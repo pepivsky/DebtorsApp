@@ -46,7 +46,7 @@ fun DialogAddMovement(
     movementType: MovementType,
     openDialog: Boolean,
     closeDialog: () -> Unit,
-    onAcceptClicked: (amount: String, dateText: LocalDate) -> Unit,
+    onAcceptClicked: (amount: String, dateText: LocalDate, concept: String) -> Unit,
 
     ) {
     if (openDialog) {
@@ -70,6 +70,8 @@ fun DialogAddMovement(
 
                     var amount by remember { mutableStateOf("") }
                     val isEnable by remember { derivedStateOf { amount.isNotBlank() } }
+                    var movementConcept by remember { mutableStateOf("") }
+
 
 
                     Text(text = if (movementType == MovementType.PAYMENT) stringResource(R.string.label_new_payment) else stringResource(
@@ -84,6 +86,16 @@ fun DialogAddMovement(
                             }
                         },
                         label = { Text(text = "Monto") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next)
+                    )
+
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = movementConcept,
+                        onValueChange = { str ->
+                            movementConcept = str
+                        },
+                        label = { Text(text = "Concepto (opcional)") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done)
                     )
 
@@ -96,7 +108,7 @@ fun DialogAddMovement(
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            onAcceptClicked(amount,dateText)
+                            onAcceptClicked(amount,dateText, movementConcept)
                             closeDialog()
                         },
                         enabled = isEnable

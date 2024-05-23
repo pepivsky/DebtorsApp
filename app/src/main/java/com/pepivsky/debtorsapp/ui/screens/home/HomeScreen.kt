@@ -191,7 +191,7 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
                 )
                 Text(
                     text = debtor.creationDate.formatToServerDateDefaults(),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.labelMedium
                 )
             }
             Spacer(modifier = Modifier.weight(1F))
