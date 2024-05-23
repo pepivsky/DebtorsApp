@@ -55,7 +55,7 @@ class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO, pr
     }
 
     suspend fun getMovementsSortedByDate(): Flow<List<Movement>> {
-        return movementDAO.getMovementsSortedByDate()
+        return movementDAO.getMovementsSortedByDateASC()
     }
 
 
