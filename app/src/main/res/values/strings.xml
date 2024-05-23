@@ -34,4 +34,5 @@
     <string name="amount">Monto</string>
     <string name="confirm">Confirmar</string>
     <string name="accept">Aceptar</string>
+    <string name="movements">Movimientos</string>
 </resources>

@@ -108,7 +108,7 @@ fun DetailDebtorScreen(
                 })
 
             Text(
-                text = "Movimientos",
+                text = stringResource(R.string.movements),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(movementsTitleRef) {

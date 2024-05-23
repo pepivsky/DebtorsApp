@@ -197,7 +197,8 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
             Spacer(modifier = Modifier.weight(1F))
             Text(
                 style = MaterialTheme.typography.titleLarge,
-                text = "$${debtor.remaining.toRidePrice()}"
+                text = "$${debtor.remaining.toRidePrice()}",
+                color = MaterialTheme.colorScheme.onTertiaryContainer
             )
 
         }
@@ -238,7 +239,8 @@ fun TotalAmount(modifier: Modifier = Modifier, total: String) {
         modifier = modifier,
         text = "Total: $$total",
         fontSize = 22.sp,
-        fontWeight = FontWeight.ExtraBold
+        fontWeight = FontWeight.ExtraBold,
+        color = MaterialTheme.colorScheme.onPrimaryContainer
     )
 }
 
