@@ -85,7 +85,7 @@ fun DialogAddMovement(
                                 amount = str
                             }
                         },
-                        label = { Text(text = "Monto") },
+                        label = { Text(text = stringResource(R.string.amount)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next)
                     )
 
@@ -95,7 +95,7 @@ fun DialogAddMovement(
                         onValueChange = { str ->
                             movementConcept = str
                         },
-                        label = { Text(text = "Concepto (opcional)") },
+                        label = { Text(text = stringResource(R.string.concept_label)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done)
                     )
 
@@ -113,17 +113,17 @@ fun DialogAddMovement(
                         },
                         enabled = isEnable
                     ) {
-                        Text(text = "Aceptar")
+                        Text(text = stringResource(R.string.accept))
                     }
 
                     if (showDialog) {
                         DatePickerDialog(onDismissRequest = { showDialog = false }, confirmButton = {
                             Button(onClick = { showDialog = false }) {
-                                Text(text = "Confirmar")
+                                Text(text = stringResource(R.string.confirm))
                             }
                         }, dismissButton = {
                             OutlinedButton(onClick = { showDialog = false }) {
-                                Text(text = "Cancelar")
+                                Text(text = stringResource(id = R.string.cancel))
                             }
                         }) {
                             DatePicker(state = state)
@@ -135,13 +135,8 @@ fun DialogAddMovement(
                         val localDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
                         dateText = localDate
                     }
-
                 }
             }
-
-
         }
     }
-
-
 }

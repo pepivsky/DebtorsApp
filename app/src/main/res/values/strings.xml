@@ -30,4 +30,8 @@
     <string name="my_email">pepivskydev@gmail.com</string>
     <string name="send_comments">Envíanos tus sugerencias y comentarios</string>
     <string name="suggestions">Sugerencias</string>
+    <string name="concept_label">Concepto (opcional)</string>
+    <string name="amount">Monto</string>
+    <string name="confirm">Confirmar</string>
+    <string name="accept">Aceptar</string>
 </resources>
