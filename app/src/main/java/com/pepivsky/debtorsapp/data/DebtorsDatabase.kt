@@ -1,5 +1,6 @@
 package com.pepivsky.debtorsapp.data
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -11,8 +12,9 @@ import com.pepivsky.debtorsapp.data.models.entity.Movement
 
 @Database(
     entities = [Debtor::class, Movement::class],
-    version = 2,
+    version = 3,
     exportSchema = true,
+    autoMigrations = [AutoMigration(from = 2, to = 3)]
 )
 @TypeConverters(BigDecimalTypeConverter::class)
 abstract class DebtorsDatabase : RoomDatabase() {

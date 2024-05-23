@@ -1,5 +1,6 @@
 package com.pepivsky.debtorsapp.data.models.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -24,5 +25,6 @@ data class Movement(
     val type: MovementType,
     val amount: Double,
     val date: LocalDate,
-    val concept: String,
+    @ColumnInfo(defaultValue = "")
+    val concept: String = ""
 )

@@ -17,7 +17,7 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideDatabase(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, DebtorsDatabase::class.java, Constants.DEBTORS_DATABASE).fallbackToDestructiveMigration().build()
+        Room.databaseBuilder(context, DebtorsDatabase::class.java, Constants.DEBTORS_DATABASE).build()
 
     @Singleton
     @Provides
