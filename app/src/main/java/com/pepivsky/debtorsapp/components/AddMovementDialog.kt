@@ -83,20 +83,20 @@ fun DialogAddMovement(
                                 amount = str
                             }
                         },
-                        label = { Text(text = "Monto",) },
+                        label = { Text(text = "Monto") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done)
                     )
 
                     OutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = { showDialog = true }) {
-                        Text(text = dateText.formatToServerDateDefaults(),)
+                        Text(text = dateText.formatToServerDateDefaults())
                     }
 
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            onAcceptClicked(amount,dateText, )
+                            onAcceptClicked(amount,dateText)
                             closeDialog()
                         },
                         enabled = isEnable
