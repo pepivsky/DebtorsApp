@@ -51,8 +51,9 @@ fun DialogAddMovement(
     ) {
     if (openDialog) {
         Dialog(onDismissRequest = { closeDialog() }) {
-            Card(modifier = Modifier
-                .fillMaxWidth(),
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors()
 
@@ -74,9 +75,15 @@ fun DialogAddMovement(
 
 
 
-                    Text(text = if (movementType == MovementType.PAYMENT) stringResource(R.string.label_new_payment) else stringResource(
-                        R.string.label_new_increase
-                    ), fontWeight = FontWeight.Bold,color = MaterialTheme.colorScheme.tertiary, style = MaterialTheme.typography.titleLarge, fontSize = 20.sp)
+                    Text(
+                        text = if (movementType == MovementType.PAYMENT) stringResource(R.string.label_new_payment) else stringResource(
+                            R.string.label_new_increase
+                        ),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontSize = 20.sp
+                    )
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = amount,
@@ -86,7 +93,10 @@ fun DialogAddMovement(
                             }
                         },
                         label = { Text(text = stringResource(R.string.amount)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next)
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Decimal,
+                            imeAction = ImeAction.Next
+                        )
                     )
 
                     OutlinedTextField(
@@ -96,7 +106,10 @@ fun DialogAddMovement(
                             movementConcept = str
                         },
                         label = { Text(text = stringResource(R.string.concept_label)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done)
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Decimal,
+                            imeAction = ImeAction.Done
+                        )
                     )
 
                     OutlinedButton(
@@ -108,7 +121,7 @@ fun DialogAddMovement(
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            onAcceptClicked(amount,dateText, movementConcept)
+                            onAcceptClicked(amount, dateText, movementConcept)
                             closeDialog()
                         },
                         enabled = isEnable
@@ -117,22 +130,26 @@ fun DialogAddMovement(
                     }
 
                     if (showDialog) {
-                        DatePickerDialog(onDismissRequest = { showDialog = false }, confirmButton = {
-                            Button(onClick = { showDialog = false }) {
-                                Text(text = stringResource(R.string.confirm))
-                            }
-                        }, dismissButton = {
-                            OutlinedButton(onClick = { showDialog = false }) {
-                                Text(text = stringResource(id = R.string.cancel))
-                            }
-                        }) {
+                        DatePickerDialog(
+                            onDismissRequest = { showDialog = false },
+                            confirmButton = {
+                                Button(onClick = { showDialog = false }) {
+                                    Text(text = stringResource(R.string.confirm))
+                                }
+                            },
+                            dismissButton = {
+                                OutlinedButton(onClick = { showDialog = false }) {
+                                    Text(text = stringResource(id = R.string.cancel))
+                                }
+                            }) {
                             DatePicker(state = state)
                         }
                     }
 
                     val date = state.selectedDateMillis
                     date?.let {
-                        val localDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
+                        val localDate =
+                            Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
                         dateText = localDate
                     }
                 }
