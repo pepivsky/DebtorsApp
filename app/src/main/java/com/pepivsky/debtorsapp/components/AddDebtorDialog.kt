@@ -252,7 +252,6 @@ fun DialogAddDebtor(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun TextFieldCustom() {
