@@ -273,10 +273,12 @@ fun ItemMovement(
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.size(4.dp))
-                Text(
-                    text = movement.concept,
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                if (movement.concept.isNotBlank()) {
+                    Text(
+                        text = movement.concept,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
                 Text(
                     text = movement.date.formatToServerDateDefaults(),
                     style = MaterialTheme.typography.labelMedium
