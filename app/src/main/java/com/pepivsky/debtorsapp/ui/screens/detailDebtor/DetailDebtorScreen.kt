@@ -40,15 +40,14 @@ import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.DialogAddMovement
+import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.entity.Movement
-import com.pepivsky.debtorsapp.data.models.MovementType
-import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.ui.screens.home.IconDebtor
+import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.extension.toRidePrice
-import java.util.Date
 
 
 //@Preview
