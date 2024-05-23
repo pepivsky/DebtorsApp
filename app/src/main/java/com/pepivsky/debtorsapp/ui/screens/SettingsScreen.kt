@@ -56,7 +56,7 @@ fun SettingsScreen(navController: NavController) {
 
                 )
             }, navigationIcon = {
-                IconButton(onClick = { navController.popBackStack()  }) {
+                IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "back",
@@ -89,15 +89,18 @@ fun SettingsScreen(navController: NavController) {
 }
 
 
-
 fun shareLink(context: Context) {
     val sendIntent = Intent(Intent.ACTION_SEND).apply {
-        putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.pepivsky.debtorsapp&pcampaignid=web_share")
+        putExtra(
+            Intent.EXTRA_TEXT,
+            "https://play.google.com/store/apps/details?id=com.pepivsky.debtorsapp&pcampaignid=web_share"
+        )
         type = "text/plain"
     }
     val shareIntent = Intent.createChooser(sendIntent, null)
     startActivity(context, shareIntent, null)
 }
+
 @Composable
 fun SetupList(modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -127,11 +130,11 @@ fun SetupList(modifier: Modifier = Modifier) {
                 content = stringResource(R.string.send_comments),
                 icon = Icons.Default.Mail
             ) {
-            composeEmail(
-                arrayOf(context.getString(R.string.my_email)),
-                context.getString(R.string.app_suggestion),
-                context
-            )
+                composeEmail(
+                    arrayOf(context.getString(R.string.my_email)),
+                    context.getString(R.string.app_suggestion),
+                    context
+                )
             }
         }
 
@@ -144,7 +147,6 @@ fun SetupList(modifier: Modifier = Modifier) {
 
             }
         }
-
 
 
         /*item {

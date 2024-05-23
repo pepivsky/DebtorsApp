@@ -20,7 +20,12 @@ import com.pepivsky.debtorsapp.navigation.AppScreens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeAppBar(navController: NavController) {
-    CenterAlignedTopAppBar(title = { Text(text = stringResource(R.string.debtors), fontSize = 24.sp) },
+    CenterAlignedTopAppBar(title = {
+        Text(
+            text = stringResource(R.string.debtors),
+            fontSize = 24.sp
+        )
+    },
         actions = {
             IconButton(onClick = {
                 navController.navigate(
