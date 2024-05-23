@@ -50,7 +50,7 @@ import com.pepivsky.debtorsapp.navigation.AppScreens
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.extension.toRidePrice
-import com.pepivsky.todocompose.ui.screens.ads.AdvertView
+import com.pepivsky.debtorsapp.components.ads.AdvertView
 
 
 //@Preview
