@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "ac96f86172f0d5d3a728ada0cb13110f",
+    "identityHash": "4dd54914cc682a10b49c7760eccabeb5",
     "entities": [
       {
         "tableName": "debtor",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "movement",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movementId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `debtorCreatorId` INTEGER NOT NULL, `type` TEXT NOT NULL, `amount` REAL NOT NULL, `date` INTEGER NOT NULL, FOREIGN KEY(`debtorCreatorId`) REFERENCES `debtor`(`debtorId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movementId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `debtorCreatorId` INTEGER NOT NULL, `type` TEXT NOT NULL, `amount` REAL NOT NULL, `date` INTEGER NOT NULL, `concept` TEXT NOT NULL DEFAULT '', FOREIGN KEY(`debtorCreatorId`) REFERENCES `debtor`(`debtorId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "movementId",
@@ -93,6 +93,13 @@
             "columnName": "date",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "concept",
+            "columnName": "concept",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           }
         ],
         "primaryKey": {
@@ -120,7 +127,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ac96f86172f0d5d3a728ada0cb13110f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4dd54914cc682a10b49c7760eccabeb5')"
     ]
   }
 }
