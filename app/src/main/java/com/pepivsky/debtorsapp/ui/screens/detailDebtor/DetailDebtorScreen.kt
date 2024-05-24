@@ -88,13 +88,13 @@ fun DetailDebtorScreen(
                 spacerRef
             ) = createRefs()
 
-            DebtorName(
+            /*DebtorName(
                 name = selectedDebtor.debtor.name,
                 modifier = Modifier.constrainAs(debtorInfoRef) {
                     top.linkTo(parent.top, margin = 8.dp)
                     start.linkTo(startGuide)
                     end.linkTo(endGuide)
-                })
+                })*/
 
             CardDebtInfo(
                 amount = selectedDebtor.debtor.amount,
