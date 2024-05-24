@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,7 +61,6 @@ fun DialogAddMovement(
             ) {
                 Column(
                     modifier = Modifier
-
                         .padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -107,7 +107,8 @@ fun DialogAddMovement(
                         },
                         label = { Text(text = stringResource(R.string.concept_label)) },
                         keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Decimal,
+                            keyboardType = KeyboardType.Text,
+                            capitalization = KeyboardCapitalization.Words,
                             imeAction = ImeAction.Done
                         )
                     )
