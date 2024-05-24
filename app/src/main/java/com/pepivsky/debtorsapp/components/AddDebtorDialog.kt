@@ -19,6 +19,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +28,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -94,7 +97,9 @@ fun DialogAddDebtor(
                     var remaining by rememberSaveable { mutableStateOf(  "${debtor?.remaining}") }
                     var description by rememberSaveable { mutableStateOf( debtor?.description ?: "") }
                     val isEnable by remember { derivedStateOf { name.isNotBlank() && amount.isNotBlank() && description.isNotBlank() } }
-
+                    val focusRequester = remember {
+                        FocusRequester()
+                    }
 
                    /* debtor?.let {
                         name = debtor.name
@@ -103,12 +108,18 @@ fun DialogAddDebtor(
                         dateText = debtor.creationDate
                     }*/
 
+                    LaunchedEffect(key1 = Unit) {
+                        focusRequester.requestFocus()
+                    }
+
 
                     Text(text = if (debtor == null) stringResource(R.string.label_new_debtor) else stringResource(
                         R.string.label_edit_debtor
                     ), fontWeight = FontWeight.Bold,color = MaterialTheme.colorScheme.tertiary, style = MaterialTheme.typography.titleLarge, fontSize = 20.sp)
                     OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(focusRequester),
                         value = name,
                         onValueChange = {
                             name = it
