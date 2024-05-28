@@ -204,7 +204,7 @@ fun DetailDebtorScreen(
 fun ShowMovementsContent(movements: List<Movement>, modifier: Modifier = Modifier) {
     if (movements.isNotEmpty()) {
         LazyColumn(modifier = modifier) {
-            items(movements) { movement ->
+            items(movements, key = { it.movementId }) { movement ->
                 ItemMovement(movement)
             }
         }
