@@ -255,7 +255,7 @@ fun IconDebtor(modifier: Modifier = Modifier, firstLetter: Char, fontSize: Int =
         Text(
             modifier = Modifier
                 .align(Alignment.Center),
-            text = "$firstLetter",
+            text = "${firstLetter.uppercaseChar()}",
             fontSize = fontSize.sp, fontWeight = FontWeight.ExtraBold
         )
     }
