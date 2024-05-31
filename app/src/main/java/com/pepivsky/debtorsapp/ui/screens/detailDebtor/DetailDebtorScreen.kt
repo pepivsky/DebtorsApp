@@ -127,7 +127,9 @@ fun DetailDebtorScreen(
                     bottom.linkTo(paymentButtonRef.top)
                     width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
-                })
+                }) { movement ->
+                viewModel.deleteMovement(movement = movement)
+            }
 
             PaymentButton(onClick = {
                 openDialogAddMovement = true
@@ -203,13 +205,17 @@ fun DetailDebtorScreen(
 
 //@Preview(showBackground = true)
 @Composable
-fun ShowMovementsContent(movements: List<Movement>, modifier: Modifier = Modifier) {
+fun ShowMovementsContent(
+    movements: List<Movement>,
+    modifier: Modifier = Modifier,
+    onDeleted: (Movement) -> Unit = {},
+) {
     if (movements.isNotEmpty()) {
         LazyColumn(modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(movements, key = { it.movementId }) { movement ->
-                SwipeBox(onDelete = { /*TODO*/ }, onEdit = { /*TODO*/ }) {
+                SwipeBox(onDelete = { onDeleted(movement) }, onEdit = { /*TODO*/ }) {
                     ItemMovement(movement)
                 }
             }
