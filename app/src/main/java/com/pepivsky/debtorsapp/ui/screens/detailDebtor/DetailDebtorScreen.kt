@@ -205,7 +205,9 @@ fun DetailDebtorScreen(
 @Composable
 fun ShowMovementsContent(movements: List<Movement>, modifier: Modifier = Modifier) {
     if (movements.isNotEmpty()) {
-        LazyColumn(modifier = modifier) {
+        LazyColumn(modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             items(movements, key = { it.movementId }) { movement ->
                 SwipeBox(onDelete = { /*TODO*/ }, onEdit = { /*TODO*/ }) {
                     ItemMovement(movement)
@@ -255,7 +257,7 @@ fun ItemMovement(
         else MaterialTheme.colorScheme.onPrimaryContainer
 
     Card(
-        modifier = modifier.padding(vertical = 4.dp),
+        //modifier = modifier.padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(
             //containerColor = containerColor,
             contentColor = contentColor

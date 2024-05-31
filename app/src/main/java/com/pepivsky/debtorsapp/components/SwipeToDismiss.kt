@@ -115,7 +115,7 @@ fun SwipeBox(
             Box(
                 contentAlignment = alignment,
                 modifier = Modifier
-                    .padding(vertical = 4.dp)
+                    //.padding(vertical = 4.dp)
                     .clip(shape = CardDefaults.shape)
                     .fillMaxSize()
                     .background(color)
