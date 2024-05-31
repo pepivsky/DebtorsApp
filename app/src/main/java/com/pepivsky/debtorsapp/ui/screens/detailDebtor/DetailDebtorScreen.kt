@@ -28,13 +28,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,6 +41,7 @@ import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.DialogAddMovement
+import com.pepivsky.debtorsapp.components.SwipeBox
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
@@ -209,7 +207,9 @@ fun ShowMovementsContent(movements: List<Movement>, modifier: Modifier = Modifie
     if (movements.isNotEmpty()) {
         LazyColumn(modifier = modifier) {
             items(movements, key = { it.movementId }) { movement ->
-                ItemMovement(movement)
+                SwipeBox(onDelete = { /*TODO*/ }, onEdit = { /*TODO*/ }) {
+                    ItemMovement(movement)
+                }
             }
         }
     } else {
@@ -255,23 +255,17 @@ fun ItemMovement(
         else MaterialTheme.colorScheme.onPrimaryContainer
 
     Card(
-        modifier = modifier.fillMaxWidth()
-            .padding(vertical = 4.dp)
-        ,
+        modifier = modifier.padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(
             //containerColor = containerColor,
             contentColor = contentColor
         )
     ) {
         Row(
-            modifier = modifier
-                .padding(10.dp)
-            ,
+            modifier = Modifier.padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier
-                //.background(Color.Green)
-                .weight(0.7F)) {
+            Column(modifier = Modifier) {
                 Text(
                     text = if (movement.type == MovementType.INCREASE) stringResource(R.string.label_increase) else stringResource(
                         R.string.label_payment
@@ -280,14 +274,11 @@ fun ItemMovement(
                     fontSize = 18.sp,
                     style = MaterialTheme.typography.bodyLarge
                 )
-                //Spacer(modifier = Modifier.size(4.dp))
+                Spacer(modifier = Modifier.size(4.dp))
                 if (movement.concept.isNotBlank()) {
                     Text(
-                        //modifier = Modifier.background(Color.Yellow),
                         text = movement.concept,
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
                 Text(
@@ -295,14 +286,11 @@ fun ItemMovement(
                     style = MaterialTheme.typography.labelMedium
                 )
             }
-            //Spacer(modifier = Modifier.weight(0.1F))
-            Text(modifier = Modifier.weight(0.3F)
-                //.background(Color.Red)
-                ,
+            Spacer(modifier = Modifier.weight(1F))
+            Text(
                 text = "$${movement.amount.toRidePrice()}",
                 fontSize = 18.sp,
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Right
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }
