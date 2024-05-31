@@ -104,7 +104,7 @@ fun SwipeBox(
         SwipeToDismissBoxValue.Settled -> {
             icon = Icons.Outlined.Delete
             alignment = Alignment.CenterEnd
-            color = Color(0xff252f26)
+            color = CardDefaults.cardColors().containerColor
         }
     }
 
