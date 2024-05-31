@@ -107,30 +107,33 @@ fun SwipeBox(
 
     lateinit var icon: ImageVector
     lateinit var alignment: Alignment
-    val color: Color
+    val backgroundColor: Color
     val degrees: Float
+    val iconColor: Color
 
     when (swipeState.dismissDirection) {
         SwipeToDismissBoxValue.EndToStart -> {
             icon = Icons.Outlined.Delete
             alignment = Alignment.CenterEnd
-            color = MaterialTheme.colorScheme.errorContainer
+            backgroundColor = MaterialTheme.colorScheme.errorContainer
+            iconColor = MaterialTheme.colorScheme.onErrorContainer
             degrees = degreesDeleteIcon
         }
 
         SwipeToDismissBoxValue.StartToEnd -> {
             icon = Icons.Outlined.Edit
             alignment = Alignment.CenterStart
-            color =
-                Color.Green.copy(alpha = 0.3f) // You can generate theme for successContainer in themeBuilder
+            backgroundColor = MaterialTheme.colorScheme.primaryContainer
+            iconColor = MaterialTheme.colorScheme.onPrimaryContainer
             degrees = degreesEditIcon
         }
 
         SwipeToDismissBoxValue.Settled -> {
             icon = Icons.Outlined.Delete
             alignment = Alignment.CenterEnd
-            color = CardDefaults.cardColors().containerColor
+            backgroundColor = CardDefaults.cardColors().containerColor
             degrees = 0F
+            iconColor = Color.Unspecified
         }
     }
 
@@ -144,12 +147,13 @@ fun SwipeBox(
                     //.padding(vertical = 4.dp)
                     .clip(shape = CardDefaults.shape)
                     .fillMaxSize()
-                    .background(color)
+                    .background(backgroundColor)
 
             ) {
                 Icon(
                     modifier = Modifier.minimumInteractiveComponentSize().rotate(degrees),
-                    imageVector = icon, contentDescription = null
+                    imageVector = icon, contentDescription = null,
+                    tint = iconColor
                 )
             }
         }
