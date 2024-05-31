@@ -1,19 +1,17 @@
 package com.pepivsky.debtorsapp.components
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,10 +31,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -83,15 +81,41 @@ fun SwipeBox(
 ) {
     val swipeState = rememberSwipeToDismissBoxState()
 
+    // grados para animar
+    val degreesDeleteIcon by animateFloatAsState(
+        targetValue = if (swipeState.currentValue == swipeState.targetValue) {
+            0F
+        } else {
+            -45F
+        }
+    )
+
+    val degreesEditIcon by animateFloatAsState(
+        targetValue = if (swipeState.currentValue == swipeState.targetValue) {
+            -45F
+        } else {
+            0F
+        }
+    )
+
+
+
+    /*swipeState.currentValue
+    swipeState.targetValue
+
+    swipeState.progress*/
+
     lateinit var icon: ImageVector
     lateinit var alignment: Alignment
     val color: Color
+    val degrees: Float
 
     when (swipeState.dismissDirection) {
         SwipeToDismissBoxValue.EndToStart -> {
             icon = Icons.Outlined.Delete
             alignment = Alignment.CenterEnd
             color = MaterialTheme.colorScheme.errorContainer
+            degrees = degreesDeleteIcon
         }
 
         SwipeToDismissBoxValue.StartToEnd -> {
@@ -99,12 +123,14 @@ fun SwipeBox(
             alignment = Alignment.CenterStart
             color =
                 Color.Green.copy(alpha = 0.3f) // You can generate theme for successContainer in themeBuilder
+            degrees = degreesEditIcon
         }
 
         SwipeToDismissBoxValue.Settled -> {
             icon = Icons.Outlined.Delete
             alignment = Alignment.CenterEnd
             color = CardDefaults.cardColors().containerColor
+            degrees = 0F
         }
     }
 
@@ -122,7 +148,7 @@ fun SwipeBox(
 
             ) {
                 Icon(
-                    modifier = Modifier.minimumInteractiveComponentSize(),
+                    modifier = Modifier.minimumInteractiveComponentSize().rotate(degrees),
                     imageVector = icon, contentDescription = null
                 )
             }
