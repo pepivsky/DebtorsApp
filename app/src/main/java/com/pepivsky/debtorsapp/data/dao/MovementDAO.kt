@@ -14,8 +14,7 @@ interface MovementDAO {
     @Insert
     suspend fun insertMovement(vararg movement: Movement)
 
-    @Delete
-    suspend fun deleteMovement(movement: Movement)
+
 
     @Update
     suspend fun udpateMovement(movement: Movement)

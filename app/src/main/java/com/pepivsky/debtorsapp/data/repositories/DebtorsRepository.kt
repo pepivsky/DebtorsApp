@@ -50,8 +50,8 @@ class DebtorsRepository @Inject constructor(private val debtorDAO: DebtorDAO, pr
         movementDAO.insertMovement(movement)
     }
 
-    suspend fun deleteMovement(movement: Movement) {
-        movementDAO.deleteMovement(movement)
+    suspend fun deleteMovement(debtor: Debtor, movement: Movement) {
+        debtorDAO.deleteMovementTransaction(debtor, movement)
     }
 
     suspend fun addMovementTransaction(debtor: Debtor, movement: Movement) {

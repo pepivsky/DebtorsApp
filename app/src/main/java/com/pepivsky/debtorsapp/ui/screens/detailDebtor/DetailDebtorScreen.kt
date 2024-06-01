@@ -1,7 +1,6 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -128,7 +127,21 @@ fun DetailDebtorScreen(
                     width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
                 }) { movement ->
-                viewModel.deleteMovement(movement = movement)
+
+                val debtorUpdated: Debtor = when (movement.type) {
+                    MovementType.PAYMENT -> {
+                        selectedDebtor.debtor.copy(remaining = selectedDebtor.debtor.remaining + movement.amount)
+                    }
+
+                    MovementType.INCREASE -> {
+                        selectedDebtor.debtor.copy(
+                            remaining = selectedDebtor.debtor.remaining - movement.amount,
+                            amount = selectedDebtor.debtor.amount - movement.amount
+                        )
+
+                    }
+                }
+                viewModel.deleteMovementTransaction(debtor = debtorUpdated,movement = movement)
             }
 
             PaymentButton(onClick = {

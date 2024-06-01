@@ -101,9 +101,9 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
         }
     }
 
-    fun deleteMovement(movement: Movement) {
+    fun deleteMovementTransaction(debtor: Debtor, movement: Movement) {
         viewModelScope.launch {
-            debtorsRepository.deleteMovement(movement)
+            debtorsRepository.deleteMovement(debtor, movement)
         }
 
     }
