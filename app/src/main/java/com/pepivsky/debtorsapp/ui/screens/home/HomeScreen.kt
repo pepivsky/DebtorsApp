@@ -2,6 +2,7 @@ package com.pepivsky.debtorsapp.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -127,7 +128,8 @@ fun ShowContent(
         val context = LocalContext.current
         val randomNum = (1..10).random()
 
-        LazyColumn(modifier = modifier) {
+        LazyColumn(modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(debtors, key = { it.debtorId }) { debtor ->
                 ItemDebtor(debtor = debtor) {
                     if ((randomNum == 2 || randomNum == 7 || randomNum == 5) && adIsLoaded) {
@@ -165,8 +167,8 @@ fun EmptyContent(modifier: Modifier = Modifier) {
 @Composable
 fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Unit) {
     Card(
-        modifier = modifier
-            .padding(vertical = 4.dp), onClick = onClick,
+        modifier = modifier,
+        onClick = onClick,
         colors = CardDefaults.cardColors()
     ) {
         Row(
