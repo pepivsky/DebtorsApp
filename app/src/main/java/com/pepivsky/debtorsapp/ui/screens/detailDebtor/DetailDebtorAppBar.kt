@@ -1,5 +1,10 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.DocumentsContract
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -24,14 +29,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
+//import com.pepivsky.debtorsapp.util.generatePDF
 
 
 //@Preview
@@ -81,7 +89,6 @@ fun DefaultDetailDebtorAppBar(
 fun DetailDebtorAppBarActions(
     onDeleteClicked: () -> Unit,
     onEditClicked: () -> Unit,
-
     ) {
     var showDialogConfirmDelete by remember { mutableStateOf(false) }
 
@@ -104,15 +111,34 @@ fun DetailDebtorAppBarActions(
             },
         )
     }
+    val context = LocalContext.current
+    var pickedUri: Uri
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        pickedUri = it.data?.data!!
+    }
+    val pickerInitialUri: Uri = "content://com.android.externalstorage.documents/document/primary".toUri()
     DropDownActions(
         onDelete = { showDialogConfirmDelete = true },
-        onEdit = { onEditClicked() }
+        onEdit = { onEditClicked() },
+        onGeneratePDF = {
+            val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "application/pdf"
+                putExtra(Intent.EXTRA_TITLE, "invoice.pdf")
+
+                // Optionally, specify a URI for the directory that should be opened in
+                // the system file picker before your app creates the document.
+                putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+            }
+            //generatePDF(context)
+            launcher.launch(intent)
+        }
     )
 }
 
 // delete all action
 @Composable
-fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit) {
+fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit, onGeneratePDF: () -> Unit) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     IconButton(onClick = { expanded = true }) {
@@ -136,5 +162,14 @@ fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit) {
             expanded = false
             onEdit()
         })
+
+        DropdownMenuItem(text = {
+            Text(text = "Generar PDF")
+        }, onClick = {
+            expanded = false
+            onGeneratePDF()
+        })
+
+
     }
 }
