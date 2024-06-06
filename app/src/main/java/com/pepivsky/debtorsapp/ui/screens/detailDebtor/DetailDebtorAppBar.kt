@@ -40,6 +40,12 @@ import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 //import com.pepivsky.debtorsapp.util.generatePDF
+import android.content.ContentResolver
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.pdf.PdfDocument
+import java.io.IOException
 
 
 //@Preview
@@ -111,29 +117,55 @@ fun DetailDebtorAppBarActions(
             },
         )
     }
+    val contentResolver = LocalContext.current.contentResolver
     val context = LocalContext.current
-    var pickedUri: Uri
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        pickedUri = it.data?.data!!
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
+        if (selectedUri != null) {
+            createPdf(context, selectedUri, "Hola desde el PDF")
+        } else {
+            println("No file was selected")
+        }
     }
+
     val pickerInitialUri: Uri = "content://com.android.externalstorage.documents/document/primary".toUri()
     DropDownActions(
         onDelete = { showDialogConfirmDelete = true },
         onEdit = { onEditClicked() },
         onGeneratePDF = {
-            val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "application/pdf"
-                putExtra(Intent.EXTRA_TITLE, "invoice.pdf")
-
-                // Optionally, specify a URI for the directory that should be opened in
-                // the system file picker before your app creates the document.
-                putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
-            }
-            //generatePDF(context)
-            launcher.launch(intent)
+            launcher.launch("hola.pdf")
         }
     )
+}
+fun createPdf(context: Context, uri: Uri, textContent: String) {
+    val pdfDocument = PdfDocument()
+    val paint = Paint()
+
+    // Create a page description
+    val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
+
+    // Start a page
+    val page = pdfDocument.startPage(pageInfo)
+
+    // Draw text on the page
+    val canvas: Canvas = page.canvas
+    canvas.drawText(textContent, 80f, 50f, paint)
+
+    // Finish the page
+    pdfDocument.finishPage(page)
+
+    // Write the document content
+    try {
+        val outputStream = context.contentResolver.openOutputStream(uri)
+        if (outputStream != null) {
+            pdfDocument.writeTo(outputStream)
+            outputStream.close()
+        }
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+
+    // Close the document
+    pdfDocument.close()
 }
 
 // delete all action
