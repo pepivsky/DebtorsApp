@@ -43,9 +43,15 @@ import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
+import com.pepivsky.debtorsapp.data.models.entity.Movement
+import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
+import com.pepivsky.debtorsapp.util.extension.toRidePrice
+import java.io.FileOutputStream
 import java.io.IOException
+import java.time.format.DateTimeFormatter
 
 
 //@Preview
@@ -75,7 +81,7 @@ fun DefaultDetailDebtorAppBar(
                 navController.popBackStack()
             }, onEditClicked = {
                 onEditClicked()
-            })
+            }, debtorWithMovements)
 
 
         }, navigationIcon = {
@@ -95,6 +101,7 @@ fun DefaultDetailDebtorAppBar(
 fun DetailDebtorAppBarActions(
     onDeleteClicked: () -> Unit,
     onEditClicked: () -> Unit,
+    debtorWithMovements: DebtorWithMovements,
     ) {
     var showDialogConfirmDelete by remember { mutableStateOf(false) }
 
@@ -121,7 +128,7 @@ fun DetailDebtorAppBarActions(
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
         if (selectedUri != null) {
-            createPdf(context, selectedUri, "Hola desde el PDF")
+            createPdf(context, selectedUri, debtorWithMovements.movements, debtorWithMovements.debtor.remaining)
         } else {
             println("No file was selected")
         }
@@ -136,36 +143,63 @@ fun DetailDebtorAppBarActions(
         }
     )
 }
-fun createPdf(context: Context, uri: Uri, textContent: String) {
+fun createPdf(context: Context, uri: Uri, movements: List<Movement>, remaining: Double) {
     val pdfDocument = PdfDocument()
-    val paint = Paint()
-
-    // Create a page description
     val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
-
-    // Start a page
     val page = pdfDocument.startPage(pageInfo)
 
-    // Draw text on the page
     val canvas: Canvas = page.canvas
-    canvas.drawText(textContent, 80f, 50f, paint)
+    val paint = Paint()
+    paint.color = Color.BLACK
+    paint.textSize = 12f
 
-    // Finish the page
+    val marginLeft = 20f
+    val marginTop = 40f
+    val lineSpacing = 20f
+
+    // Draw headers
+    var xPos = marginLeft
+    var yPos = marginTop
+    canvas.drawText("Fecha", xPos, yPos, paint)
+    xPos += 150
+    canvas.drawText("Concepto", xPos, yPos, paint)
+    xPos += 150
+    canvas.drawText("Tipo de movimiento", xPos, yPos, paint)
+    xPos += 150
+    canvas.drawText("Monto", xPos, yPos, paint)
+
+    // Draw each movement
+    yPos += lineSpacing
+    for (movement in movements) {
+        xPos = marginLeft
+        canvas.drawText(movement.date.formatToServerDateDefaults(), xPos, yPos, paint)
+        xPos += 150
+        canvas.drawText(movement.concept, xPos, yPos, paint)
+        xPos += 150
+        canvas.drawText(movement.type.name, xPos, yPos, paint)
+        xPos += 150
+        canvas.drawText("$${movement.amount.toRidePrice()}", xPos, yPos, paint)
+        yPos += lineSpacing
+    }
+
+    // Draw "restante:" text below the last amount
+    yPos += lineSpacing
+    xPos = marginLeft
+    canvas.drawText("Restante por pagar: $${remaining.toRidePrice()}", xPos, yPos, paint)
+
     pdfDocument.finishPage(page)
 
-    // Write the document content
     try {
-        val outputStream = context.contentResolver.openOutputStream(uri)
-        if (outputStream != null) {
-            pdfDocument.writeTo(outputStream)
-            outputStream.close()
+        context.contentResolver.openFileDescriptor(uri, "w")?.use {
+            FileOutputStream(it.fileDescriptor).use { outputStream ->
+                pdfDocument.writeTo(outputStream)
+            }
         }
     } catch (e: IOException) {
         e.printStackTrace()
+    } finally {
+        pdfDocument.close()
     }
-
-    // Close the document
-    pdfDocument.close()
 }
 
 // delete all action
