@@ -149,43 +149,52 @@ fun createPdf(context: Context, uri: Uri, movements: List<Movement>, remaining: 
     val page = pdfDocument.startPage(pageInfo)
 
     val canvas: Canvas = page.canvas
-    val paint = Paint()
-    paint.color = Color.BLACK
-    paint.textSize = 12f
 
+    // Paint for regular text
+    val regularPaint = Paint().apply {
+        color = Color.BLACK
+        textSize = 12f
+    }
+
+    // Paint for bold text
+    val boldPaint = Paint(regularPaint).apply {
+        isFakeBoldText = true
+    }
+
+    val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val marginLeft = 20f
     val marginTop = 40f
     val lineSpacing = 20f
 
-    // Draw headers
+    // Draw headers with bold text
     var xPos = marginLeft
     var yPos = marginTop
-    canvas.drawText("Fecha", xPos, yPos, paint)
+    canvas.drawText("Fecha", xPos, yPos, boldPaint)
     xPos += 150
-    canvas.drawText("Concepto", xPos, yPos, paint)
+    canvas.drawText("Concepto", xPos, yPos, boldPaint)
     xPos += 150
-    canvas.drawText("Tipo de movimiento", xPos, yPos, paint)
+    canvas.drawText("Tipo de movimiento", xPos, yPos, boldPaint)
     xPos += 150
-    canvas.drawText("Monto", xPos, yPos, paint)
+    canvas.drawText("Monto", xPos, yPos, boldPaint)
 
-    // Draw each movement
+    // Draw each movement with regular text
     yPos += lineSpacing
     for (movement in movements) {
         xPos = marginLeft
-        canvas.drawText(movement.date.formatToServerDateDefaults(), xPos, yPos, paint)
+        canvas.drawText(movement.date.format(dateFormat), xPos, yPos, regularPaint)
         xPos += 150
-        canvas.drawText(movement.concept, xPos, yPos, paint)
+        canvas.drawText(movement.concept, xPos, yPos, regularPaint)
         xPos += 150
-        canvas.drawText(movement.type.name, xPos, yPos, paint)
+        canvas.drawText(movement.type.name, xPos, yPos, regularPaint)
         xPos += 150
-        canvas.drawText("$${movement.amount.toRidePrice()}", xPos, yPos, paint)
+        canvas.drawText("$${movement.amount.toRidePrice()}", xPos, yPos, regularPaint)
         yPos += lineSpacing
     }
 
-    // Draw "restante:" text below the last amount
+    // Draw "Restante:" text below the last amount with bold text
     yPos += lineSpacing
     xPos = marginLeft
-    canvas.drawText("Restante por pagar: $${remaining.toRidePrice()}", xPos, yPos, paint)
+    canvas.drawText("Restante por pagar:$${remaining.toRidePrice()}", xPos, yPos, boldPaint)
 
     pdfDocument.finishPage(page)
 
