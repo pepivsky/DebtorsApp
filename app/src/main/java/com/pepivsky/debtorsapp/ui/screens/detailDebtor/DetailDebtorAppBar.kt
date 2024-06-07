@@ -161,7 +161,6 @@ fun createPdf(context: Context, uri: Uri, movements: List<Movement>, remaining: 
         isFakeBoldText = true
     }
 
-    val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val marginLeft = 20f
     val marginTop = 40f
     val lineSpacing = 20f
@@ -181,7 +180,7 @@ fun createPdf(context: Context, uri: Uri, movements: List<Movement>, remaining: 
     yPos += lineSpacing
     for (movement in movements) {
         xPos = marginLeft
-        canvas.drawText(movement.date.format(dateFormat), xPos, yPos, regularPaint)
+        canvas.drawText(movement.date.formatToServerDateDefaults(), xPos, yPos, regularPaint)
         xPos += 150
         canvas.drawText(movement.concept, xPos, yPos, regularPaint)
         xPos += 150
@@ -194,7 +193,7 @@ fun createPdf(context: Context, uri: Uri, movements: List<Movement>, remaining: 
     // Draw "Restante:" text below the last amount with bold text
     yPos += lineSpacing
     xPos = marginLeft
-    canvas.drawText("Restante por pagar:$${remaining.toRidePrice()}", xPos, yPos, boldPaint)
+    canvas.drawText("Restante por pagar: $${remaining.toRidePrice()}", xPos, yPos, boldPaint)
 
     pdfDocument.finishPage(page)
 
