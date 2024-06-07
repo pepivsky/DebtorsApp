@@ -140,7 +140,7 @@ fun DetailDebtorAppBarActions(
         onDelete = { showDialogConfirmDelete = true },
         onEdit = { onEditClicked() },
         onGeneratePDF = {
-            launcher.launch("hola.pdf")
+            launcher.launch("detalle_deuda_${debtorWithMovements.debtor.name}.pdf")
         }
     )
 }
