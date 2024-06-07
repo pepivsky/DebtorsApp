@@ -46,6 +46,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
+import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.extension.toRidePrice
@@ -184,7 +185,7 @@ fun createPdf(context: Context, uri: Uri, movements: List<Movement>, remaining: 
         xPos += 150
         canvas.drawText(movement.concept, xPos, yPos, regularPaint)
         xPos += 150
-        canvas.drawText(movement.type.name, xPos, yPos, regularPaint)
+        canvas.drawText(if (movement.type == MovementType.INCREASE) "Aumento" else "Pago", xPos, yPos, regularPaint)
         xPos += 150
         canvas.drawText("$${movement.amount.toRidePrice()}", xPos, yPos, regularPaint)
         yPos += lineSpacing
