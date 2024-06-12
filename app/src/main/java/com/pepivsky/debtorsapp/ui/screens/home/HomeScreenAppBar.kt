@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.R
-import com.pepivsky.debtorsapp.navigation.AppScreens
+import com.pepivsky.debtorsapp.navigation.SettingsScreenNav
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +29,7 @@ fun HomeAppBar(navController: NavController) {
         actions = {
             IconButton(onClick = {
                 navController.navigate(
-                    route = AppScreens.AboutScreen.route
+                    route = SettingsScreenNav
                 )
             }) {
                 Icon(
