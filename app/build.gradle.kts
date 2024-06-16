@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
-    alias(libs.plugins.kotlinxSerialization)
 }
 
 android {
@@ -91,7 +90,6 @@ dependencies {
 
     // navigation
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
 
     // ads
     implementation ("com.google.android.gms:play-services-ads:23.0.0")
