@@ -47,11 +47,11 @@ import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.ads.adIsLoaded
 import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
+import com.pepivsky.debtorsapp.navigation.AppScreens
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.extension.toRidePrice
 import com.pepivsky.debtorsapp.components.ads.AdvertView
-import com.pepivsky.debtorsapp.navigation.DetailDebtorScreenNav
 
 
 //@Preview
@@ -135,12 +135,12 @@ fun ShowContent(
                     if ((randomNum == 2 || randomNum == 7 || randomNum == 5) && adIsLoaded) {
                         showInterstitial(context) {
                             navController.navigate(
-                                route = DetailDebtorScreenNav(debtor.debtorId)
+                                route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
                             )
                         }
                     } else {
                         navController.navigate(
-                            route = DetailDebtorScreenNav(debtor.debtorId)
+                            route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
                         )
                     }
                 }
