@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    alias(libs.plugins.googleGmsGoogleServices)
+    alias(libs.plugins.googleFirebaseCrashlytics)
 }
 
 android {
@@ -96,6 +98,9 @@ dependencies {
 
 // splashScreen
     implementation ("androidx.core:core-splashscreen:1.0.1")
+
+    // crashlitycs
+    implementation(libs.firebase.crashlytics)
 
 
     testImplementation(libs.junit)
