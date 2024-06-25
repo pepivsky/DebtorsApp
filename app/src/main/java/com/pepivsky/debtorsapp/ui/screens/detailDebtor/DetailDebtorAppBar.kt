@@ -46,6 +46,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
+import android.widget.Toast
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
@@ -202,10 +203,15 @@ fun createPdf(context: Context, uri: Uri, movements: List<Movement>, remaining: 
         context.contentResolver.openFileDescriptor(uri, "w")?.use {
             FileOutputStream(it.fileDescriptor).use { outputStream ->
                 pdfDocument.writeTo(outputStream)
+
+                // Show success toast
+                Toast.makeText(context, "PDF generado exitosamente :)", Toast.LENGTH_LONG).show()
             }
         }
     } catch (e: IOException) {
         e.printStackTrace()
+        // Show error toast
+        Toast.makeText(context, "Error al guardar el archivo :(", Toast.LENGTH_LONG).show()
     } finally {
         pdfDocument.close()
     }
