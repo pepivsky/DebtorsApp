@@ -39,6 +39,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            // enable in release builds
+            extra["enableCrashlytics"] = true
+            extra["alwaysUpdateBuildId"] = true
+            // enable crashlytics in release
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = true
         }
 
         debug {
