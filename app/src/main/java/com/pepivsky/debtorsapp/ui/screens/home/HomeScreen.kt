@@ -50,7 +50,7 @@ import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.navigation.AppScreens
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
-import com.pepivsky.debtorsapp.util.extension.toRidePrice
+import com.pepivsky.debtorsapp.util.extension.toCurrencyFormat
 import com.pepivsky.debtorsapp.components.ads.AdvertView
 
 
@@ -95,7 +95,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
             )
 
             TotalAmount(
-                total = total.toRidePrice(),
+                total = total.toCurrencyFormat(),
                 modifier = Modifier.constrainAs(totalAmountRef) {
                     bottom.linkTo(bottomGuide)
                     start.linkTo(startGuide)
@@ -199,7 +199,7 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
             Spacer(modifier = Modifier.weight(1F))
             Text(
                 style = MaterialTheme.typography.titleLarge,
-                text = debtor.remaining.toRidePrice(),
+                text = debtor.remaining.toCurrencyFormat(),
                 color = MaterialTheme.colorScheme.onTertiaryContainer
             )
 

@@ -48,7 +48,7 @@ import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.ui.screens.home.IconDebtor
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
-import com.pepivsky.debtorsapp.util.extension.toRidePrice
+import com.pepivsky.debtorsapp.util.extension.toCurrencyFormat
 
 
 //@Preview
@@ -309,7 +309,7 @@ fun ItemMovement(
             }
             Spacer(modifier = Modifier.weight(1F))
             Text(
-                text = movement.amount.toRidePrice(),
+                text = movement.amount.toCurrencyFormat(),
                 fontSize = 18.sp,
                 style = MaterialTheme.typography.bodyLarge
             )
@@ -329,7 +329,7 @@ fun DebtInfo(
             Text(text = stringResource(R.string.label_remaining), fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
             Text(
-                text = remaining.toRidePrice(),
+                text = remaining.toCurrencyFormat(),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -340,7 +340,7 @@ fun DebtInfo(
         Row {
             Text(text = stringResource(R.string.label_debt), fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = amount.toRidePrice(), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = amount.toCurrencyFormat(), fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
         }
     }
@@ -369,7 +369,7 @@ fun CardDebtInfo(
                 )
                 Spacer(modifier = Modifier.weight(1F))
                 Text(
-                    text = remaining.toRidePrice(),
+                    text = remaining.toCurrencyFormat(),
                     //fontSize = 18.sp,
                     //fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge,
@@ -385,7 +385,7 @@ fun CardDebtInfo(
                 )
                 Spacer(modifier = Modifier.weight(1F))
                 Text(
-                    text = amount.toRidePrice(),
+                    text = amount.toCurrencyFormat(),
                     //fontSize = 18.sp, fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge,
                 )
