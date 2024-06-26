@@ -83,7 +83,9 @@ fun DefaultDetailDebtorAppBar(
                 navController.popBackStack()
             }, onEditClicked = {
                 onEditClicked()
-            }, debtorWithMovements)
+            }, debtorWithMovements,
+                sharedViewModel = sharedViewModel
+            )
 
 
         }, navigationIcon = {
@@ -104,6 +106,7 @@ fun DetailDebtorAppBarActions(
     onDeleteClicked: () -> Unit,
     onEditClicked: () -> Unit,
     debtorWithMovements: DebtorWithMovements,
+    sharedViewModel: SharedViewModel,
     ) {
     var showDialogConfirmDelete by remember { mutableStateOf(false) }
 
@@ -130,7 +133,8 @@ fun DetailDebtorAppBarActions(
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
         if (selectedUri != null) {
-            createPdf(context, selectedUri, debtorWithMovements.movements, debtorWithMovements.debtor.remaining)
+            sharedViewModel.generatePDF(selectedUri, debtorWithMovements.movements,debtorWithMovements.debtor.remaining)
+            //createPdf(context, selectedUri, debtorWithMovements.movements, debtorWithMovements.debtor.remaining)
         } else {
             println("No file was selected")
         }
@@ -144,77 +148,6 @@ fun DetailDebtorAppBarActions(
             launcher.launch("detalle_deuda_${debtorWithMovements.debtor.name}_${System.currentTimeMillis()}.pdf")
         }
     )
-}
-fun createPdf(context: Context, uri: Uri, movements: List<Movement>, remaining: Double) {
-    val pdfDocument = PdfDocument()
-    val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
-    val page = pdfDocument.startPage(pageInfo)
-
-    val canvas: Canvas = page.canvas
-
-    // Paint for regular text
-    val regularPaint = Paint().apply {
-        color = Color.BLACK
-        textSize = 12f
-    }
-
-    // Paint for bold text
-    val boldPaint = Paint(regularPaint).apply {
-        isFakeBoldText = true
-    }
-
-    val marginLeft = 20f
-    val marginTop = 40f
-    val lineSpacing = 20f
-
-    // Draw headers with bold text
-    var xPos = marginLeft
-    var yPos = marginTop
-    canvas.drawText("Fecha", xPos, yPos, boldPaint)
-    xPos += 150
-    canvas.drawText("Concepto", xPos, yPos, boldPaint)
-    xPos += 150
-    canvas.drawText("Tipo de movimiento", xPos, yPos, boldPaint)
-    xPos += 150
-    canvas.drawText("Monto", xPos, yPos, boldPaint)
-
-    // Draw each movement with regular text
-    yPos += lineSpacing
-    for (movement in movements) {
-        xPos = marginLeft
-        canvas.drawText(movement.date.formatToServerDateDefaults(), xPos, yPos, regularPaint)
-        xPos += 150
-        canvas.drawText(movement.concept, xPos, yPos, regularPaint)
-        xPos += 150
-        canvas.drawText(if (movement.type == MovementType.INCREASE) "Aumento" else "Pago", xPos, yPos, regularPaint)
-        xPos += 150
-        canvas.drawText("$${movement.amount.toRidePrice()}", xPos, yPos, regularPaint)
-        yPos += lineSpacing
-    }
-
-    // Draw "Restante:" text below the last amount with bold text
-    yPos += lineSpacing
-    xPos = marginLeft
-    canvas.drawText("Restante por pagar: $${remaining.toRidePrice()}", xPos, yPos, boldPaint)
-
-    pdfDocument.finishPage(page)
-
-    try {
-        context.contentResolver.openFileDescriptor(uri, "w")?.use {
-            FileOutputStream(it.fileDescriptor).use { outputStream ->
-                pdfDocument.writeTo(outputStream)
-
-                // Show success toast
-                Toast.makeText(context, "PDF generado exitosamente :)", Toast.LENGTH_LONG).show()
-            }
-        }
-    } catch (e: IOException) {
-        e.printStackTrace()
-        // Show error toast
-        Toast.makeText(context, "Error al guardar el archivo :(", Toast.LENGTH_LONG).show()
-    } finally {
-        pdfDocument.close()
-    }
 }
 
 // delete all action
