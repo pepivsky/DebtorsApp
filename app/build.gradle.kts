@@ -40,6 +40,14 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        debug {
+            // optimize crashlytics usage in debug builds
+            extra["enableCrashlytics"] = false
+            extra["alwaysUpdateBuildId"] = false
+            // disable crashlytics in debug
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = false
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
