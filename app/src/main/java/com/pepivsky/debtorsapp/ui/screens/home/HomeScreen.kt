@@ -191,7 +191,7 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (debtor.isPaid) {
-                        Icon(modifier = Modifier.size(12.dp).padding(start = 2.dp),painter = painterResource(id = R.drawable.ic_checkmark), contentDescription = null,
+                        Icon(modifier = Modifier.size(16.dp).padding(start = 2.dp),painter = painterResource(id = R.drawable.ic_checkmark), contentDescription = null,
                             //tint = MaterialTheme.colorScheme.onPrimaryContainer
                             tint = Color(0xff52d053)
                         )
