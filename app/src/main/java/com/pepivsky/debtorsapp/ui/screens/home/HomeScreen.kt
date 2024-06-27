@@ -31,11 +31,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -182,11 +184,19 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
                 fontSize = 24
             )
             Column(modifier = Modifier.padding(start = 8.dp)) {
-                Text(
-                    text = debtor.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Row {
+                    Text(
+                        text = debtor.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    if (debtor.isPaid) {
+                        Icon(painter = painterResource(id = R.drawable.ic_checkmark), contentDescription = null,
+                            //tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            tint = Color(0xff52d053)
+                        )
+                    }
+                }
                 Text(
                     text = debtor.description,
                     style = MaterialTheme.typography.bodyMedium
@@ -200,7 +210,8 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
             Text(
                 style = MaterialTheme.typography.titleLarge,
                 text = debtor.remaining.toCurrencyFormat(),
-                color = MaterialTheme.colorScheme.onTertiaryContainer
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                textDecoration = if (debtor.isPaid) TextDecoration.LineThrough else TextDecoration.None,
             )
 
         }
