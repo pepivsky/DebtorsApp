@@ -184,14 +184,14 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
                 fontSize = 24
             )
             Column(modifier = Modifier.padding(start = 8.dp)) {
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = debtor.name,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (debtor.isPaid) {
-                        Icon(painter = painterResource(id = R.drawable.ic_checkmark), contentDescription = null,
+                        Icon(modifier = Modifier.size(12.dp).padding(start = 2.dp),painter = painterResource(id = R.drawable.ic_checkmark), contentDescription = null,
                             //tint = MaterialTheme.colorScheme.onPrimaryContainer
                             tint = Color(0xff52d053)
                         )
