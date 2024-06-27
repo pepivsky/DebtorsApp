@@ -84,10 +84,14 @@ fun DetailDebtorScreen(
             val endGuide = createGuidelineFromEnd(0.05F)
             val bottomGuide = createGuidelineFromBottom(0.02F)
 
-            val (debtorInfoRef, debtInfoRef, movementsTitleRef, movementsListRef,
+            val (debtorInfoRef,
+                debtInfoRef,
+                movementsTitleRef,
+                movementsListRef,
                 increaseButtonRef,
                 paymentButtonRef,
-                spacerRef
+                spacerRef,
+                isPaidContainer,
             ) = createRefs()
 
             /*DebtorName(
@@ -110,12 +114,31 @@ fun DetailDebtorScreen(
                     height = Dimension.wrapContent
                 })
 
+            if (selectedDebtor.debtor.isPaid) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.constrainAs(isPaidContainer) {
+                        top.linkTo(debtInfoRef.bottom,)
+                        start.linkTo(startGuide)
+                        end.linkTo(endGuide)
+                    }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(70.dp),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_monetization),
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Text(text = "Pagado", color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        style = MaterialTheme.typography.titleLarge)
+                }
+            }
+
             Text(
                 text = stringResource(R.string.movements),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(movementsTitleRef) {
-                    top.linkTo(debtInfoRef.bottom, margin = 24.dp)
+                    top.linkTo(if (selectedDebtor.debtor.isPaid) isPaidContainer.bottom else debtInfoRef.bottom, margin = 24.dp)
                     start.linkTo(startGuide)
                 })
 
