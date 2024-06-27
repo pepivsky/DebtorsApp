@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -98,6 +99,7 @@ fun DetailDebtorScreen(
                 })*/
 
             CardDebtInfo(
+                debtor = selectedDebtor.debtor,
                 amount = selectedDebtor.debtor.amount,
                 remaining = selectedDebtor.debtor.remaining,
                 modifier = Modifier.constrainAs(debtInfoRef) {
@@ -123,7 +125,7 @@ fun DetailDebtorScreen(
                     top.linkTo(movementsTitleRef.bottom, margin = 8.dp)
                     start.linkTo(startGuide)
                     end.linkTo(endGuide)
-                    bottom.linkTo(paymentButtonRef.top)
+                    bottom.linkTo(increaseButtonRef.top)
                     width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
                 }) { movement ->
@@ -144,32 +146,45 @@ fun DetailDebtorScreen(
                 viewModel.deleteMovementTransaction(debtor = debtorUpdated,movement = movement)
             }
 
-            PaymentButton(onClick = {
-                openDialogAddMovement = true
-                movementType = MovementType.PAYMENT
-            }, modifier = Modifier.constrainAs(paymentButtonRef) {
-                start.linkTo(startGuide)
-                end.linkTo(spacerRef.start)
-                bottom.linkTo(bottomGuide)
-                width = Dimension.fillToConstraints
-            })
-
-            Spacer(modifier = Modifier
-                .size(16.dp)
-                .constrainAs(spacerRef) {
-                    start.linkTo(paymentButtonRef.end)
-                    end.linkTo(increaseButtonRef.start)
+            if (!selectedDebtor.debtor.isPaid) {
+                PaymentButton(onClick = {
+                    openDialogAddMovement = true
+                    movementType = MovementType.PAYMENT
+                }, modifier = Modifier.constrainAs(paymentButtonRef) {
+                    start.linkTo(startGuide)
+                    end.linkTo(spacerRef.start)
                     bottom.linkTo(bottomGuide)
+                    width = Dimension.fillToConstraints
                 })
-            IncreaseButton(onClick = {
-                openDialogAddMovement = true
-                movementType = MovementType.INCREASE
-            }, modifier = Modifier.constrainAs(increaseButtonRef) {
-                start.linkTo(spacerRef.end)
-                end.linkTo(endGuide)
-                bottom.linkTo(bottomGuide)
-                width = Dimension.fillToConstraints
-            })
+
+                Spacer(modifier = Modifier
+                    .size(16.dp)
+                    .constrainAs(spacerRef) {
+                        start.linkTo(paymentButtonRef.end)
+                        end.linkTo(increaseButtonRef.start)
+                        bottom.linkTo(bottomGuide)
+                    })
+                IncreaseButton(onClick = {
+                    openDialogAddMovement = true
+                    movementType = MovementType.INCREASE
+                }, modifier = Modifier.constrainAs(increaseButtonRef) {
+                    start.linkTo(spacerRef.end)
+                    end.linkTo(endGuide)
+                    bottom.linkTo(bottomGuide)
+                    width = Dimension.fillToConstraints
+                })
+            } else {
+                IncreaseButton(onClick = {
+                    openDialogAddMovement = true
+                    movementType = MovementType.INCREASE
+                }, modifier = Modifier.constrainAs(increaseButtonRef) {
+                    start.linkTo(startGuide)
+                    end.linkTo(endGuide)
+                    bottom.linkTo(bottomGuide)
+                    width = Dimension.fillToConstraints
+                })
+            }
+
 
             //createHorizontalChain(paymentButtonRef, increaseButtonRef, chainStyle = ChainStyle.Packed)
 
@@ -181,20 +196,37 @@ fun DetailDebtorScreen(
         movementType = movementType,
         openDialog = openDialogAddMovement,
         closeDialog = { openDialogAddMovement = false }) { amount, dateText, concept ->
+        //val realAmo
 
         val debtorUpdated: Debtor = when (movementType) {
             MovementType.PAYMENT -> {
-                selectedDebtor.debtor.copy(remaining = selectedDebtor.debtor.remaining - amount.toDouble())
+                if (amount >= selectedDebtor.debtor.remaining) {
+                    selectedDebtor.debtor.copy(
+                        remaining = 0.0,
+                        isPaid = true
+                    )
+                } else {
+                    selectedDebtor.debtor.copy(remaining = selectedDebtor.debtor.remaining - amount.toDouble())
+                }
             }
 
             MovementType.INCREASE -> {
-                selectedDebtor.debtor.copy(
-                    remaining = selectedDebtor.debtor.remaining + amount.toDouble(),
-                    amount = selectedDebtor.debtor.amount + amount.toDouble()
-                )
+                if (selectedDebtor.debtor.isPaid) {
+                    selectedDebtor.debtor.copy(
+                        remaining = selectedDebtor.debtor.remaining + amount.toDouble(),
+                        amount = selectedDebtor.debtor.amount + amount.toDouble(),
+                        isPaid = false
+                    )
+                } else {
+                    selectedDebtor.debtor.copy(
+                        remaining = selectedDebtor.debtor.remaining + amount.toDouble(),
+                        amount = selectedDebtor.debtor.amount + amount.toDouble()
+                    )
+                }
 
             }
         }
+
         val movement = Movement(
             debtorCreatorId = selectedDebtor.debtor.debtorId,
             type = movementType,
@@ -349,6 +381,7 @@ fun DebtInfo(
 //@Preview(showBackground = true)
 @Composable
 fun CardDebtInfo(
+    debtor: Debtor,
     amount: Double,
     remaining: Double,
     modifier: Modifier = Modifier
@@ -388,6 +421,7 @@ fun CardDebtInfo(
                     text = amount.toCurrencyFormat(),
                     //fontSize = 18.sp, fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge,
+                    textDecoration = if (debtor.isPaid) TextDecoration.LineThrough else TextDecoration.None
                 )
 
             }

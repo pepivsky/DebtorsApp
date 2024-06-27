@@ -47,7 +47,7 @@ fun DialogAddMovement(
     movementType: MovementType,
     openDialog: Boolean,
     closeDialog: () -> Unit,
-    onAcceptClicked: (amount: String, dateText: LocalDate, concept: String) -> Unit,
+    onAcceptClicked: (amount: Double, dateText: LocalDate, concept: String) -> Unit,
 
     ) {
     if (openDialog) {
@@ -122,7 +122,7 @@ fun DialogAddMovement(
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            onAcceptClicked(amount, dateText, movementConcept)
+                            onAcceptClicked(amount.toDouble(), dateText, movementConcept)
                             closeDialog()
                         },
                         enabled = isEnable
