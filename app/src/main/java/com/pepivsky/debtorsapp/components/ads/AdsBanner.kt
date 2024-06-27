@@ -1,4 +1,4 @@
-package com.pepivsky.todocompose.ui.screens.ads
+package com.pepivsky.debtorsapp.components.ads
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -14,8 +14,7 @@ interface MovementDAO {
     @Insert
     suspend fun insertMovement(vararg movement: Movement)
 
-    @Delete
-    suspend fun deleteMovement(movement: Movement)
+
 
     @Update
     suspend fun udpateMovement(movement: Movement)
@@ -25,6 +24,13 @@ interface MovementDAO {
 
     @Query("DELETE FROM movement")
     suspend fun deleteAllMovements()
+    @Query("SELECT * FROM movement ORDER BY date ASC")
+    fun getMovementsSortedByDateASC(): Flow<List<Movement>>
+
+    @Query("SELECT * FROM movement ORDER BY date DESC")
+    fun getMovementsSortedByDateDESC(): Flow<List<Movement>>
+
+
 
 
     /*@Query("SELECT * FROM movement WHERE debtorCreatorId = :id")

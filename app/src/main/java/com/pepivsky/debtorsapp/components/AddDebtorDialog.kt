@@ -1,19 +1,13 @@
 package com.pepivsky.debtorsapp.components
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
@@ -22,12 +16,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,18 +28,20 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.core.text.isDigitsOnly
-import com.pepivsky.debtorsapp.data.models.MovementType
+import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
+import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.numberValidator
 import java.time.Instant
 import java.time.LocalDate
@@ -96,14 +90,16 @@ fun DialogAddDebtor(
                 ) {
                     var showDialog by remember { mutableStateOf(false) }
                     val state = rememberDatePickerState()
-                    var dateText by remember { mutableStateOf("${LocalDate.now().dayOfMonth}/${LocalDate.now().monthValue}/${LocalDate.now().year}") }
+                    var creationDate by remember { mutableStateOf(LocalDate.now()) }
 
                     var name by rememberSaveable { mutableStateOf(debtor?.name ?: "") }
                     var amount by rememberSaveable { mutableStateOf(  "${debtor?.amount ?: ""}") }
                     var remaining by rememberSaveable { mutableStateOf(  "${debtor?.remaining}") }
                     var description by rememberSaveable { mutableStateOf( debtor?.description ?: "") }
                     val isEnable by remember { derivedStateOf { name.isNotBlank() && amount.isNotBlank() && description.isNotBlank() } }
-
+                    val focusRequester = remember {
+                        FocusRequester()
+                    }
 
                    /* debtor?.let {
                         name = debtor.name
@@ -112,21 +108,30 @@ fun DialogAddDebtor(
                         dateText = debtor.creationDate
                     }*/
 
+                    LaunchedEffect(key1 = Unit) {
+                        focusRequester.requestFocus()
+                    }
 
-                    Text(text = if (debtor == null) "Nuevo deudor" else "Editar deudor", fontWeight = FontWeight.Bold, fontSize = 18.sp,)
+
+                    Text(text = if (debtor == null) stringResource(R.string.label_new_debtor) else stringResource(
+                        R.string.label_edit_debtor
+                    ), fontWeight = FontWeight.Bold,color = MaterialTheme.colorScheme.tertiary, style = MaterialTheme.typography.titleLarge, fontSize = 20.sp)
                     OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(focusRequester),
                         value = name,
                         onValueChange = {
                             name = it
                         },
-                        label = { Text(text = "Nombre",) },
+                        label = { Text(text = "Nombre") },
                         /*colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color(0xFFA1824A)
 
                         ),*/
                         keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Words
+                            capitalization = KeyboardCapitalization.Words,
+                            imeAction = ImeAction.Next
                         ), /*supportingText = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -145,12 +150,12 @@ fun DialogAddDebtor(
                                 amount = str
                             }
                         },
-                        label = { Text(text = "Monto",) },
+                        label = { Text(text = "Monto") },
                         /*colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color(0xFFA1824A)
 
                         ),*/
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Next)
                     )
 
                     OutlinedTextField(
@@ -159,12 +164,12 @@ fun DialogAddDebtor(
                         onValueChange = {
                             description = it
                         },
-                        label = { Text(text = "Concepto",) },
+                        label = { Text(text = "Concepto") },
                         /*colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color(0xFFA1824A)
 
                         ),*/
-                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = if (debtor != null) ImeAction.Next else ImeAction.Done)
                     )
 
                     if (debtor != null) {
@@ -174,30 +179,30 @@ fun DialogAddDebtor(
                             onValueChange = {
                                 remaining = it
                             },
-                            label = { Text(text = "Restante",) },
+                            label = { Text(text = stringResource(R.string.remaining)) },
                             /*colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = Color(0xFFA1824A)
 
                             ),*/
-                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
+                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Done)
                         )
                     }
 
                     OutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = { showDialog = true }) {
-                        Text(text = dateText,)
+                        Text(text = creationDate.formatToServerDateDefaults())
                     }
 
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             if (debtor == null) { // nuevo deudor
-                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && dateText.isNotEmpty()) {
+                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && creationDate != null) {
                                     val newDebtor = Debtor(
                                         name = name,
                                         description = description,
-                                        creationDate = dateText,
+                                        creationDate = creationDate,
                                         amount = amount.toDoubleOrNull() ?: 0.0,
                                         remaining = amount.toDoubleOrNull() ?: 0.0
                                     )
@@ -205,11 +210,11 @@ fun DialogAddDebtor(
                                     closeDialog()
                                 }
                             } else { // editar deudor
-                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && dateText.isNotEmpty()) {
+                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && creationDate != null) {
                                     val editedDebtor = debtor.copy(
                                         name = name,
                                         description = description,
-                                        creationDate = dateText,
+                                        creationDate = creationDate,
                                         amount = amount.toDoubleOrNull() ?: 0.0,
                                         remaining = remaining.toDoubleOrNull() ?: 0.0
                                     )
@@ -243,7 +248,9 @@ fun DialogAddDebtor(
                     val date = state.selectedDateMillis
                     date?.let {
                         val localDate = Instant.ofEpochMilli(it).atZone(ZoneId.of("UTC")).toLocalDate()
-                        dateText = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
+                        //val date = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
+                        creationDate = localDate
+                        Log.d("pruebilla", "DialogAddDebtor: $date")
                         //Text(text = "Fecha seleccionada: $dateText")
                     }
 
@@ -256,7 +263,6 @@ fun DialogAddDebtor(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun TextFieldCustom() {
@@ -266,7 +272,7 @@ fun TextFieldCustom() {
         onValueChange = {
 
         },
-        label = { Text(text = "Nombre",) },
+        label = { Text(text = "Nombre") },
         /*colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0xFFA1824A)
 

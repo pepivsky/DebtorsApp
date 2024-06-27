@@ -1,6 +1,7 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -25,6 +27,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,15 +37,18 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.DialogAddMovement
+import com.pepivsky.debtorsapp.components.SwipeBox
+import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.entity.Movement
-import com.pepivsky.debtorsapp.data.models.MovementType
-import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.ui.screens.home.IconDebtor
-import com.pepivsky.debtorsapp.util.extension.toRidePrice
+import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
+import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
+import com.pepivsky.debtorsapp.util.extension.toCurrencyFormat
 
 
 //@Preview
@@ -81,13 +89,13 @@ fun DetailDebtorScreen(
                 spacerRef
             ) = createRefs()
 
-            DebtorName(
+            /*DebtorName(
                 name = selectedDebtor.debtor.name,
                 modifier = Modifier.constrainAs(debtorInfoRef) {
                     top.linkTo(parent.top, margin = 8.dp)
                     start.linkTo(startGuide)
                     end.linkTo(endGuide)
-                })
+                })*/
 
             CardDebtInfo(
                 amount = selectedDebtor.debtor.amount,
@@ -101,7 +109,7 @@ fun DetailDebtorScreen(
                 })
 
             Text(
-                text = "Movimientos",
+                text = stringResource(R.string.movements),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(movementsTitleRef) {
@@ -109,7 +117,7 @@ fun DetailDebtorScreen(
                     start.linkTo(startGuide)
                 })
 
-            MovementsList(
+            ShowMovementsContent(
                 selectedDebtor.movements,
                 modifier = Modifier.constrainAs(movementsListRef) {
                     top.linkTo(movementsTitleRef.bottom, margin = 8.dp)
@@ -118,7 +126,23 @@ fun DetailDebtorScreen(
                     bottom.linkTo(paymentButtonRef.top)
                     width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
-                })
+                }) { movement ->
+
+                val debtorUpdated: Debtor = when (movement.type) {
+                    MovementType.PAYMENT -> {
+                        selectedDebtor.debtor.copy(remaining = selectedDebtor.debtor.remaining + movement.amount)
+                    }
+
+                    MovementType.INCREASE -> {
+                        selectedDebtor.debtor.copy(
+                            remaining = selectedDebtor.debtor.remaining - movement.amount,
+                            amount = selectedDebtor.debtor.amount - movement.amount
+                        )
+
+                    }
+                }
+                viewModel.deleteMovementTransaction(debtor = debtorUpdated,movement = movement)
+            }
 
             PaymentButton(onClick = {
                 openDialogAddMovement = true
@@ -156,7 +180,7 @@ fun DetailDebtorScreen(
     DialogAddMovement(
         movementType = movementType,
         openDialog = openDialogAddMovement,
-        closeDialog = { openDialogAddMovement = false }) { amount, dateText ->
+        closeDialog = { openDialogAddMovement = false }) { amount, dateText, concept ->
 
         val debtorUpdated: Debtor = when (movementType) {
             MovementType.PAYMENT -> {
@@ -173,9 +197,10 @@ fun DetailDebtorScreen(
         }
         val movement = Movement(
             debtorCreatorId = selectedDebtor.debtor.debtorId,
-            type = movementType.name,
+            type = movementType,
             amount = amount.toDouble(),
-            date = dateText
+            date = dateText,
+            concept = concept
         )
         viewModel.addMovementTransaction(debtor = debtorUpdated, movement = movement)
     }
@@ -183,7 +208,7 @@ fun DetailDebtorScreen(
     DialogAddDebtor(
         openDialog = openDialogEditDebtor,
         closeDialog = { openDialogEditDebtor = false },
-        debtor = selectedDebtor.debtor ,
+        debtor = selectedDebtor.debtor,
         onAcceptClicked = { debtor ->
             viewModel.updateDebtor(debtor)
             Log.d("pruebilla", "DetailDebtorScreen: onAcceptClicked")
@@ -193,12 +218,51 @@ fun DetailDebtorScreen(
 
 //@Preview(showBackground = true)
 @Composable
-fun MovementsList(movements: List<Movement>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
-        items(movements) { movement ->
-            ItemMovement(movement)
+fun ShowMovementsContent(
+    movements: List<Movement>,
+    modifier: Modifier = Modifier,
+    onDeleted: (Movement) -> Unit = {},
+) {
+    if (movements.isNotEmpty()) {
+        LazyColumn(modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(movements, key = { it.movementId }) { movement ->
+                SwipeBox(onDelete = { onDeleted(movement) }, onEdit = { /*TODO*/ }) {
+                    ItemMovement(movement)
+                }
+            }
         }
+    } else {
+        EmptyIcon(modifier = modifier)
     }
+}
+
+@Preview
+@Composable
+fun EmptyIcon(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            modifier = modifier.size(70.dp),
+            imageVector = ImageVector.vectorResource(id = R.drawable.money_off_icon),
+            contentDescription = ""
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(
+            text = stringResource(R.string.no_movements),
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(modifier = Modifier.size(4.dp))
+        Text(
+            text = stringResource(R.string.add_a_movement),
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+
 }
 
 //@Preview(showBackground = true)
@@ -207,26 +271,48 @@ fun ItemMovement(
     movement: Movement,
     modifier: Modifier = Modifier
 ) {
+    val contentColor =
+        if (movement.type == MovementType.INCREASE) MaterialTheme.colorScheme.onErrorContainer
+        else MaterialTheme.colorScheme.onPrimaryContainer
+
     Card(
-        modifier = modifier
-            .padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors()
+        //modifier = modifier.padding(vertical = 4.dp),
+        colors = CardDefaults.cardColors(
+            //containerColor = containerColor,
+            contentColor = contentColor
+        )
     ) {
         Row(
-            modifier = modifier
-                .padding(8.dp),
+            modifier = Modifier.padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier) {
                 Text(
-                    text = if (movement.type == MovementType.INCREASE.name) "Aumento" else "Pago",
+                    text = if (movement.type == MovementType.INCREASE) stringResource(R.string.label_increase) else stringResource(
+                        R.string.label_payment
+                    ),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.bodyLarge
                 )
-                Text(text = movement.date)
+                Spacer(modifier = Modifier.size(4.dp))
+                if (movement.concept.isNotBlank()) {
+                    Text(
+                        text = movement.concept,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Text(
+                    text = movement.date.formatToServerDateDefaults(),
+                    style = MaterialTheme.typography.labelMedium
+                )
             }
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$${movement.amount.toRidePrice()}", fontSize = 18.sp)
+            Text(
+                text = movement.amount.toCurrencyFormat(),
+                fontSize = 18.sp,
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }
@@ -240,10 +326,10 @@ fun DebtInfo(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = "Restante", fontSize = 18.sp)
+            Text(text = stringResource(R.string.label_remaining), fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
             Text(
-                text = "$${remaining.toRidePrice()}",
+                text = remaining.toCurrencyFormat(),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -252,9 +338,9 @@ fun DebtInfo(
 
         Spacer(modifier = Modifier.size(8.dp))
         Row {
-            Text(text = "Deuda", fontSize = 18.sp)
+            Text(text = stringResource(R.string.label_debt), fontSize = 18.sp)
             Spacer(modifier = Modifier.weight(1F))
-            Text(text = "$${amount.toRidePrice()}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = amount.toCurrencyFormat(), fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
         }
     }
@@ -278,12 +364,12 @@ fun CardDebtInfo(
         Column(modifier = Modifier.padding(18.dp)) {
             Row {
                 Text(
-                    text = "Restante:",
+                    text = stringResource(id = R.string.label_remaining) + ":",
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.weight(1F))
                 Text(
-                    text = "$${remaining.toRidePrice()}",
+                    text = remaining.toCurrencyFormat(),
                     //fontSize = 18.sp,
                     //fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge,
@@ -294,12 +380,12 @@ fun CardDebtInfo(
             Spacer(modifier = Modifier.size(8.dp))
             Row {
                 Text(
-                    text = "Deuda:",
+                    text = stringResource(id = R.string.label_debt) + ":",
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.weight(1F))
                 Text(
-                    text = "$${amount.toRidePrice()}",
+                    text = amount.toCurrencyFormat(),
                     //fontSize = 18.sp, fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge,
                 )
@@ -312,7 +398,7 @@ fun CardDebtInfo(
 
 @Preview
 @Composable
-fun DebtorName(name: String = "Blanquis", modifier: Modifier = Modifier) {
+fun DebtorName(modifier: Modifier = Modifier, name: String = "Blanquis") {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         IconDebtor(firstLetter = name.first(), modifier = Modifier.size(120.dp), fontSize = 60)
         Spacer(modifier = Modifier.size(8.dp))
@@ -329,7 +415,7 @@ fun PaymentButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(20.dp),
         //colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009963))
     ) {
-        Text(text = "Pago")
+        Text(text = stringResource(id = R.string.label_payment))
     }
 }
 
@@ -342,7 +428,7 @@ fun IncreaseButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(20.dp),
         //colors = ButtonDefaults.buttonColors(containerColor = )
     ) {
-        Text(text = "Aumento")
+        Text(text = stringResource(id = R.string.label_increase))
         //ButtonColors(containerColor = Color(0xFF009963))
     }
 }

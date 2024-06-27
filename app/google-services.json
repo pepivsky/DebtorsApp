@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "445594486263",
+    "project_id": "debtorsapp-7282a",
+    "storage_bucket": "debtorsapp-7282a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445594486263:android:35b2d3ec1fb532be12daf2",
+        "android_client_info": {
+          "package_name": "com.pepivsky.debtorsapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD21NQMnTjzPMxR97Y6C-nrDuDFJ5fjpoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

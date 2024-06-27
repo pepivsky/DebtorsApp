@@ -56,4 +56,12 @@ interface DebtorDAO {
     */
     @Insert
     suspend fun insertMovement(vararg movement: Movement)
+
+    @Delete
+    suspend fun deleteMovement(movement: Movement)
+    @Transaction
+    suspend fun deleteMovementTransaction(debtor: Debtor, movement: Movement) {
+        updateDebtor(debtor)
+        deleteMovement(movement)
+    }
 }

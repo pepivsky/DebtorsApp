@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    alias(libs.plugins.googleGmsGoogleServices)
+    alias(libs.plugins.googleFirebaseCrashlytics)
 }
 
 android {
@@ -13,14 +15,20 @@ android {
         applicationId = "com.pepivsky.debtorsapp"
         minSdk = 27
         targetSdk = 34
-        versionCode = 10
-        versionName = "1.1.0"
+        versionCode = 23
+        versionName = "1.2.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
 
+        // export schema, necesario para las migraciones automaticas
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
 
     }
 
@@ -31,6 +39,20 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            // enable in release builds
+            extra["enableCrashlytics"] = true
+            extra["alwaysUpdateBuildId"] = true
+            // enable crashlytics in release
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = true
+        }
+
+        debug {
+            // optimize crashlytics usage in debug builds
+            extra["enableCrashlytics"] = false
+            extra["alwaysUpdateBuildId"] = false
+            // disable crashlytics in debug
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = false
         }
     }
     compileOptions {
@@ -42,6 +64,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -86,6 +109,12 @@ dependencies {
 
     // ads
     implementation ("com.google.android.gms:play-services-ads:23.0.0")
+
+// splashScreen
+    implementation ("androidx.core:core-splashscreen:1.0.1")
+
+    // crashlitycs
+    implementation(libs.firebase.crashlytics)
 
 
     testImplementation(libs.junit)
