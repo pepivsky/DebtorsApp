@@ -200,7 +200,7 @@ fun DialogAddDebtor(
                             if (debtor == null) { // nuevo deudor
                                 if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && creationDate != null) {
                                     val newDebtor = Debtor(
-                                        name = name,
+                                        name = name.trim(),
                                         description = description,
                                         creationDate = creationDate,
                                         amount = amount.toDoubleOrNull() ?: 0.0,
@@ -212,7 +212,7 @@ fun DialogAddDebtor(
                             } else { // editar deudor
                                 if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && creationDate != null) {
                                     val editedDebtor = debtor.copy(
-                                        name = name,
+                                        name = name.trim(),
                                         description = description,
                                         creationDate = creationDate,
                                         amount = amount.toDoubleOrNull() ?: 0.0,
