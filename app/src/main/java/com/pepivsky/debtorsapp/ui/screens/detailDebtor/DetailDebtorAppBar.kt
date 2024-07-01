@@ -51,6 +51,8 @@ import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.extension.toRidePrice
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.FileOutputStream
 import java.io.IOException
 import java.time.format.DateTimeFormatter
@@ -145,6 +147,15 @@ fun DetailDebtorAppBarActions(
         onDelete = { showDialogConfirmDelete = true },
         onEdit = { onEditClicked() },
         onGeneratePDF = {
+            if (debtorWithMovements.movements.isEmpty()) {
+                Toast.makeText(
+                    context,
+                    "Agrega al menos un movimiento para generar el PDF",
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+                return@DropDownActions
+            }
             launcher.launch("detalle_deuda_${debtorWithMovements.debtor.name}_${System.currentTimeMillis()}.pdf")
         }
     )
