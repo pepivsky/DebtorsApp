@@ -84,7 +84,8 @@ fun DetailDebtorScreen(
             val endGuide = createGuidelineFromEnd(0.05F)
             val bottomGuide = createGuidelineFromBottom(0.02F)
 
-            val (debtorInfoRef,
+            val (
+                debtorInfoRef,
                 debtInfoRef,
                 movementsTitleRef,
                 movementsListRef,
@@ -117,7 +118,7 @@ fun DetailDebtorScreen(
             if (selectedDebtor.debtor.isPaid) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.constrainAs(isPaidContainer) {
-                        top.linkTo(debtInfoRef.bottom,)
+                        top.linkTo(debtInfoRef.bottom)
                         start.linkTo(startGuide)
                         end.linkTo(endGuide)
                     }
@@ -128,8 +129,10 @@ fun DetailDebtorScreen(
                         contentDescription = "",
                         tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
-                    Text(text = "Pagado", color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        text = "Pagado", color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
             }
 
@@ -138,7 +141,10 @@ fun DetailDebtorScreen(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(movementsTitleRef) {
-                    top.linkTo(if (selectedDebtor.debtor.isPaid) isPaidContainer.bottom else debtInfoRef.bottom, margin = 24.dp)
+                    top.linkTo(
+                        if (selectedDebtor.debtor.isPaid) isPaidContainer.bottom else debtInfoRef.bottom,
+                        margin = 24.dp
+                    )
                     start.linkTo(startGuide)
                 })
 
@@ -155,7 +161,10 @@ fun DetailDebtorScreen(
 
                 val debtorUpdated: Debtor = when (movement.type) {
                     MovementType.PAYMENT -> {
-                        selectedDebtor.debtor.copy(isPaid = false,remaining = selectedDebtor.debtor.remaining + if (movement.amount > selectedDebtor.debtor.amount) selectedDebtor.debtor.amount else movement.amount)
+                        selectedDebtor.debtor.copy(
+                            isPaid = false,
+                            remaining = selectedDebtor.debtor.remaining + if (movement.amount > selectedDebtor.debtor.amount) selectedDebtor.debtor.amount else movement.amount
+                        )
                     }
 
                     MovementType.INCREASE -> {
@@ -166,7 +175,7 @@ fun DetailDebtorScreen(
 
                     }
                 }
-                viewModel.deleteMovementTransaction(debtor = debtorUpdated,movement = movement)
+                viewModel.deleteMovementTransaction(debtor = debtorUpdated, movement = movement)
             }
 
             if (!selectedDebtor.debtor.isPaid) {
@@ -279,7 +288,8 @@ fun ShowMovementsContent(
     onDeleted: (Movement) -> Unit = {},
 ) {
     if (movements.isNotEmpty()) {
-        LazyColumn(modifier = modifier,
+        LazyColumn(
+            modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(movements, key = { it.movementId }) { movement ->
