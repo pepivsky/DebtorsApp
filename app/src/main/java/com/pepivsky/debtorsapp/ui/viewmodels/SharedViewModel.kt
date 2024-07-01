@@ -1,21 +1,37 @@
 package com.pepivsky.debtorsapp.ui.viewmodels
 
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.pdf.PdfDocument
+import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pepivsky.debtorsapp.components.Report
+import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.repositories.DebtorsRepository
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.data.models.entity.Movement
+import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
+import com.pepivsky.debtorsapp.util.extension.toRidePrice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class SharedViewModel @Inject constructor(private val debtorsRepository: DebtorsRepository) :
+class SharedViewModel @Inject constructor(
+    private val debtorsRepository: DebtorsRepository,
+    private val report: Report,
+) :
     ViewModel() {
 
     private val _showSplash = MutableStateFlow(true)
@@ -107,6 +123,14 @@ class SharedViewModel @Inject constructor(private val debtorsRepository: Debtors
         }
 
     }
+
+
+    fun generatePDF(uri: Uri, movements: List<Movement>, remaining: Double) {
+        viewModelScope.launch {
+            report.createPdf(uri, movements, remaining)
+        }
+    }
+
 
     /*fun deleteDebtorWithMov(debtorWithMovements: DebtorWithMovements) {
         viewModelScope.launch {

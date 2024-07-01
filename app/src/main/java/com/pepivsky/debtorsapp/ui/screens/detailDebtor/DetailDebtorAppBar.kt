@@ -1,5 +1,10 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.DocumentsContract
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -24,14 +29,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
+//import com.pepivsky.debtorsapp.util.generatePDF
+import android.content.ContentResolver
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.pdf.PdfDocument
+import android.widget.Toast
+import com.pepivsky.debtorsapp.data.models.MovementType
+import com.pepivsky.debtorsapp.data.models.entity.Movement
+import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
+import com.pepivsky.debtorsapp.util.extension.toRidePrice
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.FileOutputStream
+import java.io.IOException
+import java.time.format.DateTimeFormatter
 
 
 //@Preview
@@ -61,7 +85,9 @@ fun DefaultDetailDebtorAppBar(
                 navController.popBackStack()
             }, onEditClicked = {
                 onEditClicked()
-            })
+            }, debtorWithMovements,
+                sharedViewModel = sharedViewModel
+            )
 
 
         }, navigationIcon = {
@@ -81,7 +107,8 @@ fun DefaultDetailDebtorAppBar(
 fun DetailDebtorAppBarActions(
     onDeleteClicked: () -> Unit,
     onEditClicked: () -> Unit,
-
+    debtorWithMovements: DebtorWithMovements,
+    sharedViewModel: SharedViewModel,
     ) {
     var showDialogConfirmDelete by remember { mutableStateOf(false) }
 
@@ -104,15 +131,39 @@ fun DetailDebtorAppBarActions(
             },
         )
     }
+    val contentResolver = LocalContext.current.contentResolver
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
+        if (selectedUri != null) {
+            sharedViewModel.generatePDF(selectedUri, debtorWithMovements.movements,debtorWithMovements.debtor.remaining)
+            //createPdf(context, selectedUri, debtorWithMovements.movements, debtorWithMovements.debtor.remaining)
+        } else {
+            println("No file was selected")
+        }
+    }
+
+    val pickerInitialUri: Uri = "content://com.android.externalstorage.documents/document/primary".toUri()
     DropDownActions(
         onDelete = { showDialogConfirmDelete = true },
-        onEdit = { onEditClicked() }
+        onEdit = { onEditClicked() },
+        onGeneratePDF = {
+            if (debtorWithMovements.movements.isEmpty()) {
+                Toast.makeText(
+                    context,
+                    "Agrega al menos un movimiento para generar el PDF",
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+                return@DropDownActions
+            }
+            launcher.launch("detalle_deuda_${debtorWithMovements.debtor.name}_${System.currentTimeMillis()}.pdf")
+        }
     )
 }
 
 // delete all action
 @Composable
-fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit) {
+fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit, onGeneratePDF: () -> Unit) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     IconButton(onClick = { expanded = true }) {
@@ -136,5 +187,14 @@ fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit) {
             expanded = false
             onEdit()
         })
+
+        DropdownMenuItem(text = {
+            Text(text = "Generar PDF")
+        }, onClick = {
+            expanded = false
+            onGeneratePDF()
+        })
+
+
     }
 }
