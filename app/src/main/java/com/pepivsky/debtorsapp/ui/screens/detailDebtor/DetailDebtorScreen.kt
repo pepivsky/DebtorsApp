@@ -155,7 +155,7 @@ fun DetailDebtorScreen(
 
                 val debtorUpdated: Debtor = when (movement.type) {
                     MovementType.PAYMENT -> {
-                        selectedDebtor.debtor.copy(remaining = selectedDebtor.debtor.remaining + movement.amount)
+                        selectedDebtor.debtor.copy(isPaid = false,remaining = selectedDebtor.debtor.remaining + if (movement.amount > selectedDebtor.debtor.amount) selectedDebtor.debtor.amount else movement.amount)
                     }
 
                     MovementType.INCREASE -> {
