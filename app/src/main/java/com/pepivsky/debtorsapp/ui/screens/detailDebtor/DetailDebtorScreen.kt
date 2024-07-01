@@ -238,21 +238,21 @@ fun DetailDebtorScreen(
                         isPaid = true
                     )
                 } else {
-                    selectedDebtor.debtor.copy(remaining = selectedDebtor.debtor.remaining - amount.toDouble())
+                    selectedDebtor.debtor.copy(remaining = selectedDebtor.debtor.remaining - amount)
                 }
             }
 
             MovementType.INCREASE -> {
                 if (selectedDebtor.debtor.isPaid) {
                     selectedDebtor.debtor.copy(
-                        remaining = selectedDebtor.debtor.remaining + amount.toDouble(),
-                        amount = selectedDebtor.debtor.amount + amount.toDouble(),
+                        remaining = selectedDebtor.debtor.remaining + amount,
+                        amount = selectedDebtor.debtor.amount + amount,
                         isPaid = false
                     )
                 } else {
                     selectedDebtor.debtor.copy(
-                        remaining = selectedDebtor.debtor.remaining + amount.toDouble(),
-                        amount = selectedDebtor.debtor.amount + amount.toDouble()
+                        remaining = selectedDebtor.debtor.remaining + amount,
+                        amount = selectedDebtor.debtor.amount + amount
                     )
                 }
 
@@ -262,7 +262,7 @@ fun DetailDebtorScreen(
         val movement = Movement(
             debtorCreatorId = selectedDebtor.debtor.debtorId,
             type = movementType,
-            amount = amount.toDouble(),
+            amount = amount,
             date = dateText,
             concept = concept
         )
