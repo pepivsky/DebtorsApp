@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
-import com.pepivsky.debtorsapp.util.extension.toRidePrice
+import com.pepivsky.debtorsapp.util.extension.toCurrencyFormat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -82,7 +82,7 @@ class Report @Inject constructor(
                         regularPaint
                     )
                     xPos += 150
-                    canvas.drawText("$${movement.amount.toRidePrice()}", xPos, yPos, regularPaint)
+                    canvas.drawText(movement.amount.toCurrencyFormat(), xPos, yPos, regularPaint)
                     yPos += lineSpacing
 
 
@@ -91,7 +91,7 @@ class Report @Inject constructor(
                 if (isLastPage) {
                     yPos += lineSpacing // Leave a gap before the "Restante por pagar" text
                     canvas.drawText(
-                        "Restante por pagar: $${remaining.toRidePrice()}",
+                        "Restante por pagar: ${remaining.toCurrencyFormat()}",
                         marginLeft,
                         yPos,
                         boldPaint

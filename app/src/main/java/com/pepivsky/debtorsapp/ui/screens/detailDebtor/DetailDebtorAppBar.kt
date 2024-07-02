@@ -50,7 +50,6 @@ import android.widget.Toast
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
-import com.pepivsky.debtorsapp.util.extension.toRidePrice
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.FileOutputStream
