@@ -116,6 +116,9 @@ dependencies {
     // crashlitycs
     implementation(libs.firebase.crashlytics)
 
+    // in app reviews
+    implementation ("com.google.android.play:review-ktx:2.0.1")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

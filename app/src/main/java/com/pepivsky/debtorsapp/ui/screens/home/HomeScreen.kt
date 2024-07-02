@@ -1,5 +1,6 @@
 package com.pepivsky.debtorsapp.ui.screens.home
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.ads.adIsLoaded
@@ -54,6 +57,7 @@ import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.extension.toCurrencyFormat
 import com.pepivsky.debtorsapp.components.ads.AdvertView
+import com.pepivsky.debtorsapp.components.rememberReviewTask
 
 
 //@Preview
@@ -62,6 +66,10 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
     val allDebtors by viewModel.allDebtors.collectAsState()
     val total by viewModel.totalAmount.collectAsState(0.0)
     var openDialog by rememberSaveable { mutableStateOf(false) }
+    val localContext = LocalContext.current
+
+    val reviewManager = remember { ReviewManagerFactory.create(localContext) }
+    val reviewInfo = rememberReviewTask(reviewManager)
 
     Scaffold(topBar = {
         HomeAppBar(navController = navController)
@@ -112,6 +120,11 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
             openDialog = openDialog,
             closeDialog = { openDialog = false }) { debtor ->
             viewModel.addNewDebtor(debtor)
+
+            // show in app review bottom sheet
+            reviewInfo?.let {
+                reviewManager.launchReviewFlow(localContext as Activity, reviewInfo)
+            }
         }
     }
 }
