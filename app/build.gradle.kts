@@ -119,6 +119,10 @@ dependencies {
     // in app reviews
     implementation ("com.google.android.play:review-ktx:2.0.1")
 
+    // lottie-compose
+    implementation ("com.airbnb.android:lottie-compose:6.4.1")
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

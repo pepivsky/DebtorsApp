@@ -1,7 +1,9 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +29,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -39,6 +42,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.R
+import com.pepivsky.debtorsapp.components.AnimatedIsPaid
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.DialogAddMovement
 import com.pepivsky.debtorsapp.components.SwipeBox
@@ -93,7 +97,27 @@ fun DetailDebtorScreen(
                 paymentButtonRef,
                 spacerRef,
                 isPaidContainer,
+                animatedIsPaidRef,
             ) = createRefs()
+
+            /*if (selectedDebtor.debtor.isPaid) {
+                val modifier = Modifier.fillMaxSize()
+                //AnimatedIsPaid(modifier)
+                Box(
+                    modifier = modifier.constrainAs(animatedIsPaidRef) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+
+                        width = Dimension.fillToConstraints
+                        height = Dimension.fillToConstraints
+                    }.background(Color.Cyan)
+                ) {
+                    AnimatedIsPaid(modifier)
+                }
+            }*/
+
 
             /*DebtorName(
                 name = selectedDebtor.debtor.name,
@@ -220,8 +244,24 @@ fun DetailDebtorScreen(
 
             //createHorizontalChain(paymentButtonRef, increaseButtonRef, chainStyle = ChainStyle.Packed)
 
+            if (selectedDebtor.debtor.isPaid) {
+               // val modifier = Modifier.fillMaxSize()
+                //AnimatedIsPaid(modifier)
+                Box(
+                    modifier = Modifier.constrainAs(animatedIsPaidRef) {
+                        width = Dimension.matchParent
+                        height = Dimension.matchParent
+                    }.fillMaxSize()
+                        //.background(Color.Cyan)
+                ) {
+                    AnimatedIsPaid()
+                }
+            }
 
         }
+
+
+
     }
 
     DialogAddMovement(
