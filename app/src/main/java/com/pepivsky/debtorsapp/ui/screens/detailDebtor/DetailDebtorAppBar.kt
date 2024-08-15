@@ -1,8 +1,6 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
-import android.content.Intent
-import android.net.Uri
-import android.provider.DocumentsContract
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
@@ -16,10 +14,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -34,28 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.R
+import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
-//import com.pepivsky.debtorsapp.util.generatePDF
-import android.content.ContentResolver
-import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.pdf.PdfDocument
-import android.widget.Toast
-import com.pepivsky.debtorsapp.components.ads.showInterstitial
-import com.pepivsky.debtorsapp.data.models.MovementType
-import com.pepivsky.debtorsapp.data.models.entity.Movement
-import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.io.FileOutputStream
-import java.io.IOException
-import java.time.format.DateTimeFormatter
 
 
 //@Preview
@@ -68,6 +47,8 @@ fun DefaultDetailDebtorAppBar(
     onEditClicked: () -> Unit,
 
     ) {
+    var isButtonEnabled by remember { mutableStateOf(true) }
+
     TopAppBar(colors = TopAppBarDefaults.topAppBarColors(),
         title = {
             Text(
@@ -78,8 +59,6 @@ fun DefaultDetailDebtorAppBar(
             )
         },
         actions = {
-
-
             DetailDebtorAppBarActions(onDeleteClicked = {
                 sharedViewModel.deleteSelectedDebtor(debtorWithMovements.debtor)
                 navController.popBackStack()
@@ -89,9 +68,13 @@ fun DefaultDetailDebtorAppBar(
                 sharedViewModel = sharedViewModel
             )
 
-
         }, navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
+            IconButton(onClick = {
+                if (isButtonEnabled) {
+                    isButtonEnabled = false
+                    navController.popBackStack()
+                }
+            }, enabled = isButtonEnabled) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "back",
@@ -99,7 +82,6 @@ fun DefaultDetailDebtorAppBar(
                         .padding(8.dp)
                 )
             }
-
         })
 }
 
@@ -131,7 +113,6 @@ fun DetailDebtorAppBarActions(
             },
         )
     }
-    val contentResolver = LocalContext.current.contentResolver
     val context = LocalContext.current
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
@@ -150,8 +131,6 @@ fun DetailDebtorAppBarActions(
             }
         }
 
-    val pickerInitialUri: Uri =
-        "content://com.android.externalstorage.documents/document/primary".toUri()
     DropDownActions(
         onDelete = { showDialogConfirmDelete = true },
         onEdit = { onEditClicked() },
@@ -203,7 +182,5 @@ fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit, onGeneratePDF: () 
             expanded = false
             onGeneratePDF()
         })
-
-
     }
 }
