@@ -109,7 +109,7 @@ fun DetailDebtorAppBarActions(
     onEditClicked: () -> Unit,
     debtorWithMovements: DebtorWithMovements,
     sharedViewModel: SharedViewModel,
-    ) {
+) {
     var showDialogConfirmDelete by remember { mutableStateOf(false) }
 
     if (showDialogConfirmDelete) {
@@ -133,19 +133,25 @@ fun DetailDebtorAppBarActions(
     }
     val contentResolver = LocalContext.current.contentResolver
     val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
-        if (selectedUri != null) {
-            // show interstitial before generate pdf
-            showInterstitial(context) {
-                sharedViewModel.generatePDF(selectedUri, debtorWithMovements.movements,debtorWithMovements.debtor.remaining)
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
+            if (selectedUri != null) {
+                // show interstitial before generate pdf
+                showInterstitial(context) {
+                    sharedViewModel.generatePDF(
+                        selectedUri,
+                        debtorWithMovements.movements,
+                        debtorWithMovements.debtor.remaining
+                    )
+                }
+                //createPdf(context, selectedUri, debtorWithMovements.movements, debtorWithMovements.debtor.remaining)
+            } else {
+                println("No file was selected")
             }
-            //createPdf(context, selectedUri, debtorWithMovements.movements, debtorWithMovements.debtor.remaining)
-        } else {
-            println("No file was selected")
         }
-    }
 
-    val pickerInitialUri: Uri = "content://com.android.externalstorage.documents/document/primary".toUri()
+    val pickerInitialUri: Uri =
+        "content://com.android.externalstorage.documents/document/primary".toUri()
     DropDownActions(
         onDelete = { showDialogConfirmDelete = true },
         onEdit = { onEditClicked() },
