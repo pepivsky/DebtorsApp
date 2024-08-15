@@ -47,6 +47,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.widget.Toast
+import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
@@ -134,7 +135,10 @@ fun DetailDebtorAppBarActions(
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
         if (selectedUri != null) {
-            sharedViewModel.generatePDF(selectedUri, debtorWithMovements.movements,debtorWithMovements.debtor.remaining)
+            // show interstitial before generate pdf
+            showInterstitial(context) {
+                sharedViewModel.generatePDF(selectedUri, debtorWithMovements.movements,debtorWithMovements.debtor.remaining)
+            }
             //createPdf(context, selectedUri, debtorWithMovements.movements, debtorWithMovements.debtor.remaining)
         } else {
             println("No file was selected")
