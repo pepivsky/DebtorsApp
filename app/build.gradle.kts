@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.googleGmsGoogleServices)
     alias(libs.plugins.googleFirebaseCrashlytics)
     alias(libs.plugins.compose.compiler)
+    id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -25,10 +26,8 @@ android {
         }
 
         // export schema, necesario para las migraciones automaticas
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas")
-            }
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
 
     }
@@ -75,10 +74,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    // Allow references to generated code
-    /*kapt {
-        correctErrorTypes = true
-    }*/
 }
 
 dependencies {
@@ -98,11 +93,11 @@ dependencies {
     /*implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)*/
     implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    ksp("com.google.dagger:hilt-android-compiler:2.48")
 
     // Room
     implementation ("androidx.room:room-runtime:2.6.1")
-    kapt ("androidx.room:room-compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
     implementation ("androidx.room:room-ktx:2.6.1")
 
     // navigation
@@ -128,9 +123,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-}
-
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
 }
