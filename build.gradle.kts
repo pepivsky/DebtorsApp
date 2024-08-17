@@ -5,4 +5,6 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.48" apply false
     alias(libs.plugins.googleGmsGoogleServices) apply false
     alias(libs.plugins.googleFirebaseCrashlytics) apply false
+    alias(libs.plugins.compose.compiler) apply false
+
 }
