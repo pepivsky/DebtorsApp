@@ -1,6 +1,7 @@
 [versions]
 agp = "8.3.0"
 constraintlayoutComposeVersion = "1.0.1"
+coreSplashscreen = "1.0.1"
 hiltAndroid = "2.48"
 kotlin = "2.0.0"
 coreKtx = "1.12.0"
@@ -16,11 +17,14 @@ firebaseCrashlytics = "19.0.1"
 googleGmsGoogleServices = "4.4.2"
 googleFirebaseCrashlytics = "3.0.1"
 ksp = "2.0.0-1.0.21"
+playServicesAds = "23.3.0"
+reviewKtx = "2.0.1"
 
 
 [libraries]
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutComposeVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
@@ -40,6 +44,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
+review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "reviewKtx" }
 
 
 [plugins]

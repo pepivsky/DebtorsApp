@@ -104,16 +104,16 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     // ads
-    implementation ("com.google.android.gms:play-services-ads:23.0.0")
+    implementation (libs.play.services.ads)
 
 // splashScreen
-    implementation ("androidx.core:core-splashscreen:1.0.1")
+    implementation (libs.androidx.core.splashscreen)
 
     // crashlitycs
     implementation(libs.firebase.crashlytics)
 
     // in app reviews
-    implementation ("com.google.android.play:review-ktx:2.0.1")
+    implementation (libs.review.ktx)
 
 
     testImplementation(libs.junit)
