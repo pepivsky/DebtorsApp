@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.R
+import com.pepivsky.debtorsapp.components.ads.adIsLoaded
 import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
@@ -118,7 +119,15 @@ fun DetailDebtorAppBarActions(
         rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
             if (selectedUri != null) {
                 // show interstitial before generate pdf
-                showInterstitial(context) {
+                if (adIsLoaded) {
+                    showInterstitial(context) {
+                        sharedViewModel.generatePDF(
+                            selectedUri,
+                            debtorWithMovements.movements,
+                            debtorWithMovements.debtor.remaining
+                        )
+                    }
+                } else {
                     sharedViewModel.generatePDF(
                         selectedUri,
                         debtorWithMovements.movements,
