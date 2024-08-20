@@ -92,8 +92,8 @@ dependencies {
     // dagger hilt
     /*implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)*/
-    implementation("com.google.dagger:hilt-android:2.48")
-    ksp("com.google.dagger:hilt-android-compiler:2.48")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
     // Room
     implementation (libs.androidx.room.runtime)
