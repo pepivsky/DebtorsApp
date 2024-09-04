@@ -101,14 +101,14 @@ fun DetailDebtorAppBarActions(
             title = { Text(stringResource(R.string.title_dialog_delete_debtor)) },
             text = { Text(stringResource(R.string.text_dialog_delete_debtor)) },
             confirmButton = {
-                Button(onClick = {
+                OutlinedButton(onClick = {
                     onDeleteClicked()
                 }) {
                     Text(stringResource(R.string.delete).uppercase())
                 }
             },
             dismissButton = {
-                OutlinedButton(onClick = { showDialogConfirmDelete = false }) {
+                Button(onClick = { showDialogConfirmDelete = false }) {
                     Text(stringResource(R.string.cancel).uppercase())
                 }
             },
