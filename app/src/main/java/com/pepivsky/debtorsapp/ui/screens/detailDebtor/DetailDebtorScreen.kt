@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,6 +43,7 @@ import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.DialogAddMovement
 import com.pepivsky.debtorsapp.components.SwipeBox
+import com.pepivsky.debtorsapp.components.ads.AdvertView
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
@@ -292,6 +294,9 @@ fun ShowMovementsContent(
             modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            item {
+                AdvertView(modifier = Modifier.fillMaxWidth().height(60.dp))
+            }
             items(movements, key = { it.movementId }) { movement ->
                 SwipeBox(onDelete = { onDeleted(movement) }, onEdit = { /*TODO*/ }) {
                     ItemMovement(movement)
