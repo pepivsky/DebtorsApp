@@ -86,7 +86,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
 
             AdvertView(modifier = Modifier.constrainAs(adRef) {
                 top.linkTo(parent.top)
-                height = Dimension.value(50.dp)
+                height = Dimension.value(60.dp)
                 width = Dimension.wrapContent
             })
 
