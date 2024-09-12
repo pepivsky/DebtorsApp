@@ -146,7 +146,7 @@ fun ShowContent(
         LazyColumn(modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(debtors, key = { it.debtorId }) { debtor ->
-                ItemDebtor(debtor = debtor) {
+                ItemDebtor(debtor = debtor, modifier = Modifier.animateItem()) {
                     if ((randomNum == 2 || randomNum == 7 || randomNum == 5) && adIsLoaded) {
                         showInterstitial(context) {
                             navController.navigate(

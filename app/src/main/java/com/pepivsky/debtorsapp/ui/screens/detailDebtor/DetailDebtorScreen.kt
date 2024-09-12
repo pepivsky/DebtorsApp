@@ -298,7 +298,7 @@ fun ShowMovementsContent(
                 AdvertView(modifier = Modifier.fillMaxWidth().height(60.dp))
             }
             items(movements, key = { it.movementId }) { movement ->
-                SwipeBox(onDelete = { onDeleted(movement) }, onEdit = { /*TODO*/ }) {
+                SwipeBox(modifier = Modifier.animateItem(), onDelete = { onDeleted(movement) }, onEdit = { /*TODO*/ }) {
                     ItemMovement(movement)
                 }
             }
