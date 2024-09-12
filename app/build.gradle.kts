@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.googleFirebaseCrashlytics)
     alias(libs.plugins.compose.compiler)
     id("com.google.devtools.ksp")
+    alias(libs.plugins.kotlinxSerialization)
 
 }
 
@@ -102,6 +103,8 @@ dependencies {
 
     // navigation
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+
 
     // ads
     implementation (libs.play.services.ads)
