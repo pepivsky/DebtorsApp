@@ -35,7 +35,12 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalFoundationApi::class)
 @Preview
@@ -80,6 +85,9 @@ fun SwipeBox(
     content: @Composable () -> Unit
 ) {
     val swipeState = rememberSwipeToDismissBoxState()
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+
 
     // grados para animar
     val degreesDeleteIcon by animateFloatAsState(
@@ -97,8 +105,6 @@ fun SwipeBox(
             0F
         }
     )
-
-
 
     /*swipeState.currentValue
     swipeState.targetValue
@@ -164,17 +170,67 @@ fun SwipeBox(
 
     when (swipeState.currentValue) {
         SwipeToDismissBoxValue.EndToStart -> {
-            onDelete()
+            showDeleteConfirmation = true
         }
-
         SwipeToDismissBoxValue.StartToEnd -> {
             LaunchedEffect(swipeState) {
                 onEdit()
                 swipeState.snapTo(SwipeToDismissBoxValue.Settled)
             }
         }
-
         SwipeToDismissBoxValue.Settled -> {
+        }
+    }
+
+    if (showDeleteConfirmation) {
+        AlertDialog(
+            onDismissRequest = {
+                //swipeState.reset()
+                coroutineScope.launch {
+                    withContext(Dispatchers.Main) {
+                        swipeState.reset()
+                        showDeleteConfirmation = false
+
+                    }
+                }
+            },
+            title = { Text("Confirm Delete") },
+            text = { Text("Are you sure you want to delete this item?") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDelete()
+                        showDeleteConfirmation = false
+                        coroutineScope.launch {
+                            withContext(Dispatchers.Main) {
+                                swipeState.reset()
+                            }
+                        }
+                    }
+                ) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            withContext(Dispatchers.Main) {
+                                swipeState.reset()
+                                showDeleteConfirmation = false
+                            }
+                        }
+                    }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    LaunchedEffect(showDeleteConfirmation) {
+        if (!showDeleteConfirmation) {
+            swipeState.reset()
         }
     }
 }
