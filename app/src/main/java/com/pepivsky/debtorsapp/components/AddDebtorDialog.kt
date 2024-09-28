@@ -96,6 +96,7 @@ fun DialogAddDebtor(
                     var amount by rememberSaveable { mutableStateOf(  "${debtor?.amount ?: ""}") }
                     var remaining by rememberSaveable { mutableStateOf(  "${debtor?.remaining}") }
                     var description by rememberSaveable { mutableStateOf( debtor?.description ?: "") }
+                    var phoneNumber by rememberSaveable { mutableStateOf( debtor?.phoneNumber ?: "") }
                     val isEnable by remember { derivedStateOf { name.isNotBlank() && amount.isNotBlank() && description.isNotBlank() } }
                     val focusRequester = remember {
                         FocusRequester()
@@ -184,9 +185,24 @@ fun DialogAddDebtor(
                                 focusedBorderColor = Color(0xFFA1824A)
 
                             ),*/
-                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Done)
+                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Next)
                         )
                     }
+
+                    // phoneNumber
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = phoneNumber,
+                        onValueChange = {
+                            phoneNumber = it
+                        },
+                        label = { Text(text = "Número telefónico") },
+                        /*colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color(0xFFA1824A)
+
+                        ),*/
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone, imeAction = ImeAction.Done)
+                    )
 
                     OutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
@@ -198,25 +214,28 @@ fun DialogAddDebtor(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             if (debtor == null) { // nuevo deudor
-                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && creationDate != null) {
+                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && phoneNumber.isNotEmpty() && creationDate != null) {
                                     val newDebtor = Debtor(
                                         name = name.trim(),
                                         description = description.trim(),
                                         creationDate = creationDate,
                                         amount = amount.toDoubleOrNull() ?: 0.0,
-                                        remaining = amount.toDoubleOrNull() ?: 0.0
+                                        remaining = amount.toDoubleOrNull() ?: 0.0,
+                                        phoneNumber = phoneNumber.trim(),
                                     )
                                     onAcceptClicked(newDebtor)
                                     closeDialog()
                                 }
                             } else { // editar deudor
-                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty() && creationDate != null) {
+                                if (name.isNotEmpty() && amount.isNotEmpty() && description.isNotEmpty()  && phoneNumber.isNotEmpty() && creationDate != null) {
                                     val editedDebtor = debtor.copy(
                                         name = name.trim(),
                                         description = description.trim(),
                                         creationDate = creationDate,
                                         amount = amount.toDoubleOrNull() ?: 0.0,
-                                        remaining = remaining.toDoubleOrNull() ?: 0.0
+                                        remaining = remaining.toDoubleOrNull() ?: 0.0,
+                                        phoneNumber = phoneNumber.trim(),
+
                                     )
                                     onAcceptClicked(editedDebtor)
                                     closeDialog()
