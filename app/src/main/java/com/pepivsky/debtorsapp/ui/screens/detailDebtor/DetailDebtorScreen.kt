@@ -95,6 +95,7 @@ fun DetailDebtorScreen(
                 paymentButtonRef,
                 spacerRef,
                 isPaidContainer,
+                phoneNumberRef
             ) = createRefs()
 
             /*DebtorName(
@@ -116,11 +117,17 @@ fun DetailDebtorScreen(
                     width = Dimension.fillToConstraints
                     height = Dimension.wrapContent
                 })
+            Text(modifier = Modifier.constrainAs(phoneNumberRef) {
+                start.linkTo(startGuide)
+                /*end.linkTo(endGuide)*/
+                top.linkTo(debtInfoRef.bottom, margin = 16.dp)
+
+            },text = "Número telefónico: ${selectedDebtor.debtor.phoneNumber}")
 
             if (selectedDebtor.debtor.isPaid) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.constrainAs(isPaidContainer) {
-                        top.linkTo(debtInfoRef.bottom)
+                        top.linkTo(phoneNumberRef.bottom)
                         start.linkTo(startGuide)
                         end.linkTo(endGuide)
                     }
@@ -144,7 +151,7 @@ fun DetailDebtorScreen(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(movementsTitleRef) {
                     top.linkTo(
-                        if (selectedDebtor.debtor.isPaid) isPaidContainer.bottom else debtInfoRef.bottom,
+                        if (selectedDebtor.debtor.isPaid) isPaidContainer.bottom else phoneNumberRef.bottom,
                         margin = 24.dp
                     )
                     start.linkTo(startGuide)
@@ -295,7 +302,9 @@ fun ShowMovementsContent(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item {
-                AdvertView(modifier = Modifier.fillMaxWidth().height(60.dp))
+                AdvertView(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp))
             }
             items(movements, key = { it.movementId }) { movement ->
                 SwipeBox(modifier = Modifier.animateItem(), onDelete = { onDeleted(movement) }, onEdit = { /*TODO*/ }) {
