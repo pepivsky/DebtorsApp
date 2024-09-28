@@ -7,9 +7,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.util.Constants
-import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.Date
 
 @Entity(
     tableName = Constants.MOVEMENT_TABLE,
