@@ -118,6 +118,9 @@ dependencies {
     // in app reviews
     implementation (libs.review.ktx)
 
+    // billing
+    implementation (libs.billing)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
