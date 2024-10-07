@@ -120,6 +120,7 @@ dependencies {
 
     // billing
     implementation (libs.billing)
+    implementation(libs.billing.ktx)
 
 
     testImplementation(libs.junit)
