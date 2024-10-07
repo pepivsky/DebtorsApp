@@ -1,10 +1,13 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.googleGmsGoogleServices)
     alias(libs.plugins.googleFirebaseCrashlytics)
+    alias(libs.plugins.compose.compiler)
+    id("com.google.devtools.ksp")
+    alias(libs.plugins.kotlinxSerialization)
+
 }
 
 android {
@@ -15,8 +18,8 @@ android {
         applicationId = "com.pepivsky.debtorsapp"
         minSdk = 27
         targetSdk = 34
-        versionCode = 23
-        versionName = "1.2.3"
+        versionCode = 31
+        versionName = "1.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,10 +27,8 @@ android {
         }
 
         // export schema, necesario para las migraciones automaticas
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas")
-            }
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
 
     }
@@ -66,18 +67,14 @@ android {
         compose = true
         buildConfig = true
     }
-    composeOptions {
+    /*composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
-    }
+    }*/
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    // Allow references to generated code
-    /*kapt {
-        correctErrorTypes = true
-    }*/
 }
 
 dependencies {
@@ -96,25 +93,30 @@ dependencies {
     // dagger hilt
     /*implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)*/
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
     // Room
-    implementation ("androidx.room:room-runtime:2.6.1")
-    kapt ("androidx.room:room-compiler:2.6.1")
-    implementation ("androidx.room:room-ktx:2.6.1")
+    implementation (libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation (libs.androidx.room.ktx)
 
     // navigation
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+
 
     // ads
-    implementation ("com.google.android.gms:play-services-ads:23.0.0")
+    implementation (libs.play.services.ads)
 
 // splashScreen
-    implementation ("androidx.core:core-splashscreen:1.0.1")
+    implementation (libs.androidx.core.splashscreen)
 
     // crashlitycs
     implementation(libs.firebase.crashlytics)
+
+    // in app reviews
+    implementation (libs.review.ktx)
 
 
     testImplementation(libs.junit)
@@ -124,9 +126,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-}
-
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
 }

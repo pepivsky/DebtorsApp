@@ -26,6 +26,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -46,6 +50,9 @@ import com.pepivsky.debtorsapp.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavController) {
+    var isButtonEnabled by remember { mutableStateOf(true) }
+
+
     Scaffold(topBar = {
         TopAppBar(colors = TopAppBarDefaults.topAppBarColors(),
             title = {
@@ -56,7 +63,13 @@ fun SettingsScreen(navController: NavController) {
 
                 )
             }, navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
+                IconButton(onClick = {
+                    if (isButtonEnabled) {
+                        isButtonEnabled = false
+                        navController.popBackStack()
+                    }
+                }
+                ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "back",

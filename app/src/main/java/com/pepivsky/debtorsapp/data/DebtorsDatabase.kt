@@ -12,9 +12,9 @@ import com.pepivsky.debtorsapp.data.models.entity.Movement
 
 @Database(
     entities = [Debtor::class, Movement::class],
-    version = 3,
+    version = 4,
     exportSchema = true,
-    autoMigrations = [AutoMigration(from = 2, to = 3)]
+    autoMigrations = [AutoMigration(from = 3, to = 4)]
 )
 @TypeConverters(BigDecimalTypeConverter::class)
 abstract class DebtorsDatabase : RoomDatabase() {

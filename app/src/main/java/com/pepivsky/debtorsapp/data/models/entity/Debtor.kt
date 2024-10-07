@@ -1,5 +1,6 @@
 package com.pepivsky.debtorsapp.data.models.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.pepivsky.debtorsapp.util.Constants
@@ -15,4 +16,6 @@ data class Debtor(
     val amount: Double,
     val remaining: Double,
     val isPaid: Boolean = false,
+    @ColumnInfo(defaultValue = "")
+    val phoneNumber: String = "",
 )

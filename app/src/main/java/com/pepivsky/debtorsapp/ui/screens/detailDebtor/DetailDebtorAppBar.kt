@@ -1,5 +1,8 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -11,10 +14,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -24,12 +25,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pepivsky.debtorsapp.R
+import com.pepivsky.debtorsapp.components.ads.adIsLoaded
+import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.entity.DebtorWithMovements
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 
@@ -44,6 +48,8 @@ fun DefaultDetailDebtorAppBar(
     onEditClicked: () -> Unit,
 
     ) {
+    var isButtonEnabled by remember { mutableStateOf(true) }
+
     TopAppBar(colors = TopAppBarDefaults.topAppBarColors(),
         title = {
             Text(
@@ -54,18 +60,22 @@ fun DefaultDetailDebtorAppBar(
             )
         },
         actions = {
-
-
             DetailDebtorAppBarActions(onDeleteClicked = {
                 sharedViewModel.deleteSelectedDebtor(debtorWithMovements.debtor)
                 navController.popBackStack()
             }, onEditClicked = {
                 onEditClicked()
-            })
-
+            }, debtorWithMovements,
+                sharedViewModel = sharedViewModel
+            )
 
         }, navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
+            IconButton(onClick = {
+                if (isButtonEnabled) {
+                    isButtonEnabled = false
+                    navController.popBackStack()
+                }
+            }, enabled = isButtonEnabled) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "back",
@@ -73,7 +83,6 @@ fun DefaultDetailDebtorAppBar(
                         .padding(8.dp)
                 )
             }
-
         })
 }
 
@@ -81,8 +90,9 @@ fun DefaultDetailDebtorAppBar(
 fun DetailDebtorAppBarActions(
     onDeleteClicked: () -> Unit,
     onEditClicked: () -> Unit,
-
-    ) {
+    debtorWithMovements: DebtorWithMovements,
+    sharedViewModel: SharedViewModel,
+) {
     var showDialogConfirmDelete by remember { mutableStateOf(false) }
 
     if (showDialogConfirmDelete) {
@@ -91,28 +101,66 @@ fun DetailDebtorAppBarActions(
             title = { Text(stringResource(R.string.title_dialog_delete_debtor)) },
             text = { Text(stringResource(R.string.text_dialog_delete_debtor)) },
             confirmButton = {
-                Button(onClick = {
+                OutlinedButton(onClick = {
                     onDeleteClicked()
                 }) {
                     Text(stringResource(R.string.delete).uppercase())
                 }
             },
             dismissButton = {
-                OutlinedButton(onClick = { showDialogConfirmDelete = false }) {
+                Button(onClick = { showDialogConfirmDelete = false }) {
                     Text(stringResource(R.string.cancel).uppercase())
                 }
             },
         )
     }
+    val context = LocalContext.current
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
+            if (selectedUri != null) {
+                // show interstitial before generate pdf
+                if (adIsLoaded) {
+                    showInterstitial(context) {
+                        sharedViewModel.generatePDF(
+                            selectedUri,
+                            debtorWithMovements.movements,
+                            debtorWithMovements.debtor.remaining
+                        )
+                    }
+                } else {
+                    sharedViewModel.generatePDF(
+                        selectedUri,
+                        debtorWithMovements.movements,
+                        debtorWithMovements.debtor.remaining
+                    )
+                }
+                //createPdf(context, selectedUri, debtorWithMovements.movements, debtorWithMovements.debtor.remaining)
+            } else {
+                println("No file was selected")
+            }
+        }
+
     DropDownActions(
         onDelete = { showDialogConfirmDelete = true },
-        onEdit = { onEditClicked() }
+        onEdit = { onEditClicked() },
+        onGeneratePDF = {
+            if (debtorWithMovements.movements.isEmpty()) {
+                Toast.makeText(
+                    context,
+                    "Agrega al menos un movimiento para generar el PDF",
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+                return@DropDownActions
+            }
+            launcher.launch("detalle_deuda_${debtorWithMovements.debtor.name}_${System.currentTimeMillis()}.pdf")
+        }
     )
 }
 
 // delete all action
 @Composable
-fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit) {
+fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit, onGeneratePDF: () -> Unit) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     IconButton(onClick = { expanded = true }) {
@@ -135,6 +183,13 @@ fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit) {
         }, onClick = {
             expanded = false
             onEdit()
+        })
+
+        DropdownMenuItem(text = {
+            Text(text = "Generar PDF")
+        }, onClick = {
+            expanded = false
+            onGeneratePDF()
         })
     }
 }

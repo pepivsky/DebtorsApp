@@ -1,5 +1,6 @@
 package com.pepivsky.debtorsapp.ui.screens.home
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,32 +27,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.pepivsky.debtorsapp.R
 import com.pepivsky.debtorsapp.components.DialogAddDebtor
 import com.pepivsky.debtorsapp.components.ads.adIsLoaded
 import com.pepivsky.debtorsapp.components.ads.showInterstitial
 import com.pepivsky.debtorsapp.data.models.entity.Debtor
-import com.pepivsky.debtorsapp.navigation.AppScreens
 import com.pepivsky.debtorsapp.ui.viewmodels.SharedViewModel
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
 import com.pepivsky.debtorsapp.util.extension.toCurrencyFormat
 import com.pepivsky.debtorsapp.components.ads.AdvertView
+import com.pepivsky.debtorsapp.components.rememberReviewTask
+import com.pepivsky.debtorsapp.navigation.DetailDebtorScreenNav
 
 
 //@Preview
@@ -60,6 +66,10 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
     val allDebtors by viewModel.allDebtors.collectAsState()
     val total by viewModel.totalAmount.collectAsState(0.0)
     var openDialog by rememberSaveable { mutableStateOf(false) }
+    val localContext = LocalContext.current
+
+    val reviewManager = remember { ReviewManagerFactory.create(localContext) }
+    val reviewInfo = rememberReviewTask(reviewManager)
 
     Scaffold(topBar = {
         HomeAppBar(navController = navController)
@@ -76,7 +86,7 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
 
             AdvertView(modifier = Modifier.constrainAs(adRef) {
                 top.linkTo(parent.top)
-                height = Dimension.value(50.dp)
+                height = Dimension.value(60.dp)
                 width = Dimension.wrapContent
             })
 
@@ -110,6 +120,11 @@ fun HomeScreen(viewModel: SharedViewModel, navController: NavController) {
             openDialog = openDialog,
             closeDialog = { openDialog = false }) { debtor ->
             viewModel.addNewDebtor(debtor)
+
+            // show in app review bottom sheet
+            reviewInfo?.let {
+                reviewManager.launchReviewFlow(localContext as Activity, reviewInfo)
+            }
         }
     }
 }
@@ -131,16 +146,16 @@ fun ShowContent(
         LazyColumn(modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(debtors, key = { it.debtorId }) { debtor ->
-                ItemDebtor(debtor = debtor) {
+                ItemDebtor(debtor = debtor, modifier = Modifier.animateItem()) {
                     if ((randomNum == 2 || randomNum == 7 || randomNum == 5) && adIsLoaded) {
                         showInterstitial(context) {
                             navController.navigate(
-                                route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
+                                route = DetailDebtorScreenNav(debtor.debtorId)
                             )
                         }
                     } else {
                         navController.navigate(
-                            route = AppScreens.MovementsScreen.createRoute(debtor.debtorId)
+                            route = DetailDebtorScreenNav(debtor.debtorId)
                         )
                     }
                 }
@@ -182,11 +197,19 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
                 fontSize = 24
             )
             Column(modifier = Modifier.padding(start = 8.dp)) {
-                Text(
-                    text = debtor.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = debtor.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    if (debtor.isPaid) {
+                        Icon(modifier = Modifier.size(16.dp).padding(start = 2.dp),painter = painterResource(id = R.drawable.ic_checkmark), contentDescription = null,
+                            //tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            tint = Color(0xff52d053)
+                        )
+                    }
+                }
                 Text(
                     text = debtor.description,
                     style = MaterialTheme.typography.bodyMedium
@@ -200,7 +223,8 @@ fun ItemDebtor(modifier: Modifier = Modifier, debtor: Debtor, onClick: () -> Uni
             Text(
                 style = MaterialTheme.typography.titleLarge,
                 text = debtor.remaining.toCurrencyFormat(),
-                color = MaterialTheme.colorScheme.onTertiaryContainer
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                textDecoration = if (debtor.isPaid) TextDecoration.LineThrough else TextDecoration.None,
             )
 
         }
