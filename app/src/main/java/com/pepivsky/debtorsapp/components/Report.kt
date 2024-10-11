@@ -1,12 +1,14 @@
 package com.pepivsky.debtorsapp.components
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import com.pepivsky.debtorsapp.data.models.MovementType
 import com.pepivsky.debtorsapp.data.models.entity.Movement
 import com.pepivsky.debtorsapp.util.extension.formatToServerDateDefaults
@@ -14,16 +16,17 @@ import com.pepivsky.debtorsapp.util.extension.toCurrencyFormat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
 class Report @Inject constructor(
-    @ApplicationContext val context: Context,
+    @ApplicationContext private val context: Context,
 ) {
 
-    suspend fun createPdf(uri: Uri, movements: List<Movement>, remaining: Double) {
-        withContext(Dispatchers.IO) {
+    suspend fun createPdf(movements: List<Movement>, remaining: Double, debtorName: String): Uri? {
+        return withContext(Dispatchers.IO) {
             val pdfDocument = PdfDocument()
             val pageWidth = 595
             val pageHeight = 842
@@ -124,34 +127,50 @@ class Report @Inject constructor(
             }
 
 
-            // Save the PDF to the provided URI
+            // Guardar el PDF en el almacenamiento interno de la app
+            val file = File(context.filesDir, "detalle_deuda_${debtorName}_${System.currentTimeMillis()}.pdf")
             try {
-                context.contentResolver.openFileDescriptor(uri, "w")?.use {
-                    FileOutputStream(it.fileDescriptor).use { outputStream ->
-                        pdfDocument.writeTo(outputStream)
-
-                        // Show success toast
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                context,
-                                "PDF generado exitosamente :)",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
+                FileOutputStream(file).use { outputStream ->
+                    pdfDocument.writeTo(outputStream)
                 }
+
+                // Mostrar toast de éxito
+                /*withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        context,
+                        "PDF generado exitosamente :)",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }*/
+
+                // Devolver la Uri del archivo guardado
+                FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.fileprovider",
+                    file
+                )
             } catch (e: IOException) {
                 e.printStackTrace()
-                // Show error toast
+                // Mostrar toast de error
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Error al guardar el archivo :(", Toast.LENGTH_LONG)
+                    Toast.makeText(context, "Error al compartir el archivo :(", Toast.LENGTH_LONG)
                         .show()
                 }
+                null
             } finally {
                 pdfDocument.close()
             }
         }
     }
 
-
+    fun sharePdf(pdfUri: Uri) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "application/pdf"
+            putExtra(Intent.EXTRA_STREAM, pdfUri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        val chooser = Intent.createChooser(intent, "Compartir PDF")
+        chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(chooser)
+    }
 }
