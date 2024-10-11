@@ -35,4 +35,5 @@
     <string name="confirm">Confirmar</string>
     <string name="accept">Aceptar</string>
     <string name="movements">Movimientos</string>
+    <string name="label_share_pdf">Compartir PDF</string>
 </resources>

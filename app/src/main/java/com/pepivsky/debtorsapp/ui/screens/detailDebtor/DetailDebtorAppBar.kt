@@ -202,7 +202,7 @@ fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit, onGeneratePDF: () 
         })
 
         DropdownMenuItem(text = {
-            Text(text = "Generar PDF")
+            Text(text = stringResource(R.string.label_share_pdf))
         }, onClick = {
             expanded = false
             onGeneratePDF()
