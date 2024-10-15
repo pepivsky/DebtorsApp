@@ -26,7 +26,9 @@ class Report @Inject constructor(
 ) {
 
     suspend fun createPdf(movements: List<Movement>, remaining: Double, debtorName: String): Uri? {
-        return withContext(Dispatchers.IO) {
+        var fileUri: Uri?
+
+        withContext(Dispatchers.IO) {
             val pdfDocument = PdfDocument()
             val pageWidth = 595
             val pageHeight = 842
@@ -144,7 +146,7 @@ class Report @Inject constructor(
                 }*/
 
                 // Devolver la Uri del archivo guardado
-                FileProvider.getUriForFile(
+                fileUri = FileProvider.getUriForFile(
                     context,
                     "${context.packageName}.fileprovider",
                     file
@@ -156,11 +158,12 @@ class Report @Inject constructor(
                     Toast.makeText(context, "Error al compartir el archivo :(", Toast.LENGTH_LONG)
                         .show()
                 }
-                null
+                fileUri = null
             } finally {
                 pdfDocument.close()
             }
         }
+        return fileUri
     }
 
     fun sharePdf(pdfUri: Uri) {
