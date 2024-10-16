@@ -130,8 +130,18 @@ class Report @Inject constructor(
             }
 
 
-            // Guardar el PDF en el almacenamiento interno de la app
+            // Guardar el PDF en cache en un archivo temporal
             val file = File(context.cacheDir, "detalle_deuda_${debtorName}_${System.currentTimeMillis()}.pdf")
+
+            // se puede guardar en el almacenamiento interno de la app usando filesDir
+            /*
+                        val file = File(context.filesDir, "detalle_deuda_${debtorName}_${System.currentTimeMillis()}.pdf")
+
+                        y hay que modificar el archivo file_paths.xml para poder guardar en el almacenamiento interno de la app
+                        <paths>
+                           <files-path name="pdfs" path="." />
+                        </paths>
+             */
             try {
                 FileOutputStream(file).use { outputStream ->
                     pdfDocument.writeTo(outputStream)
