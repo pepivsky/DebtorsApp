@@ -19,6 +19,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class Report @Inject constructor(
@@ -130,7 +131,7 @@ class Report @Inject constructor(
 
 
             // Guardar el PDF en el almacenamiento interno de la app
-            val file = File(context.filesDir, "detalle_deuda_${debtorName}_${System.currentTimeMillis()}.pdf")
+            val file = File(context.cacheDir, "detalle_deuda_${debtorName}_${System.currentTimeMillis()}.pdf")
             try {
                 FileOutputStream(file).use { outputStream ->
                     pdfDocument.writeTo(outputStream)
