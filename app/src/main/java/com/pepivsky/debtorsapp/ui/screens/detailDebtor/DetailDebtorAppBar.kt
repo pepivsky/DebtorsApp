@@ -1,8 +1,6 @@
 package com.pepivsky.debtorsapp.ui.screens.detailDebtor
 
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -24,6 +22,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+//import androidx.compose.runtime.variable
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -115,30 +115,29 @@ fun DetailDebtorAppBarActions(
         )
     }
     val context = LocalContext.current
-    val launcher =
+    /*val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { selectedUri ->
+
             if (selectedUri != null) {
-                // show interstitial before generate pdf
                 if (adIsLoaded) {
                     showInterstitial(context) {
-                        sharedViewModel.generatePDF(
+                        sharedViewModel.generateAndSharePDF(
                             selectedUri,
                             debtorWithMovements.movements,
                             debtorWithMovements.debtor.remaining
                         )
                     }
                 } else {
-                    sharedViewModel.generatePDF(
+                    sharedViewModel.generateAndSharePDF(
                         selectedUri,
                         debtorWithMovements.movements,
                         debtorWithMovements.debtor.remaining
                     )
                 }
-                //createPdf(context, selectedUri, debtorWithMovements.movements, debtorWithMovements.debtor.remaining)
             } else {
                 println("No file was selected")
             }
-        }
+        }*/
 
     DropDownActions(
         onDelete = { showDialogConfirmDelete = true },
@@ -153,7 +152,24 @@ fun DetailDebtorAppBarActions(
                     .show()
                 return@DropDownActions
             }
-            launcher.launch("detalle_deuda_${debtorWithMovements.debtor.name}_${System.currentTimeMillis()}.pdf")
+
+            // mostrar el interstitial y despues compartir el PDF
+            //launcher.launch("detalle_deuda_${debtorWithMovements.debtor.name}_${System.currentTimeMillis()}.pdf")
+            if (adIsLoaded) {
+                showInterstitial(context) {
+                    sharedViewModel.generateAndSharePDF(
+                        debtorWithMovements.debtor.name,
+                        debtorWithMovements.movements,
+                        debtorWithMovements.debtor.remaining
+                    )
+                }
+            } else {
+                sharedViewModel.generateAndSharePDF(
+                    debtorWithMovements.debtor.name,
+                    debtorWithMovements.movements,
+                    debtorWithMovements.debtor.remaining
+                )
+            }
         }
     )
 }
@@ -186,7 +202,7 @@ fun DropDownActions(onDelete: () -> Unit, onEdit: () -> Unit, onGeneratePDF: () 
         })
 
         DropdownMenuItem(text = {
-            Text(text = "Generar PDF")
+            Text(text = stringResource(R.string.label_share_pdf))
         }, onClick = {
             expanded = false
             onGeneratePDF()

@@ -1,6 +1,5 @@
 package com.pepivsky.debtorsapp.ui.viewmodels
 
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -114,9 +113,12 @@ class SharedViewModel @Inject constructor(
     }
 
 
-    fun generatePDF(uri: Uri, movements: List<Movement>, remaining: Double) {
+    fun generateAndSharePDF(debtorName: String, movements: List<Movement>, remaining: Double) {
         viewModelScope.launch {
-            report.createPdf(uri, movements, remaining)
+            val pdfUri = report.createPdf(movements, remaining, debtorName)
+            pdfUri?.let {
+                report.sharePdf(it)
+            }
         }
     }
 
