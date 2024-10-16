@@ -132,7 +132,7 @@ fun DetailDebtorScreen(
                         tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
-                        text = "Pagado", color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        text = stringResource(R.string.paid_label), color = MaterialTheme.colorScheme.onPrimaryContainer,
                         style = MaterialTheme.typography.titleLarge
                     )
                 }
@@ -295,7 +295,9 @@ fun ShowMovementsContent(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item {
-                AdvertView(modifier = Modifier.fillMaxWidth().height(60.dp))
+                AdvertView(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp))
             }
             items(movements, key = { it.movementId }) { movement ->
                 SwipeBox(modifier = Modifier.animateItem(), onDelete = { onDeleted(movement) }, onEdit = { /*TODO*/ }) {
